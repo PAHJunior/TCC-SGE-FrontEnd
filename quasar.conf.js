@@ -68,6 +68,7 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
+<<<<<<< HEAD
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -77,6 +78,8 @@ module.exports = function (ctx) {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
         })
+=======
+>>>>>>> a53e8b6168ac3c655da17726fa3d1adcdd2b3101
       }
     },
 
@@ -97,9 +100,15 @@ module.exports = function (ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
+<<<<<<< HEAD
         // name: 'TCC SGE',
         // short_name: 'TCC SGE',
         // description: 'Trabalho de conclusão de curso - SISTEMA DE GERENCIAMENTO DE ESTOQUE - ETEC de Embu - curso: desenvolvimento de sistemas -  \n Integrantes \n Paulo Arthur \n Natalia Pires \n Polyana Feitosa',
+=======
+        // name: 'Sistema de gerenciamento de estoque',
+        // short_name: 'Sistema de gerenciamento de estoque',
+        // description: 'Trabalho de conclusão de curso - SISTEMA DE GERENCIAMENTO DE ESTOQUE - ETEC de Embu - curso: desenvolvimento de sistemas -  \n Integrantes \n Paulo Arthur \n Natalia Pires \n Polyana Almeida',
+>>>>>>> a53e8b6168ac3c655da17726fa3d1adcdd2b3101
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
