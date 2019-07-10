@@ -2,19 +2,12 @@
   "name": "tcc_sge",
   "version": "0.0.1",
   "description": "Trabalho de conclusão de curso - SISTEMA DE GERENCIAMENTO DE ESTOQUE - ETEC de Embu - curso: desenvolvimento de sistemas -  \n Integrantes \n Paulo Arthur \n Natalia Pires \n Polyana Feitosa",
-<<<<<<< HEAD
   "productName": "TCC SGE",
-=======
-  "productName": "Sistema de gerenciamento de estoque",
->>>>>>> a53e8b6168ac3c655da17726fa3d1adcdd2b3101
   "cordovaId": "org.cordova.quasar.app",
   "author": "tcc_sge@outlook.com",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
     "lint": "eslint --ext .js,.vue src",
-=======
->>>>>>> a53e8b6168ac3c655da17726fa3d1adcdd2b3101
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
@@ -24,16 +17,12 @@
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@quasar/app": "^1.0.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-vue": "^5.0.0"
-=======
-    "@quasar/app": "^1.0.0"
->>>>>>> a53e8b6168ac3c655da17726fa3d1adcdd2b3101
   },
   "engines": {
     "node": ">= 8.9.0",
