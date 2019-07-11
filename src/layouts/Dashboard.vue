@@ -27,8 +27,18 @@
       content-class="bg-fundo-menu"
       :breakpoint="400"
     >
+    <q-toolbar class="bg-primary text-white shadow-2">
+      <q-toolbar-title></q-toolbar-title>
+    </q-toolbar>
       <q-list>
-        <q-item class="text-grey-1" clickable tag="a" target="_blank" href="https://quasar.dev">
+        <q-item
+          :active="link === 'dashboard'"
+          @click="link = 'dashboard'"
+          class="text-grey-1"
+          clickable
+          tag="a"
+          target="_blank"
+          :href="link == 'dashboard'? false : '/dashboard'">
           <q-item-section avatar>
             <q-icon name="dashboard" />
           </q-item-section>
@@ -53,6 +63,7 @@ export default {
   data () {
     return {
       empresa: 'TCC',
+      link: '',
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
