@@ -11,7 +11,8 @@ const routes = [
     path: '/dashboard',
     component: () => import('layouts/LayoutPrincipal.vue'),
     children: [
-      { path: '', component: () => import('pages/Home.vue') }
+      { path: '', component: () => import('pages/Home.vue') },
+      { path: '/usuario', component: () => import('pages/Usuario.vue') }
     ]
   },
   {

@@ -1,9 +1,9 @@
 <template>
-  <q-layout view="lHh lpR lfr">
+  <q-layout view="lHh LpR lfr">
     <q-header elevated class="row">
 
       <!-- Toolbar para o nome do sistema -->
-      <q-toolbar class="col-md-2 text-white bg-secondary">
+      <q-toolbar class="col-md-2 col-xs-2 text-white bg-secondary">
         <q-btn
           flat
           dense
@@ -19,7 +19,7 @@
       </q-toolbar>
 
       <!-- Toolbar para barra de busca -->
-      <q-toolbar class="col-md-7 text-white bg-secondary row">
+      <q-toolbar class="col-md-7 col-xs-5 col-sm-7 text-white bg-secondary row">
 
         <q-input dark dense standout v-model="searchText" input-class="text-right" class="absolute-center col-md-10 col-xs-12 col-sm-12" >
           <template v-slot:append>
@@ -31,7 +31,7 @@
       </q-toolbar>
 
       <!-- ToolBar para os botões de ação com o usuario -->
-      <q-toolbar class="col-md-3 text-white bg-secondary">
+      <q-toolbar class="col-md-3 col-xs-5 col-sm-3 text-white bg-secondary">
 
         <q-space />
 
@@ -51,7 +51,7 @@
 
           <div class="row items-center no-wrap">
             <q-icon left name="img:statics/user.png" />
-            <div class="text-center">
+            <div class="text-center" v-if="!$q.screen.lt.md">
               Olá, {{ usuario }}
             </div>
           </div>
@@ -80,8 +80,8 @@
             class="text-grey-1"
             clickable
             tag="a"
-            target="_blank"
-            :href="link == 'dashboard'? false : '/dashboard'">
+            to="/dashboard"
+          >
 
             <q-item-section avatar>
 
@@ -97,10 +97,10 @@
 
           <q-expansion-item
             v-for="menus in menu"
-            :key="menus"
-            :icon=menus.icon
+            :key="menus.id"
+            :icon="menus.icon"
             expand-separator
-            :label=menus.label
+            :label="menus.label"
             class="text-white"
           >
             <q-card class="bg-grey-9">
@@ -110,10 +110,9 @@
                 class="text-grey-1"
                 clickable
                 tag="a"
-                target="_blank"
-                v-for="(submenus) in menus.submenu"
+                v-for="submenus in menus.submenu"
                 :key="submenus"
-                :href="link == 'dashboard'? false : '/dashboard'">
+                :to="submenus.link">
                 <q-item-section avatar />
                 <q-item-section>
                   <q-item-label>{{ submenus.label }}</q-item-label>
@@ -122,21 +121,6 @@
             </q-card>
           </q-expansion-item>
 
-          <q-item
-            :active="link === 'dashboard'"
-            @click="link = 'dashboard'"
-            class="text-grey-1"
-            clickable
-            tag="a"
-            target="_blank"
-            :href="link == 'dashboard'? false : '/dashboard'">
-            <q-item-section avatar>
-              <q-icon name="img:statics/settings.png" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Configurações</q-item-label>
-            </q-item-section>
-          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -160,26 +144,39 @@ export default {
       usuario: 'Paulo',
       menu: {
         cadastros: {
+          id: '0',
           label: 'Cadastros Gerais',
           icon: 'img:statics/database.png',
           submenu: [
-            { label: 'Cadastro de Estoque' },
+            { label: 'Cadastrar Usuário', link: '/usuario' },
+            { label: 'Cadastrar Estoque' },
+            { label: 'Cadastro de Grupos' },
             { label: 'Cadastro de Produto' }
           ]
         },
         consulta: {
-          label: 'Consulta',
+          id: '1',
+          label: 'Consultar',
           icon: 'img:statics/feature-search-white.png',
           submenu: [
-            { label: 'Consultar Produto' },
-            { label: 'Consultar Estoque' }
+            { label: 'Consultar Estoque' },
+            { label: 'Consultar Produto' }
           ]
         },
         relatorio: {
+          id: '2',
           label: 'Relatórios',
           icon: 'img:statics/file-chart.png',
           submenu: [
             { label: 'Relatório mensal' }
+          ]
+        },
+        configuracoes: {
+          id: '3',
+          label: 'Configurações',
+          icon: 'img:statics/settings.png',
+          submenu: [
+            { label: 'Admnistrador' }
           ]
         }
       },

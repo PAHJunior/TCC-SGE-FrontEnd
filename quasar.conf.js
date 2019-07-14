@@ -60,7 +60,15 @@ module.exports = function (ctx) {
         'QDate',
         'QToggle',
         'QPopupProxy',
-        'QMenu'
+        'QMenu',
+        'QBreadcrumbs',
+        'QBreadcrumbsEl',
+        'QSelect',
+        'QForm',
+        'QUploader',
+        'QStepper',
+        'QStep',
+        'QStepperNavigation'
       ],
 
       directives: [
