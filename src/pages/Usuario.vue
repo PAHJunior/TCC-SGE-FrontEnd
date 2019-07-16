@@ -225,7 +225,7 @@ export default {
       done2: false,
       done3: false,
       name: '',
-      date: ''
+      date: '2019/07/25'
     }
   },
   computed: {
