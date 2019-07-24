@@ -12,7 +12,8 @@ const routes = [
     component: () => import('layouts/LayoutPrincipal.vue'),
     children: [
       { path: '', component: () => import('pages/Home.vue') },
-      { path: '/usuario', component: () => import('pages/Usuario.vue') }
+      { path: '/cadastro_usuario', component: () => import('pages/Cad_usuario.vue') },
+      { path: '/cadastro_estoque', component: () => import('pages/Cad_estoque.vue') }
     ]
   },
   {

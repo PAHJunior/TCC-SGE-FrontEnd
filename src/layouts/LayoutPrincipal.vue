@@ -48,13 +48,37 @@
         <q-btn flat round dense icon="img:statics/star.png" />
 
         <q-btn flat dense>
-
           <div class="row items-center no-wrap">
             <q-icon left name="img:statics/user.png" />
             <div class="text-center" v-if="!$q.screen.lt.md">
               Olá, {{ usuario }}
             </div>
           </div>
+          <q-menu  anchor="bottom middle" self="top middle">
+            <div class="row no-wrap q-pa-md">
+              <div class="column">
+                <div class="text-h6 q-mb-md">Configurações</div>
+              </div>
+
+              <q-separator vertical inset class="q-mx-lg" />
+
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                </q-avatar>
+
+                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ usuario }}</div>
+
+                <q-btn
+                  to="/"
+                  color="red-10"
+                  label="Sair"
+                  size="sm"
+                  v-close-popup
+                />
+              </div>
+            </div>
+          </q-menu>
 
         </q-btn>
 
@@ -148,8 +172,8 @@ export default {
           label: 'Cadastros Gerais',
           icon: 'img:statics/database.png',
           submenu: [
-            { label: 'Cadastrar Usuário', link: '/usuario' },
-            { label: 'Cadastrar Estoque' },
+            { label: 'Cadastrar Usuário', link: '/cadastro_usuario' },
+            { label: 'Cadastrar Estoque', link: '/cadastro_estoque' },
             { label: 'Cadastro de Grupos' },
             { label: 'Cadastro de Produto' }
           ]
