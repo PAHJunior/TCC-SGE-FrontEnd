@@ -76,9 +76,9 @@ export default {
   margin-top: -24%;
 }
 .img {
-  background-image: url("https://cdn.quasar.dev/img/avatar.png");
+  background-image: url("../assets/logo_tcc.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: 150px;
 }
 </style>

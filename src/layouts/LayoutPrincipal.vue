@@ -69,8 +69,7 @@
     >
     <q-scroll-area style="height: calc(100% );">
 
-      <q-toolbar class="bg-primary text-white shadow-2 ">
-        <q-toolbar-title></q-toolbar-title>
+      <q-toolbar class="bg-primary text-white shadow-2  ">
       </q-toolbar>
 
         <q-list >
@@ -138,6 +137,7 @@ export default {
   name: 'MyLayout',
   data () {
     return {
+      urlImg: '../assets/logo_tcc.png',
       calendario: false,
       date: '',
       searchText: '',

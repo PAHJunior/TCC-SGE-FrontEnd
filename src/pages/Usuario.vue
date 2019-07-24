@@ -142,7 +142,7 @@
                               class="col-md-2"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="cep"
                               label="CEP"
                             />
 
@@ -178,7 +178,7 @@
                               class="col-md-5"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="cidade"
                               label="Cidade"
                             />
 
@@ -196,7 +196,8 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="buscarCEP" type="submit" color="primary" class="col-12"/>
+                          {{ cep }}
                         </div>
                       </div>
                     </div>
@@ -216,20 +217,52 @@
 </template>
 
 <script>
+import Cep from '../service/cep/cep.js'
 
 export default {
   data () {
     return {
-      step: 1,
-      done1: false,
-      done2: false,
-      done3: false,
+      usuario: {
+        nome: '',
+        hierarquia: '',
+        rg: '',
+        cpf: '',
+        dtnascimento: '',
+        login: '',
+        senha: '',
+        email: '',
+        telefone: '',
+        celular: '',
+        cep: '',
+        logradouro: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        uf: ''
+      },
       name: '',
+      cep: '',
+      cidade: '',
       date: '2019/07/25'
     }
   },
+  // methods: {}
   computed: {
 
+  },
+  methods: {
+    buscarCEP () {
+      Cep.cep(this.cep)
+        .then(resposta => {
+          console.log(resposta.data)
+          const cep = resposta.data
+          // this.cadastro.nmlogrnome = cep.logradouro
+          // this.cadastro.nmbairro = cep.bairro
+          // this.cadastro.nmcidade = cep.cidade
+          this.cidade = cep.cidade
+          // this.cadastro.cdestado = cep.estado
+        })
+    }
   }
 }
 </script>
