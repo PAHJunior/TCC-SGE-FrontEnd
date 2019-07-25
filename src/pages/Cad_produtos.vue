@@ -16,7 +16,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="fas fa-boxes" to="/cadastro_estoque"  label="Cadastro de estoque" />
+                <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_produtos"  label="Cadastro de produtos" />
 
               </q-breadcrumbs>
 
@@ -39,27 +39,25 @@
 
                         <fieldset class="col-12 no-border">
 
-                          <legend>Dados do estoque</legend>
+                          <legend>Dados do produto</legend>
 
                           <div class="q-col-gutter-sm row">
 
                             <q-input
-                              class="col-md-12"
+                              class="col-md-2"
                               dense
                               outlined
                               v-model="estoque.nome_estoque"
-                              hint="Exemplo: 'Estoque A', 'Estoque B'"
-                              label="Nome do estoque *"
+                              label="código do produto"
                             />
 
                             <!-- Campo do quantidade_total -->
                             <q-input
-                              class="col-md-6"
+                              class="col-md-10"
                               dense
                               outlined
                               v-model="estoque.valor_estoque"
-                              label="Quantidade Total"
-                              disable
+                              label="Descrição"
                             />
 
                             <!-- Campo data de nascimento -->

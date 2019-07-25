@@ -13,7 +13,8 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Home.vue') },
       { path: '/cadastro_usuario', component: () => import('pages/Cad_usuario.vue') },
-      { path: '/cadastro_estoque', component: () => import('pages/Cad_estoque.vue') }
+      { path: '/cadastro_estoque', component: () => import('pages/Cad_estoque.vue') },
+      { path: '/cadastro_produtos', component: () => import('pages/Cad_produtos.vue') }
     ]
   },
   {

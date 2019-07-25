@@ -27,7 +27,7 @@
           <div class="col-md-12 col-sm-12 col-xs-12 row">
 
             <q-card class="col-12 ">
-              <q-card-section class="row q-col-gutter-sm text-center items-end">
+              <q-card-section class=" q-col-gutter-sm text-center items-end">
 
                 <q-form
                   @submit="onSubmit"
@@ -44,37 +44,47 @@
                           <div class="q-col-gutter-sm row">
 
                             <q-input
-                              class="col-md-12"
+                              class="col-md-1"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.id"
+                              label="ID"
+                              disable
+                            />
+
+                            <!-- nom completo -->
+                            <q-input
+                              class="col-md-11"
+                              dense
+                              outlined
+                              v-model="usuario.nome"
                               label="Nome completo"
                             />
 
                             <!-- Campo do CPF -->
                             <q-input
-                              class="col-md-4"
+                              class="col-md-3"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.cpf"
                               label="CPF"
                             />
 
                             <!-- Campo do RG -->
                             <q-input
-                              class="col-md-4"
+                              class="col-md-3"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.rg"
                               label="RG"
                             />
 
                             <!-- Campo data de nascimento -->
                             <q-input
-                              class="col-md-4"
+                              class="col-md-3"
                               dense
                               outlined
-                              v-model="date"
+                              v-model="usuario.dtnascimento"
                               label="Data de nascimento"
                             >
                               <template v-slot:prepend>
@@ -83,7 +93,7 @@
                                   <q-menu fit anchor="bottom left" self="top left">
 
                                     <q-date
-                                      v-model="date"
+                                      v-model="usuario.dtnascimento"
                                       minimal
                                     />
 
@@ -92,6 +102,15 @@
                                 </q-btn>
                               </template>
                             </q-input>
+
+                            <!-- Campo GRupo -->
+                            <q-input
+                              class="col-md-3"
+                              dense
+                              outlined
+                              v-model="usuario.grupo"
+                              label="Grupo"
+                            />
 
                           </div>
                         </fieldset>
@@ -106,7 +125,7 @@
                               class="col-md-12"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.email"
                               label="E-mail"
                             />
 
@@ -115,7 +134,7 @@
                               class="col-md-6"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.telefone"
                               label="Telefone"
                             />
 
@@ -124,7 +143,7 @@
                               class="col-md-6"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.celular"
                               label="Celular"
                             />
 
@@ -142,7 +161,7 @@
                               class="col-md-2"
                               dense
                               outlined
-                              v-model="cep"
+                              v-model="usuario.cep"
                               label="CEP"
                             />
 
@@ -151,7 +170,7 @@
                               class="col-md-8"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.logradouro"
                               label="Logradouro"
                             />
 
@@ -160,7 +179,7 @@
                               class="col-md-2"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.numero"
                               label="Numero"
                             />
 
@@ -169,7 +188,7 @@
                               class="col-md-5"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.bairro"
                               label="Bairro"
                             />
 
@@ -178,7 +197,7 @@
                               class="col-md-5"
                               dense
                               outlined
-                              v-model="cidade"
+                              v-model="usuario.cidade"
                               label="Cidade"
                             />
 
@@ -187,7 +206,7 @@
                               class="col-md-2"
                               dense
                               outlined
-                              v-model="name"
+                              v-model="usuario.uf"
                               label="UF"
                             />
 
@@ -223,6 +242,7 @@ export default {
   data () {
     return {
       usuario: {
+        id: '',
         nome: '',
         hierarquia: '',
         rg: '',
@@ -239,11 +259,7 @@ export default {
         bairro: '',
         cidade: '',
         uf: ''
-      },
-      name: '',
-      cep: '',
-      cidade: '',
-      date: '2019/07/25'
+      }
     }
   },
   // methods: {}
@@ -252,15 +268,14 @@ export default {
   },
   methods: {
     buscarCEP () {
-      Cep.cep(this.cep)
+      Cep.cep(this.usuario.cep)
         .then(resposta => {
           console.log(resposta.data)
           const cep = resposta.data
-          // this.cadastro.nmlogrnome = cep.logradouro
-          // this.cadastro.nmbairro = cep.bairro
-          // this.cadastro.nmcidade = cep.cidade
-          this.cidade = cep.cidade
-          // this.cadastro.cdestado = cep.estado
+          this.usuario.logradouro = cep.logradouro
+          this.usuario.bairro = cep.bairro
+          this.usuario.cidade = cep.cidade
+          this.usuario.uf = cep.estado
         })
     }
   }

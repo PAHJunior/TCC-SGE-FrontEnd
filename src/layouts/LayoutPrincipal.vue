@@ -174,8 +174,8 @@ export default {
           submenu: [
             { label: 'Cadastrar Usuário', link: '/cadastro_usuario' },
             { label: 'Cadastrar Estoque', link: '/cadastro_estoque' },
-            { label: 'Cadastro de Grupos' },
-            { label: 'Cadastro de Produto' }
+            // { label: 'Cadastro de Grupos', link: '/cadastro_grupos' },
+            { label: 'Cadastro de Produto', link: 'cadastro_produtos' }
           ]
         },
         consulta: {
