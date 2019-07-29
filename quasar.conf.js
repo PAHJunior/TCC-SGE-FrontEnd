@@ -69,7 +69,8 @@ module.exports = function (ctx) {
         'QStepper',
         'QStep',
         'QSeparator',
-        'QStepperNavigation'
+        'QStepperNavigation',
+        'QTree'
       ],
 
       directives: [

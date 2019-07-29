@@ -47,7 +47,7 @@
             <q-card class="col-12">
               <q-card-section class="text-center">
                 <span class="text-weight-medium text-h5">Selecionar Produto</span>
-                <q-select outlined v-model="model" dense :options-dense="denseOpts"/>
+                <q-select outlined v-model="produto" dense :options-dense="denseOpts"/>
               </q-card-section>
             </q-card>
 
@@ -128,6 +128,7 @@ export default {
       options: [
         'Estoque A', 'Estoque B'
       ],
+      produto: 'Prego',
       entrada: 500,
       saida: 348,
       valorEstoque: '100.000.00',

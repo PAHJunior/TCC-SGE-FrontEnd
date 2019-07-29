@@ -43,34 +43,108 @@
 
                           <div class="q-col-gutter-sm row">
 
+                            <!-- Campo do código do produto -->
                             <q-input
                               class="col-md-2"
                               dense
                               outlined
-                              v-model="estoque.nome_estoque"
+                              v-model="produto.codProduto"
                               label="código do produto"
                             />
 
-                            <!-- Campo do quantidade_total -->
+                            <!-- Campo do Descrição -->
                             <q-input
                               class="col-md-10"
                               dense
                               outlined
-                              v-model="estoque.valor_estoque"
+                              v-model="produto.descricao"
                               label="Descrição"
                             />
 
-                            <!-- Campo data de nascimento -->
-                            <q-input
+                            <!-- Campo Categoria do produto -->
+                            <q-select
+                              class="col-md-3"
+                              label="Categoria do produto"
+                              outlined
+                              v-model="produto.categoriaProduto"
+                              dense
+                              options-dense
+                              :options="options"
+                            />
+
+                            <!-- Campo Unidade de medida -->
+                            <q-select
+                              class="col-md-3"
+                              label="Unidade de medida"
+                              outlined
+                              v-model="produto.unidMedida"
+                              dense
+                              options-dense
+                              :options="options"
+                            />
+
+                            <!-- Campo Fornecedor -->
+                            <q-select
                               class="col-md-6"
+                              label="Fornecedor"
+                              outlined
+                              v-model="produto.fornecedor"
+                              dense
+                              options-dense
+                              :options="options"
+                            />
+
+                            <!-- Campo Valor de venda -->
+                            <q-input
+                              class="col-md-3"
+                              dense
+                              prefix="R$"
+                              outlined
+                              label="Valor de venda"
+                              v-model="produto.valorVenda"
+                            />
+
+                            <!-- Campo Valor de custo -->
+                            <q-input
+                              class="col-md-3"
+                              dense
+                              prefix="R$"
+                              outlined
+                              label="Valor de custo"
+                              v-model="produto.valorCusto"
+                            />
+
+                            <div class="col-md-6" />
+
+                            <!-- Campo Disponível em estoque -->
+                            <q-input
+                              class="col-md-3"
                               dense
                               outlined
-                              v-model="estoque.quantidade_total"
-                              label="Valor Estoque"
-                              disable
+                              v-model="produto.disponivel"
+                              label="Disponível em estoque"
+                            />
+
+                            <!-- Campo Estoque mínimo -->
+                            <q-input
+                              class="col-md-3"
+                              dense
+                              outlined
+                              v-model="produto.estoqueMin"
+                              label="Estoque mínimo"
+                            />
+
+                            <!-- Campo Estoque mínimo -->
+                            <q-input
+                              class="col-md-3"
+                              dense
+                              outlined
+                              v-model="produto.estoqueMax"
+                              label="Estoque máximo"
                             />
 
                           </div>
+
                         </fieldset>
 
                         <div class="row col-md-6 ">
@@ -99,10 +173,17 @@
 export default {
   data () {
     return {
-      estoque: {
-        nome_estoque: '',
-        valor_estoque: '0',
-        quantidade_total: '0'
+      produto: {
+        codProduto: '',
+        descricao: '',
+        categoriaProduto: '',
+        unidMedida: '',
+        fornecedor: '',
+        valorVenda: 0,
+        valorCusto: 1,
+        disponivel: 0,
+        estoqueMin: 1,
+        estoqueMax: 1
       }
     }
   },
