@@ -183,7 +183,8 @@ export default {
           label: 'Consultar',
           icon: 'img:statics/feature-search-white.png',
           submenu: [
-            { label: 'Consultar Estoque' },
+            { label: 'Consultar Usúario', link: '/consultar_usuario' },
+            { label: 'Consultar Estoque', link: '/consultar_usuario' },
             { label: 'Consultar Produto' }
           ]
         },

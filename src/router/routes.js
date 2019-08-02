@@ -15,7 +15,8 @@ const routes = [
       { path: '/cadastro_usuario', component: () => import('pages/Cad_usuario.vue') },
       { path: '/cadastro_estoque', component: () => import('pages/Cad_estoque.vue') },
       { path: '/cadastro_produtos', component: () => import('pages/Cad_produtos.vue') },
-      { path: '/cadastro_fornecedor', component: () => import('pages/Cad_fornecedor.vue') }
+      { path: '/cadastro_fornecedor', component: () => import('pages/Cad_fornecedor.vue') },
+      { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') }
     ]
   },
   {
