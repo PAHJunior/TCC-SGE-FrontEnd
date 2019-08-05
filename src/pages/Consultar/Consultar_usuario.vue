@@ -30,11 +30,107 @@
             <div class="col-12">
 
               <q-table
+                :filter="filter"
                 :data="data"
                 :columns="columns"
+                :visible-columns="visibleColumns"
                 :separator="separator"
-                row-key="name"/>
+                selection="single"
+                :selected.sync="selected"
+                row-key="id">
 
+                <!-- Corpo da tabela -->
+                <template v-slot:body="props">
+                  <q-tr :props="props">
+                    <q-td auto-width>
+                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
+                      <q-btn dense icon="delete" color="red-8" flat round />
+                      <q-btn dense icon="img:statics/file-log.png" flat round @click="props.selected = !props.selected"/>
+                    </q-td>
+                    <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
+                    <q-td key="cpf" :props="props">{{ props.row.cpf }}</q-td>
+                    <q-td key="rg" :props="props">{{ props.row.rg }}</q-td>
+                    <q-td key="aniversario" :props="props">{{ props.row.aniversario }}</q-td>
+                    <q-td key="grupo" :props="props">{{ props.row.grupo }}</q-td>
+                  </q-tr>
+                </template>
+
+                <template v-slot:top>
+                  <div class="row col-12 justify-center q-gutter-x-xs">
+
+                    <div class="col-md-3">
+
+                      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+                        <template v-slot:prepend>
+                          <q-icon name="search" />
+                        </template>
+                      </q-input>
+
+                    </div>
+
+                    <div class="row justify-between col-md-5 ">
+
+                      <div class="">
+                        <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
+                        <q-checkbox  color="primary" left-label label="CPF" v-model="filtroPesquisa" val="cpf" />
+                        <q-checkbox  color="primary" left-label label="RG" v-model="filtroPesquisa" val="rg" />
+                        <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
+                      </div>
+                        <q-btn icon="person_add" flat round dense/>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                      <q-select
+                        v-model="visibleColumns"
+                        multiple
+                        outlined
+                        dense
+                        options-dense
+                        display-value="Colunas"
+                        emit-value
+                        map-options
+                        :options="columns"
+                        option-value="name"
+                        style="min-width: 200px; "
+                      >
+                        <template v-slot:option="scope">
+                          <q-item
+                            v-show="!scope.opt.required"
+                            v-bind="scope.itemProps"
+                            v-on="scope.itemEvents"
+                          >
+                              <q-item-section>
+                                <q-item-label v-html="scope.opt.label" />
+                              </q-item-section>
+
+                              <q-item-section avatar>
+                                <q-toggle
+                                  disable
+                                  v-model="scope.itemProps.active"
+                                  color="primary"
+                                />
+                              </q-item-section>
+                          </q-item>
+
+                        </template>
+
+                      </q-select>
+                    </div>
+
+                  </div>
+
+                </template>
+
+              </q-table>
+
+              <div class="q-mt-md">
+                Usuario Selecionado: {{ JSON.stringify(selected) }}
+              </div>
+              <div class="q-mt-md">
+                Filtro pesquisa: {{filtroPesquisa}}
+              </div>
             </div>
 
           </div>
@@ -50,22 +146,32 @@
 export default {
   data () {
     return {
+      filtroPesquisa: [],
+      filter: '',
+      selected: [],
+      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
       separator: 'horizontal',
       data: [
-        { name: '1', login: 'Paulo', email: 'pahjunior@outlook.com', create: '20/07/2019' },
-        { name: '2', login: 'Polyana', email: 'polyana@outlook.com', create: '24/07/2019' },
-        { name: '3', login: 'Natalia', email: 'natalia@gmail.com', create: '25/07/2019' }
+        { id: '1', nome: 'Paulo Arhur', cpf: '460.224.398-33', rg: '19.406.953-9', aniversario: '20/04/1999', grupo: 'admin' },
+        { id: '2', nome: 'Polyana Feitosa', cpf: '779.636.080-09', rg: '19.251.981-5', aniversario: '20/07/2000', grupo: 'admin' },
+        { id: '3', nome: 'Natalia Pires', cpf: '919.310.680-70', rg: '27.238.588-8', aniversario: '14/08/1999', grupo: 'admin' }
       ],
-      columns: [{
-        name: 'login',
-        required: true,
-        label: 'Login',
-        field: 'login',
-        align: 'left',
-        sortable: true
-      },
-      { name: 'email', label: 'Login', field: 'email', align: 'left', sortable: true },
-      { name: 'create', label: 'Data de criação', field: 'create', align: 'left', sortable: true }
+      columns: [
+        { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
+        { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },
+        { name: 'rg', label: 'RG', field: 'rg', align: 'left', sortable: true },
+        { name: 'aniversario', label: 'Aniversario', field: 'aniversario', align: 'left', sortable: true },
+        { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
+        { name: 'email', label: 'E-mail', field: 'email', align: 'left', sortable: true },
+        { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left', sortable: true },
+        { name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true },
+        { name: 'cep', label: 'CEP', field: 'cep', align: 'left', sortable: true },
+        { name: 'logradouro', label: 'Logradouro', field: 'logradouro', align: 'left', sortable: true },
+        { name: 'numero', label: 'Numero', field: 'numero', align: 'left', sortable: true },
+        { name: 'bairro', label: 'Bairro', field: 'bairro', align: 'left', sortable: true },
+        { name: 'cidade', label: 'Cidade', field: 'cidade', align: 'left', sortable: true },
+        { name: 'estado', label: 'UF', field: 'estado', align: 'left', sortable: true },
+        { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
       ]
     }
   },
