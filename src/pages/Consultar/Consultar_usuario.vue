@@ -25,13 +25,83 @@
           </div>
 
           <!-- Formulario usuario -->
-          <div class="col-md-12 col-sm-12 col-xs-12 row">
+          <div class="col-md-12 col-sm-12 col-xs-12 q-gutter-y-md row">
+
+            <!-- Cabeçalho -->
+            <q-card class="col-12 ">
+              <q-card-section class=" q-col-gutter-sm text-center items-end">
+                <div class="row col-12 justify-center q-gutter-x-xs">
+
+                  <div class="col-md-3">
+
+                    <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+                      <template v-slot:prepend>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                      </template>
+                    </q-input>
+
+                  </div>
+
+                  <div class="row justify-between col-md-5 ">
+
+                    <div class="">
+                      <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
+                      <q-checkbox  color="primary" left-label label="CPF" v-model="filtroPesquisa" val="cpf" />
+                      <q-checkbox  color="primary" left-label label="RG" v-model="filtroPesquisa" val="rg" />
+                      <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
+                    </div>
+
+                    <q-btn icon="person_add" flat round dense/>
+
+                  </div>
+
+                  <div class="col-md-3">
+
+                    <q-select
+                      v-model="visibleColumns"
+                      multiple
+                      outlined
+                      dense
+                      options-dense
+                      display-value="Colunas"
+                      emit-value
+                      map-options
+                      :options="columns"
+                      option-value="name"
+                      style="min-width: 200px; "
+                    >
+                      <template v-slot:option="scope">
+                        <q-item
+                          v-show="!scope.opt.required"
+                          v-bind="scope.itemProps"
+                          v-on="scope.itemEvents"
+                        >
+                          <q-item-section>
+                            <q-item-label v-html="scope.opt.label" />
+                          </q-item-section>
+
+                          <q-item-section avatar>
+                            <q-toggle
+                              disable
+                              v-model="scope.itemProps.active"
+                              color="primary"
+                            />
+                          </q-item-section>
+                        </q-item>
+
+                      </template>
+
+                    </q-select>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
 
             <div class="col-12">
 
               <q-table
                 :filter="filter"
-                :data="data"
+                :data="dados ? data : na"
                 :columns="columns"
                 :visible-columns="visibleColumns"
                 :separator="separator"
@@ -41,7 +111,7 @@
 
                 <!-- Corpo da tabela -->
                 <template v-slot:body="props">
-                  <q-tr :props="props">
+                  <q-tr :props="props" >
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
@@ -55,82 +125,14 @@
                   </q-tr>
                 </template>
 
-                <template v-slot:top>
-                  <div class="row col-12 justify-center q-gutter-x-xs">
-
-                    <div class="col-md-3">
-
-                      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
-                        <template v-slot:prepend>
-                          <q-icon name="search" />
-                        </template>
-                      </q-input>
-
-                    </div>
-
-                    <div class="row justify-between col-md-5 ">
-
-                      <div class="">
-                        <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
-                        <q-checkbox  color="primary" left-label label="CPF" v-model="filtroPesquisa" val="cpf" />
-                        <q-checkbox  color="primary" left-label label="RG" v-model="filtroPesquisa" val="rg" />
-                        <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
-                      </div>
-                        <q-btn icon="person_add" flat round dense/>
-
-                    </div>
-
-                    <div class="col-md-3">
-
-                      <q-select
-                        v-model="visibleColumns"
-                        multiple
-                        outlined
-                        dense
-                        options-dense
-                        display-value="Colunas"
-                        emit-value
-                        map-options
-                        :options="columns"
-                        option-value="name"
-                        style="min-width: 200px; "
-                      >
-                        <template v-slot:option="scope">
-                          <q-item
-                            v-show="!scope.opt.required"
-                            v-bind="scope.itemProps"
-                            v-on="scope.itemEvents"
-                          >
-                              <q-item-section>
-                                <q-item-label v-html="scope.opt.label" />
-                              </q-item-section>
-
-                              <q-item-section avatar>
-                                <q-toggle
-                                  disable
-                                  v-model="scope.itemProps.active"
-                                  color="primary"
-                                />
-                              </q-item-section>
-                          </q-item>
-
-                        </template>
-
-                      </q-select>
-                    </div>
-
-                  </div>
-
-                </template>
-
               </q-table>
 
-              <div class="q-mt-md">
+              <!-- <div class="q-mt-md">
                 Usuario Selecionado: {{ JSON.stringify(selected) }}
               </div>
               <div class="q-mt-md">
                 Filtro pesquisa: {{filtroPesquisa}}
-              </div>
+              </div> -->
             </div>
 
           </div>
@@ -146,6 +148,7 @@
 export default {
   data () {
     return {
+      dados: false,
       filtroPesquisa: [],
       filter: '',
       selected: [],
