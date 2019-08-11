@@ -16,7 +16,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="fas fa-boxes" to="/cadastro_estoque"  label="Cadastro de estoque" />
+                <q-breadcrumbs-el to="/cadastro_unidade-medida"  label="Cadastro de unidade de medida" />
 
               </q-breadcrumbs>
 
@@ -39,57 +39,41 @@
 
                         <fieldset class="col-12 no-border">
 
-                          <legend>Dados do estoque</legend>
+                          <legend>Dados para categoria</legend>
 
                           <div class="q-col-gutter-sm row items-start">
 
+                            <!-- Campo do código do produto -->
                             <q-input
-                              class="col-md-9"
+                              class="col-md-5"
                               dense
                               outlined
-                              v-model="estoque.nome_estoque"
-                              label="Nome do estoque"
-                              counter
-                              color="red"
-                              maxlength="45"
+                              v-model="unidMedida.nomeUnidMedida"
+                              label="Nome unidade de medida"
                             />
 
-                            <div class="col-md-3">
-                              <q-checkbox class="float-right" left-label v-model="estoque.status" label="Status do estoque" />
-                            </div>
-
+                            <!-- Campo do Descrição -->
                             <q-input
-                              class="col-12"
-                              v-model="estoque.desc_estoque"
-                              outlined
+                              class="col-5"
                               dense
-                              label="Descrição do estoque"
+                              outlined
                               autogrow
                               counter
-                              maxlength="150"
+                              maxlength="20"
+                              v-model="unidMedida.descricao"
+                              label="Descrição da unidade de medida"
                             />
 
-                            <!-- Campo do quantidade_total -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.valor_estoque"
-                              label="Quantidade Total"
-                              disable
-                            />
-
-                            <!-- Campo data de nascimento -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.quantidade_total"
-                              label="Valor Estoque"
-                              disable
-                            />
+                            <div class="col-md-2">
+                              <q-checkbox
+                                class="float-right"
+                                left-label
+                                v-model="unidMedida.status"
+                                label="Status"/>
+                            </div>
 
                           </div>
+
                         </fieldset>
 
                         <div class="row col-md-6 ">
@@ -118,11 +102,9 @@
 export default {
   data () {
     return {
-      estoque: {
-        nome_estoque: '',
-        desc_estoque: '',
-        valor_estoque: '0',
-        quantidade_total: '0',
+      unidMedida: {
+        nomeUnidMedida: '',
+        descricao: '',
         status: true
       }
     }

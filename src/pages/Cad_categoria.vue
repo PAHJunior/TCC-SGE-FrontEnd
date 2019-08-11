@@ -16,7 +16,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="fas fa-boxes" to="/cadastro_estoque"  label="Cadastro de estoque" />
+                <q-breadcrumbs-el to="/cadastro_categoria"  label="Cadastro de categorias" />
 
               </q-breadcrumbs>
 
@@ -39,57 +39,41 @@
 
                         <fieldset class="col-12 no-border">
 
-                          <legend>Dados do estoque</legend>
+                          <legend>Dados para categoria</legend>
 
-                          <div class="q-col-gutter-sm row items-start">
+                          <div class="q-col-gutter-sm row">
 
+                            <!-- Campo do código do produto -->
                             <q-input
                               class="col-md-9"
                               dense
                               outlined
-                              v-model="estoque.nome_estoque"
-                              label="Nome do estoque"
-                              counter
-                              color="red"
-                              maxlength="45"
+                              v-model="categoria.nomeCategoria"
+                              label="Nome da categoria"
                             />
 
                             <div class="col-md-3">
-                              <q-checkbox class="float-right" left-label v-model="estoque.status" label="Status do estoque" />
+                              <q-checkbox
+                                class="float-right"
+                                left-label
+                                v-model="categoria.status"
+                                label="Status de categoria"/>
                             </div>
 
+                            <!-- Campo do Descrição -->
                             <q-input
                               class="col-12"
-                              v-model="estoque.desc_estoque"
-                              outlined
                               dense
-                              label="Descrição do estoque"
+                              outlined
                               autogrow
                               counter
                               maxlength="150"
-                            />
-
-                            <!-- Campo do quantidade_total -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.valor_estoque"
-                              label="Quantidade Total"
-                              disable
-                            />
-
-                            <!-- Campo data de nascimento -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.quantidade_total"
-                              label="Valor Estoque"
-                              disable
+                              v-model="categoria.descricao"
+                              label="Descrição da categoria"
                             />
 
                           </div>
+
                         </fieldset>
 
                         <div class="row col-md-6 ">
@@ -118,11 +102,9 @@
 export default {
   data () {
     return {
-      estoque: {
-        nome_estoque: '',
-        desc_estoque: '',
-        valor_estoque: '0',
-        quantidade_total: '0',
+      categoria: {
+        nomeCategoria: '',
+        descricao: '',
         status: true
       }
     }

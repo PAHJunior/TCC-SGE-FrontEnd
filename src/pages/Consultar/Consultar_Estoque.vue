@@ -16,8 +16,8 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="fas fa-user" to="/cadastro_usuario"  label="Cadastro de usúario" />
-                <q-breadcrumbs-el icon="fas fa-search" to="/cadastro_estoque"  label="Consultar usúario" />
+                <q-breadcrumbs-el icon="fas fa-boxes" to="/cadastro_estoque"  label="Cadastro de estoque" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/cadastro_estoque"  label="Consultar estoque" />
 
               </q-breadcrumbs>
 
@@ -45,10 +45,7 @@
                   <div class="row justify-between col-md-5 ">
 
                     <div class="">
-                      <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
-                      <q-checkbox  color="primary" left-label label="CPF" v-model="filtroPesquisa" val="cpf" />
-                      <q-checkbox  color="primary" left-label label="RG" v-model="filtroPesquisa" val="rg" />
-                      <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
+
                     </div>
 
                     <q-btn icon="person_add" flat round dense/>

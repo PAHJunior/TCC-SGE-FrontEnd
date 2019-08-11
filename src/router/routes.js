@@ -16,7 +16,10 @@ const routes = [
       { path: '/cadastro_estoque', component: () => import('pages/Cad_estoque.vue') },
       { path: '/cadastro_produtos', component: () => import('pages/Cad_produtos.vue') },
       { path: '/cadastro_fornecedor', component: () => import('pages/Cad_fornecedor.vue') },
-      { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') }
+      { path: '/cadastro_categoria', component: () => import('pages/Cad_categoria.vue') },
+      { path: '/cadastro_unidade-medida', component: () => import('pages/Cad_unid-medida.vue') },
+      { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') },
+      { path: '/consultar_estoque', component: () => import('pages/consultar/Consultar_Estoque.vue') }
     ]
   },
   {

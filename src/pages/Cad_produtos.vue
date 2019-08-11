@@ -45,7 +45,7 @@
 
                             <!-- Campo do código do produto -->
                             <q-input
-                              class="col-md-2"
+                              class="col-md-3"
                               dense
                               outlined
                               v-model="produto.codProduto"
@@ -54,12 +54,16 @@
 
                             <!-- Campo do Descrição -->
                             <q-input
-                              class="col-md-10"
+                              class="col-md-6"
                               dense
                               outlined
                               v-model="produto.descricao"
                               label="Descrição"
                             />
+
+                            <div class="col-md-3">
+                              <q-checkbox class="float-right" left-label v-model="produto.status" label="Status do produtos" />
+                            </div>
 
                             <!-- Campo Categoria do produto -->
                             <q-select
@@ -74,10 +78,32 @@
 
                             <!-- Campo Unidade de medida -->
                             <q-select
-                              class="col-md-3"
-                              label="Unidade de medida"
                               outlined
                               v-model="produto.unidMedida"
+                              dense
+                              :options="unidMeidaOpt"
+                              class="col-md-3"
+                              label="Unidade de medida"
+                            >
+                              <template v-slot:option="scope">
+                                <q-item
+                                  v-bind="scope.itemProps"
+                                  v-on="scope.itemEvents"
+                                >
+                                  <q-item-section>
+                                    <q-item-label v-html="scope.opt.label" />
+                                    <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+                                  </q-item-section>
+                                </q-item>
+                              </template>
+                            </q-select>
+
+                            <!-- Campo Fornecedor -->
+                            <q-select
+                              class="col-md-3"
+                              label="Estoque"
+                              outlined
+                              v-model="produto.fornecedor"
                               dense
                               options-dense
                               :options="options"
@@ -85,7 +111,7 @@
 
                             <!-- Campo Fornecedor -->
                             <q-select
-                              class="col-md-6"
+                              class="col-md-3"
                               label="Fornecedor"
                               outlined
                               v-model="produto.fornecedor"
@@ -94,36 +120,17 @@
                               :options="options"
                             />
 
-                            <!-- Campo Valor de venda -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              prefix="R$"
-                              outlined
-                              label="Valor de venda"
-                              v-model="produto.valorVenda"
-                            />
-
-                            <!-- Campo Valor de custo -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              prefix="R$"
-                              outlined
-                              label="Valor de custo"
-                              v-model="produto.valorCusto"
-                            />
-
-                            <div class="col-md-6" />
-
-                            <!-- Campo Disponível em estoque -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.disponivel"
-                              label="Disponível em estoque"
-                            />
+                            <div class="col-md-12 row">
+                              <!-- Campo Valor de venda -->
+                              <q-input
+                                class="col-md-3"
+                                dense
+                                prefix="R$"
+                                outlined
+                                label="Valor do produto"
+                                v-model="produto.valorVenda"
+                              />
+                            </div>
 
                             <!-- Campo Estoque mínimo -->
                             <q-input
@@ -173,6 +180,13 @@
 export default {
   data () {
     return {
+      unidMeidaOpt: [
+        { label: 'Metro', value: 'm', description: 'metro - m' },
+        { label: 'Litro', value: 'l', description: 'Litro - l' },
+        { label: 'Quilograma', value: 'kg', description: 'Quilograma - kg' },
+        { label: 'Metro quadrado', value: 'm2', description: 'Metro quadrado - m²' },
+        { label: 'Metro cúbico', value: 'm3', description: 'Metro cúbico - m³' }
+      ],
       produto: {
         codProduto: '',
         descricao: '',
@@ -183,7 +197,8 @@ export default {
         valorCusto: 1,
         disponivel: 0,
         estoqueMin: 1,
-        estoqueMax: 1
+        estoqueMax: 1,
+        status: true
       }
     }
   },

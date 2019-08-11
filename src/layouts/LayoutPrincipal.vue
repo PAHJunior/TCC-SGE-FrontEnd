@@ -118,6 +118,27 @@
 
           </q-item>
 
+          <q-item
+            :active="link === 'dashboard'"
+            @click="link = 'dashboard'"
+            class="text-grey-1"
+            clickable
+            tag="a"
+            to="/dashboard"
+          >
+
+            <q-item-section avatar>
+
+              <q-icon name="fas fa-dolly" />
+
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>Movimentação</q-item-label>
+            </q-item-section>
+
+          </q-item>
+
           <q-expansion-item
             v-for="menus in menu"
             :key="menus.id"
@@ -175,7 +196,9 @@ export default {
             { label: 'Cadastrar Usuário', link: '/cadastro_usuario' },
             { label: 'Cadastrar Estoque', link: '/cadastro_estoque' },
             { label: 'Cadastro de Produto', link: 'cadastro_produtos' },
-            { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' }
+            { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
+            { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
+            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unidade-medida' }
           ]
         },
         consulta: {
@@ -184,20 +207,15 @@ export default {
           icon: 'img:statics/feature-search-white.png',
           submenu: [
             { label: 'Consultar Usúario', link: '/consultar_usuario' },
-            { label: 'Consultar Estoque', link: '/consultar_usuario' },
-            { label: 'Consultar Produto' }
-          ]
-        },
-        relatorio: {
-          id: '2',
-          label: 'Relatórios',
-          icon: 'img:statics/file-chart.png',
-          submenu: [
-            { label: 'Relatório mensal' }
+            { label: 'Consultar Estoque', link: '/consultar_estoque' },
+            { label: 'Consultar Produto' },
+            { label: 'Consultar Fornecedor' },
+            { label: 'Consultar Categorias' },
+            { label: 'Consultar Unid. de Medida' }
           ]
         },
         configuracoes: {
-          id: '3',
+          id: '4',
           label: 'Configurações',
           icon: 'img:statics/settings.png',
           submenu: [
