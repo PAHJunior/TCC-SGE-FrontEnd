@@ -17,9 +17,13 @@ const routes = [
       { path: '/cadastro_produtos', component: () => import('pages/Cad_produtos.vue') },
       { path: '/cadastro_fornecedor', component: () => import('pages/Cad_fornecedor.vue') },
       { path: '/cadastro_categoria', component: () => import('pages/Cad_categoria.vue') },
-      { path: '/cadastro_unidade-medida', component: () => import('pages/Cad_unid-medida.vue') },
+      { path: '/cadastro_unid_medida', component: () => import('pages/Cad_unid-medida.vue') },
       { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') },
-      { path: '/consultar_estoque', component: () => import('pages/consultar/Consultar_Estoque.vue') }
+      { path: '/consultar_estoque', component: () => import('pages/consultar/Consultar_Estoque.vue') },
+      { path: '/consultar_produtos', component: () => import('pages/consultar/Consultar_Produto.vue') },
+      { path: '/consultar_fornecedor', component: () => import('pages/consultar/Consultar_Fornecedor.vue') },
+      { path: '/consultar_categoria', component: () => import('pages/consultar/Consultar_Categoria.vue') },
+      { path: '/consultar_unid_medida', component: () => import('pages/consultar/Consultar_Categoria.vue') }
     ]
   },
   {

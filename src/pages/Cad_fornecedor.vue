@@ -16,7 +16,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_fornecedor"  label="Cadastro do fornecedor" />
+                <q-breadcrumbs-el icon="fas fa-truck" to="/cadastro_fornecedor"  label="Cadastro do fornecedor" />
 
               </q-breadcrumbs>
 
