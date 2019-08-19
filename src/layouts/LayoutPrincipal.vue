@@ -198,7 +198,8 @@ export default {
             { label: 'Cadastro de Produto', link: 'cadastro_produtos' },
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
-            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' }
+            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
+            { label: 'Cadastro de Grupos' }
           ]
         },
         consulta: {
@@ -211,7 +212,8 @@ export default {
             { label: 'Consultar Produto', link: '/consultar_produtos' },
             { label: 'Consultar Fornecedor', link: '/consultar_fornecedor' },
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
-            { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' }
+            { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
+            { label: 'Consultar Grupos' }
           ]
         },
         relatorio: {

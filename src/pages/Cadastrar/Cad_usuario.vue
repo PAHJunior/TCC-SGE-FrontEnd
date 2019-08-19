@@ -66,6 +66,7 @@
                               class="col-md-3"
                               dense
                               outlined
+                              mask="###.###.###-##"
                               v-model="usuario.cpf"
                               label="CPF"
                             />
@@ -73,6 +74,7 @@
                             <!-- Campo do RG -->
                             <q-input
                               class="col-md-3"
+                              mask="##.###.###-#"
                               dense
                               outlined
                               v-model="usuario.rg"
@@ -236,7 +238,7 @@
 </template>
 
 <script>
-import Cep from '../service/cep/cep.js'
+import Cep from '../../service/cep/cep.js'
 
 export default {
   data () {
