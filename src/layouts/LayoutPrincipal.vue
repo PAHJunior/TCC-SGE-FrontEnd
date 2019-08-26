@@ -199,7 +199,7 @@ export default {
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
             { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
-            { label: 'Cadastro de Grupos' }
+            { label: 'Cadastro de Grupos', link: '/cadastro_grupo' }
           ]
         },
         consulta: {
@@ -213,7 +213,7 @@ export default {
             { label: 'Consultar Fornecedor', link: '/consultar_fornecedor' },
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
-            { label: 'Consultar Grupos' }
+            { label: 'Consultar Grupos', link: 'consultar_grupo' }
           ]
         },
         relatorio: {

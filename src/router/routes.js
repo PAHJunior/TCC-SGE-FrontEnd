@@ -11,19 +11,24 @@ const routes = [
     path: '/dashboard',
     component: () => import('layouts/LayoutPrincipal.vue'),
     children: [
+      // Cadastro
       { path: '', component: () => import('pages/Home.vue') },
       { path: '/cadastro_usuario', component: () => import('pages/cadastrar/Cad_usuario.vue') },
       { path: '/cadastro_estoque', component: () => import('pages/cadastrar/Cad_estoque.vue') },
       { path: '/cadastro_produtos', component: () => import('pages/cadastrar/Cad_produtos.vue') },
       { path: '/cadastro_fornecedor', component: () => import('pages/cadastrar/Cad_fornecedor.vue') },
       { path: '/cadastro_categoria', component: () => import('pages/cadastrar/Cad_categoria.vue') },
-      { path: '/cadastro_unid_medida', component: () => import('pages/cadastrar/Cad_unid-medida.vue') },
+      { path: '/cadastro_unid_medida', component: () => import('pages/cadastrar/Cad_grupos.vue') },
+      { path: '/cadastro_grupo', component: () => import('pages/cadastrar/Cad_unid-medida.vue') },
+      // Consultar
+
       { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') },
       { path: '/consultar_estoque', component: () => import('pages/consultar/Consultar_Estoque.vue') },
       { path: '/consultar_produtos', component: () => import('pages/consultar/Consultar_Produto.vue') },
       { path: '/consultar_fornecedor', component: () => import('pages/consultar/Consultar_Fornecedor.vue') },
       { path: '/consultar_categoria', component: () => import('pages/consultar/Consultar_Categoria.vue') },
-      { path: '/consultar_unid_medida', component: () => import('pages/consultar/Consultar_Categoria.vue') }
+      { path: '/consultar_unid_medida', component: () => import('pages/consultar/Consultar_Unid_Medida.vue') },
+      { path: '/consultar_grupos', component: () => import('pages/consultar/Consultar_Grupo.vue') }
     ]
   },
   {
