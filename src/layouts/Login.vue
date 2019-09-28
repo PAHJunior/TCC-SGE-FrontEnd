@@ -1,39 +1,40 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-page-container class="fixed-center">
-       <q-card>
-          <q-card-section class="q-gutter-y-md row">
-          <div class="circle img absolute-center">
+  <q-layout view="lHh Lpr lFf" class=" row">
+    <q-page-container class="absolute-center col-md-3 col-sm-5 col-xs-6">
+      <q-card style="height: 300px;">
+        <q-card-section class="fit row justify-center items-center content-center  q-gutter-y-xl">
+          <div class="brand_logo_container absolute-center">
+            <img src="../assets/logo_tcc.png" class="brand_logo" alt="Logo">
           </div>
-          <div class="col-md-12">
-          <br/>
-          <br/>
-            <q-input filled v-model="form.login" label="Login" dense>
-              <template v-slot:append>
-                <q-icon
-                  name="fas fa-user"
-                  class="cursor-pointer"
-                  @click="isPwd = !isPwd"
-                />
-              </template>
-            </q-input>
-           </div>
-           <div class="col-md-12">
-             <q-input filled v-model="form.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
-              <template v-slot:append>
-                <q-icon
-                  :name="isPwd ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
-                  @click="isPwd = !isPwd"
-                />
-              </template>
-            </q-input>
-           </div>
+          <div class="col-md-12 q-gutter-y-md">
+            <div>
+              <q-input filled v-model="form.login" label="Login" dense>
+                <template v-slot:append>
+                  <q-icon
+                    name="fas fa-user"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+            </div>
+            <div>
+              <q-input filled v-model="form.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+            </div>
+          </div>
+          <div class="row col-12">
+            <q-btn label="Entrar" type="submit" color="primary" class="col-12"/>
+          </div>
         </q-card-section>
-        <div class="row">
-          <q-btn label="Entrar" type="submit" color="primary" class="col-12"/>
-        </div>
-       </q-card>
+      </q-card>
     </q-page-container>
   </q-layout>
 </template>
@@ -67,18 +68,21 @@ export default {
 </script>
 
 <style >
-.circle {
-  width: 150px;
+.brand_logo {
   height: 150px;
-  background: #fff;
-  border-radius: 100px;
-  border: 2px solid #1f6289;
-  margin-top: -24%;
+  width: 150px;
+  border-radius: 50%;
+  /* background: #eaeff5; */
+  /* border: 2px solid white; */
 }
-.img {
-  background-image: url("../assets/logo_tcc.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 150px;
+.brand_logo_container {
+  position: absolute;
+  height: 170px;
+  width: 170px;
+  top: -60px;
+  border-radius: 50%;
+  background: #eaeff5;
+  padding: 10px;
+  text-align: center;
 }
 </style>

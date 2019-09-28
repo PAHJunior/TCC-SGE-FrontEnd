@@ -105,7 +105,7 @@
                               </template>
                             </q-input>
 
-                            <!-- Campo GRupo -->
+                            <!-- Campo Grupo -->
                             <q-input
                               class="col-md-3"
                               dense

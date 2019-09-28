@@ -51,7 +51,7 @@
                       <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
                     </div>
 
-                    <q-btn icon="person_add" flat round dense/>
+                    <q-btn icon="person_add" flat round dense @click="teste()"/>
 
                   </div>
 
@@ -176,6 +176,11 @@ export default {
         { name: 'estado', label: 'UF', field: 'estado', align: 'left', sortable: true },
         { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
       ]
+    }
+  },
+  methods: {
+    teste () {
+      this.$router.push('/cadastro_usuario')
     }
   },
   computed: {

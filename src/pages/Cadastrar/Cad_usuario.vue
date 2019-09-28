@@ -16,6 +16,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_usuario"  label="Consultar usuários" />
                 <q-breadcrumbs-el icon="fas fa-user" to="/cadastro_usuario"  label="Cadastro de usuário" />
 
               </q-breadcrumbs>
