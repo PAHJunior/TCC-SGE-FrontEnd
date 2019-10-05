@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="row col-12">
-            <q-btn label="Entrar" type="submit" color="primary" class="col-12"/>
+            <q-btn label="Entrar" type="submit" color="primary" @click.native='login' class="col-12"/>
           </div>
         </q-card-section>
       </q-card>
@@ -40,14 +40,15 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import Usuario from ' ../service/usuario/usuario.js '
+import ValidarCPF from ' validar-cpf '
 
 export default {
   name: 'MyLayout',
   data () {
     return {
       isPwd: true,
-      form: {
+      usuario: {
         login: '',
         senha: '',
         empresa: this.$route.params.empresa
@@ -55,7 +56,31 @@ export default {
     }
   },
   methods: {
-    openURL
+    login () {
+      Usuario.login(this.usuario)
+        .then((data) => {
+          if (data.erros) {
+            for (let erro in data.erros) {
+              this.$q.notify({
+                color: 'negative',
+                message: erro.message
+              })
+            }
+          }
+          if (data.response.isLogado) {
+            console.log('logou')
+          }
+          console.log(data.response)
+        })
+        .catch((error) => {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Não foi possivel realizar a conexão'
+          })
+          this.error = true
+          console.log(error)
+        })
+    }
   },
   beforeRouteUpdate (to, from, next) {
     if ((to.params.empresa === 'raotes') || (to.params.empresa === 'tcc')) {
