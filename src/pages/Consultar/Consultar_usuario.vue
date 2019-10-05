@@ -154,11 +154,11 @@ export default {
       selected: [],
       visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
       separator: 'horizontal',
-      data: [
+      data: [[
         { id: '1', nome: 'Paulo Arhur', cpf: '460.224.398-33', rg: '19.406.953-9', aniversario: '20/04/1999', grupo: 'admin' },
         { id: '2', nome: 'Polyana Feitosa', cpf: '779.636.080-09', rg: '19.251.981-5', aniversario: '20/07/2000', grupo: 'admin' },
         { id: '3', nome: 'Natalia Pires', cpf: '919.310.680-70', rg: '27.238.588-8', aniversario: '14/08/1999', grupo: 'admin' }
-      ],
+      ]],
       columns: [
         { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
         { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },

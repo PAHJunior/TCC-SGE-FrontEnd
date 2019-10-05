@@ -6,9 +6,9 @@
           <div class="brand_logo_container absolute-center">
             <img src="../assets/logo_tcc.png" class="brand_logo" alt="Logo">
           </div>
-          <div class="col-md-12 q-gutter-y-md">
+          <div class="col-md-12 q-gutter-y-md" >
             <div>
-              <q-input filled v-model="form.login" label="Login" dense>
+              <q-input filled v-model="usuario.login" label="Login" dense>
                 <template v-slot:append>
                   <q-icon
                     name="fas fa-user"
@@ -19,7 +19,7 @@
               </q-input>
             </div>
             <div>
-              <q-input filled v-model="form.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
+              <q-input filled v-model="usuario.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
                 <template v-slot:append>
                   <q-icon
                     :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="row col-12">
-            <q-btn label="Entrar" type="submit" color="primary" @click.native='login' class="col-12"/>
+            <q-btn label="Entrar"  type="submit" color="primary" @click.native='login' class="col-12"/>
           </div>
         </q-card-section>
       </q-card>
@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import Usuario from ' ../service/usuario/usuario.js '
-import ValidarCPF from ' validar-cpf '
+import Usuario from '../service/usuario/usuario.js'
+import ValidarCpf from 'validar-cpf'
 
 export default {
   name: 'MyLayout',
@@ -52,7 +52,9 @@ export default {
         login: '',
         senha: '',
         empresa: this.$route.params.empresa
-      }
+      },
+      error: false,
+      msg_error: ''
     }
   },
   methods: {
@@ -60,7 +62,7 @@ export default {
       Usuario.login(this.usuario)
         .then((data) => {
           if (data.erros) {
-            for (let erro in data.erros) {
+            for (let erro in data.errors) {
               this.$q.notify({
                 color: 'negative',
                 message: erro.message
@@ -68,7 +70,7 @@ export default {
             }
           }
           if (data.response.isLogado) {
-            console.log('logou')
+            console.log('Logou')
           }
           console.log(data.response)
         })
@@ -86,7 +88,7 @@ export default {
     if ((to.params.empresa === 'raotes') || (to.params.empresa === 'tcc')) {
       next()
     } else {
-      next({ path: '/' })
+      next({ path: '/home' })
     }
   }
 }

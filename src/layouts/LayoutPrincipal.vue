@@ -199,7 +199,8 @@ export default {
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
             { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
-            { label: 'Cadastro de Grupos', link: '/cadastro_grupo' }
+            { label: 'Cadastro de Grupos', link: '/cadastro_grupo' },
+            { label: 'Cadastro de Movimentação', link: '/cadastro_movimentacao' }
           ]
         },
         consulta: {
@@ -213,7 +214,9 @@ export default {
             { label: 'Consultar Fornecedor', link: '/consultar_fornecedor' },
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
-            { label: 'Consultar Grupos', link: 'consultar_grupo' }
+            { label: 'Consultar Grupos', link: 'consultar_grupo' },
+            { label: 'Consultar Movimentações', link: 'consultar_movimentacao' },
+            { label: 'Consultar Relatorio', link: 'consultar_relatorio' }
           ]
         },
         relatorio: {
@@ -221,7 +224,7 @@ export default {
           label: 'Relatório',
           icon: 'img:statics/file-chart.png',
           submenu: [
-            { label: 'Relatório Mensal' }
+            { label: 'Relatório Mensal', link: 'consultar_relatorio' }
           ]
         },
         configuracoes: {
@@ -229,7 +232,7 @@ export default {
           label: 'Configurações',
           icon: 'img:statics/settings.png',
           submenu: [
-            { label: 'Admnistrador' }
+            { label: 'Admnistrador ' }
           ]
         }
       },
