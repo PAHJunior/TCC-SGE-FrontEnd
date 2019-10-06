@@ -115,7 +115,7 @@
 </template>
 
 <script>
-// import ApexCharts from 'apexcharts'
+// import ApexCharts from 'apexcharts' // Gráfico
 import VueApexCharts from 'vue-apexcharts'
 
 export default {

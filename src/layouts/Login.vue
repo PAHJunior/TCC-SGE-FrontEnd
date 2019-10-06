@@ -70,6 +70,7 @@ export default {
           }
           if (data.response.isLogado) {
             console.log('Logou')
+            this.$router.push('dashboard')
           }
           console.log(data.response)
         })
