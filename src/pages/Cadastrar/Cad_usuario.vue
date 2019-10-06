@@ -218,7 +218,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" @click="buscarCEP" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="buscarCEP"  type="submit" color="primary" class="col-12"/>
                           {{ cep }}
                         </div>
                       </div>
@@ -283,6 +283,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style>

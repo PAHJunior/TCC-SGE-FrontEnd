@@ -41,7 +41,6 @@
 
 <script>
 import Usuario from '../service/usuario/usuario.js'
-import ValidarCpf from 'validar-cpf'
 
 export default {
   name: 'MyLayout',

@@ -224,7 +224,7 @@ export default {
           label: 'Relatório',
           icon: 'img:statics/file-chart.png',
           submenu: [
-            { label: 'Relatório Mensal', link: 'consultar_relatorio' }
+            { label: 'Emitir Relatório', link: 'consultar_relatorio' }
           ]
         },
         configuracoes: {

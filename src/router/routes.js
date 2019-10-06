@@ -30,7 +30,8 @@ const routes = [
       { path: '/consultar_categoria', component: () => import('pages/consultar/Consultar_Categoria.vue') },
       { path: '/consultar_unid_medida', component: () => import('pages/consultar/Consultar_Unid_Medida.vue') },
       { path: '/consultar_grupos', component: () => import('pages/consultar/Consultar_Grupo.vue') },
-      { path: '/consultar_movimentacao', component: () => import('pages/consultar/Consultar_Movimentacao.vue') }
+      { path: '/consultar_movimentacao', component: () => import('pages/consultar/Consultar_Movimentacao.vue') },
+      { path: '/consultar_relatório', component: () => import('pages/consultar/Consultar_relatorio.vue') }
     ]
   },
   {

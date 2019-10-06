@@ -17,7 +17,7 @@
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
                 <q-breadcrumbs-el icon="fas fa-truck" to="/cadastro_fornecedor"  label="Cadastro do fornecedor" />
-                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_fornecedor"  label="Consultar fornecedir" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_fornecedor"  label="Consultar fornecedor" />
 
               </q-breadcrumbs>
 
