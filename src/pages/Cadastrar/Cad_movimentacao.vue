@@ -159,6 +159,7 @@
 </template>
 
 <script>
+import Produto from '.service/produto/produto.js'
 
 export default {
   data () {
@@ -187,6 +188,13 @@ export default {
   },
   computed: {
 
+  },
+  methods: {
+    salvar () {
+      Produto.salvar(this.produto).then(resposta => {
+        alert('Dados salvos com sucesso! ')
+      })
+    }
   }
 }
 </script>

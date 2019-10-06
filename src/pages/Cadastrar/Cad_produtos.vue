@@ -155,7 +155,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="salvar" type="submit" color="primary" class="col-12"/>
                         </div>
 
                       </div>
@@ -176,7 +176,6 @@
 </template>
 
 <script>
-import Produto from '../service/produto/produtos.js'
 
 export default {
   data () {
@@ -208,9 +207,7 @@ export default {
   },
   methods: {
     salvar () {
-      Produto.salvar(this.produto).then(reposta => {
-        alert('Dados salvos com sucesso')
-      })
+      alert('Salvou')
     }
   }
 }
