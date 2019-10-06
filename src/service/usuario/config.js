@@ -1,6 +1,6 @@
 import axios from 'axios'
 
 export const http = axios.create({
-  baseURL: 'http://localhost:3000/api/usuarios',
+  baseURL: 'http://api-sge.herokuapp.com/api/usuarios',
   timeout: 10000
 })
