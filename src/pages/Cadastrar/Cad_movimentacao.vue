@@ -139,7 +139,7 @@
 
                         </fieldset>
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="salvar" type="submit" color="primary" class="col-12"/>
                         </div>
                      </div>
                     </div>
@@ -172,15 +172,15 @@ export default {
       ],
       produto: {
         codProduto: '',
+        nomeProduto: '',
         descricao: '',
         categoriaProduto: '',
-        unidMedida: '',
         fornecedor: '',
         valorVenda: 0,
         valorCusto: 1,
         disponivel: 0,
-        estoqueMin: 1,
-        estoqueMax: 1,
+        operacao: '',
+        documento: '',
         status: true
       }
     }
