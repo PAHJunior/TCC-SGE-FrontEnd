@@ -138,6 +138,9 @@
                           </div>
 
                         </fieldset>
+                        <div class="row col-md-6 ">
+                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                        </div>
                      </div>
                     </div>
                   </div>
