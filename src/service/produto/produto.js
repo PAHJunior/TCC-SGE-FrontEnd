@@ -1,7 +1,7 @@
 import { http } from './config.js'
 
 export default {
-  cadProduto: (produto) => {
+  Produto: (produto) => {
     return http.post('/produto', produto) //pega
   },
   buscarUmProduto: (id) => {
