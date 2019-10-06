@@ -6,9 +6,9 @@
           <div class="brand_logo_container absolute-center">
             <img src="../assets/logo_tcc.png" class="brand_logo" alt="Logo">
           </div>
-          <div class="col-md-12 q-gutter-y-md" >
-            <div>
-              <q-input filled v-model="usuario.login" label="Login" dense>
+          <div class="col-md-12 q-gutter-y-md row" >
+            <div class="row col-12">
+              <q-input class="col-12" filled v-model="usuario.login" label="Login" dense>
                 <template v-slot:append>
                   <q-icon
                     name="fas fa-user"
@@ -18,8 +18,8 @@
                 </template>
               </q-input>
             </div>
-            <div>
-              <q-input filled v-model="usuario.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
+            <div class="row col-12">
+              <q-input class="col-12" filled v-model="usuario.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
                 <template v-slot:append>
                   <q-icon
                     :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -59,20 +59,20 @@ export default {
   methods: {
     login () {
       Usuario.login(this.usuario)
-        .then((data) => {
-          if (data.erros) {
-            for (let erro in data.errors) {
+        .then((usuarios) => {
+          if (usuarios.data.errors) {
+            for (let i = 0; i < usuarios.data.errors.length; i++) {
               this.$q.notify({
                 color: 'negative',
-                message: erro.message
+                message: usuarios.data.errors[i].message
               })
             }
           }
-          if (data.response.isLogado) {
-            console.log('Logou')
-            this.$router.push('dashboard')
+          if (usuarios.data.status === 200) {
+            if (usuarios.data.response.isLogado) {
+              this.$router.push('/dashboard')
+            }
           }
-          console.log(data.response)
         })
         .catch((error) => {
           this.$q.notify({
