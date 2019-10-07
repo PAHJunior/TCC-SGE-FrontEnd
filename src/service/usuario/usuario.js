@@ -4,6 +4,9 @@ export default {
   login: (usuario) => {
     return http.post('/login', usuario)
   },
+  cadastrar: (usuario) => {
+    return http.post('/', usuario)
+  },
   buscarUmUsuario: (id) => {
     return http.get(`/${id}`)
   },

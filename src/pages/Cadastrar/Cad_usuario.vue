@@ -2,7 +2,7 @@
   <q-page class="q-pa-lg  shadow-4 ">
     <div class="row">
       <div class="col">
-        <div class="row q-col-gutter-lg">
+        <div class="row q-col-gutter-md">
 
           <div class="col-12 ">
             <q-card class="transparent no-shadow">
@@ -24,6 +24,27 @@
             </q-card>
           </div>
 
+          <!-- <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
+            <q-card v-for="error in this.errors" :key="error" class="col-12 transparent no-shadow">
+              <q-banner dense inline-actions class="text-white bg-negative">
+                {{ error.msg }}
+              </q-banner>
+            </q-card>
+          </div> -->
+
+          <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
+            <q-card class="col-12 transparent no-shadow">
+              <q-banner dense inline-actions class="text-white bg-negative">
+                <span class="text-h5"> Encontramos
+                  <span class="text-weight-bold"> {{ this.errors.length }} erros</span>
+                </span>
+                <ul v-for="error in this.errors" :key="error">
+                  <li>{{ error.msg }}</li>
+                </ul>
+              </q-banner>
+            </q-card>
+          </div>
+
           <!-- Formulario usuario -->
           <div class="col-md-12 col-sm-12 col-xs-12 row">
 
@@ -42,78 +63,147 @@
 
                           <legend>Dados cadastrais</legend>
 
-                          <div class="q-col-gutter-sm row">
+                          <div class="q-col-gutter-sm row items-start">
 
-                            <q-input
-                              class="col-md-1"
-                              dense
-                              outlined
-                              v-model="usuario.id"
-                              label="ID"
-                              disable
-                            />
+                            <div :class="this.v_.id ? 'validar-error row col-md-1' : 'row col-md-1' ">
+                              <q-input
+                                class=" col-md-12"
+                                dense
+                                outlined
+                                v-model="usuario.id"
+                                label="ID"
+                                disable
+                              />
+                            </div>
 
                             <!-- nom completo -->
-                            <q-input
-                              class="col-md-11"
-                              dense
-                              outlined
-                              v-model="usuario.nome"
-                              label="Nome completo"
-                            />
+                            <div :class="this.v_.nome ? 'validar-error row col-md-11' : 'row col-md-11' ">
+                              <q-input
+                                ref="nome"
+                                maxlength="100"
+                                class="text-red col-12"
+                                dense
+                                outlined
+                                v-model="usuario.nome"
+                                label="Nome completo"
+                              />
+                            </div>
 
                             <!-- Campo do CPF -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              mask="###.###.###-##"
-                              v-model="usuario.cpf"
-                              label="CPF"
-                            />
+                            <div :class="this.v_.cpf ? 'validar-error row col-md-3' : 'row col-md-3'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="###.###.###-##"
+                                v-model="usuario.cpf"
+                                label="CPF"
+                              />
+                            </div>
 
                             <!-- Campo do RG -->
-                            <q-input
-                              class="col-md-3"
-                              mask="##.###.###-#"
-                              dense
-                              outlined
-                              v-model="usuario.rg"
-                              label="RG"
-                            />
+                            <div :class="this.v_.rg ? 'validar-error row col-md-3': 'row col-md-3'">
+                              <q-input
+                                ref="rg"
+                                class="col-12"
+                                mask="##.###.###-#"
+                                dense
+                                outlined
+                                v-model="usuario.rg"
+                                label="RG"
+                              />
+                            </div>
 
                             <!-- Campo data de nascimento -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="usuario.dtnascimento"
-                              label="Data de nascimento"
-                            >
-                              <template v-slot:prepend>
-                                <!-- <q-icon name="event" /> -->
-                                <q-btn round flat dense icon="event">
-                                  <q-menu fit anchor="bottom left" self="top left">
+                            <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3' : 'row col-md-3'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="##/##/####"
+                                v-model="usuario.dt_nascimento"
+                                label="Data de nascimento"
+                              >
+                                <template v-slot:prepend>
+                                  <!-- <q-icon name="event" /> -->
+                                  <q-btn round flat dense icon="event">
+                                    <q-menu fit anchor="bottom left" self="top left">
 
-                                    <q-date
-                                      v-model="usuario.dtnascimento"
-                                      minimal
-                                    />
+                                      <q-date
+                                        v-model="usuario.dt_nascimento"
+                                        minimal
+                                        mask="DD-MM-YYYY"
+                                      />
 
-                                  </q-menu>
+                                    </q-menu>
 
-                                </q-btn>
-                              </template>
-                            </q-input>
+                                  </q-btn>
+                                </template>
+                              </q-input>
+                            </div>
 
-                            <!-- Campo GRupo -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="usuario.grupo"
-                              label="Grupo"
-                            />
+                            <!-- Campo fk_usuario_hierarquia -->
+                            <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3': 'row col-md-3'">
+                              <q-select
+                                :options="opt_hierarquia"
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.fk_usuario_hierarquia"
+                                label="Hierarquia"
+                              />
+                            </div>
+
+                            <!-- Campo Login -->
+                            <div :class="this.v_.login ? 'validar-error row col-md-4' : 'row col-md-4'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.login"
+                                label="Login"
+                              />
+                            </div>
+
+                            <!-- Campo Senha -->
+                            <div :class="this.v_.senha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                :type="isPwd ? 'password' : 'text'"
+                                v-model="usuario.senha"
+                                label="Senha"
+                              >
+                                <template v-slot:append>
+                                  <q-icon
+                                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                                    class="cursor-pointer"
+                                    @click="isPwd = !isPwd"
+                                  />
+                                </template>
+                              </q-input>
+                            </div>
+
+                            <!-- Campo Confirmar Senha -->
+                            <div :class="this.v_.confirmarSenha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                :type="isConfirmPwd ? 'password' : 'text'"
+                                v-model="usuario.confirmarSenha"
+                                label="Confirmar senha"
+                              >
+                                <template v-slot:append>
+                                  <q-icon
+                                    :name="isConfirmPwd ? 'visibility_off' : 'visibility'"
+                                    class="cursor-pointer"
+                                    @click="isConfirmPwd = !isConfirmPwd"
+                                  />
+                                </template>
+                              </q-input>
+                            </div>
 
                           </div>
                         </fieldset>
@@ -121,34 +211,42 @@
                         <!-- Dados para contato -->
                         <fieldset class="col-12 no-border">
                           <legend>Dados para contato</legend>
-
                           <div class="q-col-gutter-sm row">
 
-                            <q-input
-                              class="col-md-12"
-                              dense
-                              outlined
-                              v-model="usuario.email"
-                              label="E-mail"
-                            />
+                            <!-- Campo do Telefone -->
+                            <div :class="this.v_.email ? 'validar-error row col-12' : 'row col-12'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.email"
+                                label="E-mail"
+                              />
+                            </div>
 
                             <!-- Campo do Telefone -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="usuario.telefone"
-                              label="Telefone"
-                            />
+                            <div :class="this.v_.telefone ? 'validar-error row col-md-6' : 'row col-md-6'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="(###) ####-####"
+                                v-model="usuario.telefone"
+                                label="Telefone"
+                              />
+                            </div>
 
                             <!-- Campo do Celular -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="usuario.celular"
-                              label="Celular"
-                            />
+                            <div :class="this.v_.celular ? 'validar-error row col-md-6' : 'row col-md-6'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="(###) #####-####"
+                                v-model="usuario.celular"
+                                label="Celular"
+                              />
+                            </div>
 
                           </div>
 
@@ -160,58 +258,82 @@
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo CEP -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="usuario.cep"
-                              label="CEP"
-                            />
+                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="#####-###"
+                                v-model="usuario.endereco.cep"
+                                label="CEP"
+                              />
+                            </div>
 
                             <!-- Campo Logradouro -->
-                            <q-input
-                              class="col-md-8"
-                              dense
-                              outlined
-                              v-model="usuario.logradouro"
-                              label="Logradouro"
-                            />
+                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.logradouro"
+                                label="Logradouro"
+                              />
+                            </div>
 
                             <!-- Campo Numero -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="usuario.numero"
-                              label="Numero"
-                            />
+                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-input
+                                class="col-md-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.numero"
+                                label="Numero"
+                              />
+                            </div>
 
                             <!-- Campo Bairro -->
-                            <q-input
-                              class="col-md-5"
-                              dense
-                              outlined
-                              v-model="usuario.bairro"
-                              label="Bairro"
-                            />
+                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.bairro"
+                                label="Bairro"
+                              />
+                            </div>
 
                             <!-- Campo Cidade -->
-                            <q-input
-                              class="col-md-5"
-                              dense
-                              outlined
-                              v-model="usuario.cidade"
-                              label="Cidade"
-                            />
+                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.cidade"
+                                label="Cidade"
+                              />
+                            </div>
 
                             <!-- Campo UF -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="usuario.uf"
-                              label="UF"
-                            />
+                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.uf"
+                                label="UF"
+                              />
+                            </div>
+
+                            <!-- Campo complemento -->
+                            <div :class="this.v_.endereco.complemento ? 'validar-error row col-12' : 'row col-12'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="usuario.endereco.complemento"
+                                label="Complemento"
+                              />
+                            </div>
 
                           </div>
 
@@ -219,7 +341,6 @@
 
                         <div class="row col-md-6 ">
                           <q-btn label="Cadastrar" @click="buscarCEP"  type="submit" color="primary" class="col-12"/>
-                          {{ cep }}
                         </div>
                       </div>
                     </div>
@@ -240,46 +361,277 @@
 
 <script>
 import Cep from '../../service/cep/cep.js'
+import Usuario from '../../service/usuario/usuario.js'
 
 export default {
   data () {
     return {
+      isPwd: true,
+      isConfirmPwd: true,
+      errors: [],
+      opt_hierarquia: [{
+        label: '1',
+        value: 1
+      }],
+      v_: {
+        id: false,
+        nome: false,
+        fk_usuario_hierarquia: false,
+        rg: false,
+        cpf: false,
+        dt_nascimento: false,
+        login: false,
+        senha: false,
+        confirmarSenha: false,
+        email: false,
+        telefone: false,
+        celular: false,
+        endereco: {
+          cep: false,
+          logradouro: false,
+          numero: false,
+          bairro: false,
+          cidade: false,
+          uf: false,
+          complemento: false
+        }
+      },
       usuario: {
         id: '',
         nome: '',
-        hierarquia: '',
         rg: '',
         cpf: '',
-        dtnascimento: '',
+        dt_nascimento: '',
         login: '',
         senha: '',
+        confirmarSenha: '',
         email: '',
         telefone: '',
         celular: '',
-        cep: '',
-        logradouro: '',
-        numero: '',
-        bairro: '',
-        cidade: '',
-        uf: ''
+        fk_usuario_hierarquia: 1,
+        fk_usuario_empresa: 1,
+        endereco: {
+          cep: '',
+          logradouro: '',
+          numero: '',
+          bairro: '',
+          cidade: '',
+          uf: '',
+          complemento: ''
+        }
       }
     }
   },
-  // methods: {}
   computed: {
 
   },
   methods: {
+    isEmail (email) {
+      let emailPattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
+      return emailPattern.test(email)
+    },
+    limparCampos () {
+      this.usuario.id = ''
+      this.usuario.nome = ''
+      this.usuario.rg = ''
+      this.usuario.cpf = ''
+      this.usuario.dt_nascimento = ''
+      this.usuario.login = ''
+      this.usuario.senha = ''
+      this.usuario.confirmarSenha = ''
+      this.usuario.email = ''
+      this.usuario.telefone = ''
+      this.usuario.celular = ''
+      this.usuario.endereco.cep = ''
+      this.usuario.endereco.logradouro = ''
+      this.usuario.endereco.numero = ''
+      this.usuario.endereco.bairro = ''
+      this.usuario.endereco.uf = ''
+      this.usuario.endereco.complemento = ''
+    },
+    validarCampos () {
+      this.errors = []
+      // Verificando o Nome
+      if (this.usuario.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+
+      // Verificando o CPF
+      if (this.usuario.cpf.length !== 14) {
+        this.errors.push({ msg: 'O campo cpf é obrigátorio', campo: 'cpf', erro: true })
+        this.v_.cpf = true
+      } else {
+        this.v_.cpf = false
+      }
+
+      // Verificando o RG
+      if (this.usuario.rg.length !== 12) {
+        this.errors.push({ msg: 'O campo rg é obrigátorio', campo: 'rg', erro: true })
+        this.v_.rg = true
+      } else {
+        this.v_.rg = false
+      }
+
+      // Verificando a data de nascimento
+      if (this.usuario.dt_nascimento.length !== 10) {
+        this.errors.push({ msg: 'O campo data de nascimento é obrigátorio', campo: 'dt_nascimento', erro: true })
+        this.v_.dt_nascimento = true
+      } else {
+        this.v_.dt_nascimento = false
+      }
+
+      // Verificando o fk_usuario_hierarquia
+      if (this.usuario.fk_usuario_hierarquia === 0) {
+        this.errors.push({ msg: 'O campo hierarquia é obrigátorio', campo: 'hierarquia', erro: true })
+        this.v_.fk_usuario_hierarquia = true
+      } else {
+        this.v_.fk_usuario_hierarquia = false
+      }
+
+      // Verificando o login
+      if (this.usuario.login.length === 0) {
+        this.errors.push({ msg: 'O campo login é obrigátorio', campo: 'login', erro: true })
+        this.v_.login = true
+      } else {
+        this.v_.login = false
+      }
+
+      // Verificando a senha
+      if (this.usuario.senha.length === 0) {
+        this.errors.push({ msg: 'O campo senha é obrigátorio', campo: 'senha', erro: true })
+        this.v_.senha = true
+      }
+      if (this.usuario.senha.length < 5) {
+        this.errors.push({ msg: 'A senha deverá conter mais de 5 caracteres', campo: 'senha', erro: true })
+        this.v_.senha = true
+      } else {
+        this.v_.senha = false
+      }
+
+      // Verificando a senha
+      if (this.usuario.confirmarSenha !== this.usuario.senha) {
+        this.errors.push({ msg: 'Confirme novamente sua senha', campo: 'confirmarSenha', erro: true })
+        this.v_.confirmarSenha = true
+      } else {
+        this.v_.confirmarSenha = false
+      }
+
+      // Verificando o email
+      if (this.usuario.email.length === 0) {
+        this.errors.push({ msg: 'O campo email é obrigátorio', campo: 'email', erro: true })
+        this.v_.email = true
+      } else if (!this.isEmail(this.usuario.email)) {
+        this.errors.push({ msg: 'O email informado está inválido', campo: 'email', erro: true })
+        this.v_.email = true
+      } else {
+        this.v_.email = false
+      }
+
+      // Verificando o email
+      if (this.usuario.celular.length === 0) {
+        this.errors.push({ msg: 'O campo celular é obrigátorio', campo: 'celular', erro: true })
+        this.v_.celular = true
+      } else {
+        this.v_.celular = false
+      }
+
+      // Verificando CEP
+      if (this.usuario.endereco.cep.length !== 9) {
+        this.errors.push({ msg: 'O cep informado é inválido', campo: 'cep', erro: true })
+        this.v_.endereco.cep = true
+      } else {
+        this.v_.endereco.cep = false
+      }
+
+      // Verificando logradouro
+      if (this.usuario.endereco.logradouro.length === 0) {
+        this.errors.push({ msg: 'O campo logradouro é obrigátorio', campo: 'logradouro', erro: true })
+        this.v_.endereco.logradouro = true
+      } else {
+        this.v_.endereco.logradouro = false
+      }
+
+      // Verificando CEP
+      if (this.usuario.endereco.numero.length === 0) {
+        this.errors.push({ msg: 'O campo numero é obrigátorio', campo: 'numero', erro: true })
+        this.v_.endereco.numero = true
+      } else {
+        this.v_.endereco.numero = false
+      }
+
+      // Verificando bairro
+      if (this.usuario.endereco.bairro.length === 0) {
+        this.errors.push({ msg: 'O campo bairro é obrigátorio', campo: 'bairro', erro: true })
+        this.v_.endereco.bairro = true
+      } else {
+        this.v_.endereco.bairro = false
+      }
+
+      // Verificando cidade
+      if (this.usuario.endereco.cidade.length === 0) {
+        this.errors.push({ msg: 'O campo cidade é obrigátorio', campo: 'cidade', erro: true })
+        this.v_.endereco.cidade = true
+      } else {
+        this.v_.endereco.cidade = false
+      }
+
+      // Verificando uf
+      if (this.usuario.endereco.uf.length === 0) {
+        this.errors.push({ msg: 'O campo uf é obrigátorio', campo: 'uf', erro: true })
+        this.v_.endereco.uf = true
+      } else {
+        this.v_.endereco.uf = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        return false
+      } else {
+        return true
+      }
+    },
     buscarCEP () {
-      Cep.cep(this.usuario.cep)
+      Cep.cep(this.usuario.endereco.cep)
         .then(resposta => {
           console.log(resposta.data)
           const cep = resposta.data
-          this.usuario.logradouro = cep.logradouro
-          this.usuario.bairro = cep.bairro
-          this.usuario.cidade = cep.cidade
-          this.usuario.uf = cep.estado
+          this.usuario.endereco.logradouro = cep.logradouro
+          this.usuario.endereco.bairro = cep.bairro
+          this.usuario.endereco.cidade = cep.cidade
+          this.usuario.endereco.uf = cep.estado
         })
+      if (this.validarCampos()) {
+        Usuario.cadastrar(this.usuario)
+          .then((usuario) => {
+            if (usuario.data.errors) {
+              this.$q.notify({
+                color: 'negative',
+                message: usuario.data.response
+              })
+              this.errors = []
+              for (let i = 0; i < usuario.data.errors.length; i++) {
+                this.errors.push({ msg: usuario.data.errors[i].message, campo: null, erro: true })
+              }
+            }
+            if (usuario.data.status === 201) {
+              this.$q.notify({
+                color: 'positive',
+                message: usuario.data.response
+              })
+              this.limparCampos()
+            }
+          })
+          .catch((error) => {
+            this.$q.notify({
+              color: 'negative',
+              message: 'Ocorreu um erro inesperado'
+            })
+            this.errors.push({ msg: 'Ocorreu um erro inesperado, entre em contato com o suporte', campo: null, erro: error })
+          })
+      }
     }
   }
 }
@@ -287,6 +639,21 @@ export default {
 </script>
 
 <style>
+/* always present */
+.expand-transition {
+  transition: all .3s ease;
+  height: 30px;
+  padding: 10px;
+  background-color: #eee;
+  overflow: hidden;
+}
+/* .expand-enter defines the starting state for entering */
+/* .expand-leave defines the ending state for leaving */
+.expand-enter, .expand-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
+}
 
 legend {
   padding: 0.2em 0.5em;
