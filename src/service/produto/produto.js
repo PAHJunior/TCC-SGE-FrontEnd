@@ -9,5 +9,8 @@ export default {
   },
   buscarProduto: () => {
     return http.get(`/`) //retorna tudo
-  }
+  },
+   salvar: (produto) => {
+     return http.post('produto', produto)
+   }
 }

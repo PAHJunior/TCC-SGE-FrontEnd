@@ -155,7 +155,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="salvar" type="submit" color="primary" class="col-12"/>
                         </div>
 
                       </div>
@@ -204,6 +204,11 @@ export default {
   },
   computed: {
 
+  },
+  methods: {
+    salvar () {
+      alert('Salvou')
+    }
   }
 }
 </script>
