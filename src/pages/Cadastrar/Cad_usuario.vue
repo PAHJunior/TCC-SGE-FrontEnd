@@ -32,7 +32,7 @@
             </q-card>
           </div> -->
 
-          <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
+          <!-- <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
             <q-card class="col-12 transparent no-shadow">
               <q-banner dense inline-actions class="text-white bg-negative">
                 <span class="text-h5"> Encontramos
@@ -43,7 +43,7 @@
                 </ul>
               </q-banner>
             </q-card>
-          </div>
+          </div> -->
 
           <!-- Formulario usuario -->
           <div class="col-md-12 col-sm-12 col-xs-12 row">
@@ -132,7 +132,6 @@
                                       <q-date
                                         v-model="usuario.dt_nascimento"
                                         minimal
-                                        mask="DD-MM-YYYY"
                                       />
 
                                     </q-menu>
@@ -588,6 +587,19 @@ export default {
 
       // Exibindo os erros
       if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
         return false
       } else {
         return true
@@ -603,6 +615,7 @@ export default {
           this.usuario.endereco.cidade = cep.cidade
           this.usuario.endereco.uf = cep.estado
         })
+      console.log(this.usuario.dt_nascimento)
       if (this.validarCampos()) {
         Usuario.cadastrar(this.usuario)
           .then((usuario) => {

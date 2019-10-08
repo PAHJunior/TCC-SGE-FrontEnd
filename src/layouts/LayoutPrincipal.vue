@@ -35,6 +35,23 @@
 
         <q-space />
 
+        <q-btn  flat round dense icon="notifications">
+          <q-menu fit anchor="bottom right" self="top right">
+            <q-list style="min-width: 100px">
+              <q-item clickable>
+                <q-item-section>Having fun</q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section>Crazy for transitions</q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>Mind blown</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+
         <q-btn  flat round dense icon="img:statics/calendar.png">
           <q-menu  anchor="bottom middle" self="top middle">
             <q-date
@@ -44,8 +61,6 @@
             />
           </q-menu>
         </q-btn>
-
-        <q-btn flat round dense icon="img:statics/star.png" />
 
         <q-btn flat dense>
           <div class="row items-center no-wrap">

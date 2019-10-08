@@ -1,6 +1,6 @@
 import axios from 'axios'
 
 export const http = axios.create({
-  baseURL: 'https://api.postmon.com.br/v1/movimentacao/',
+  baseURL: `${process.env.API}/movimentacao`,
   timeout: 3000
 })
