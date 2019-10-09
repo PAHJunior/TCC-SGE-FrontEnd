@@ -361,17 +361,23 @@
 <script>
 import Cep from '../../service/cep/cep.js'
 import Usuario from '../../service/usuario/usuario.js'
+import Hierarquia from '../../service/hierarquia/hierarquia.js'
 
 export default {
+  mounted () {
+    Hierarquia.buscar()
+      .then((hierarquias) => {
+        for (let i = 0; i < hierarquias.data.response.length; i++) {
+          this.opt_hierarquia.push(hierarquias.data.response[i].nome)
+        }
+      })
+  },
   data () {
     return {
       isPwd: true,
       isConfirmPwd: true,
       errors: [],
-      opt_hierarquia: [{
-        label: '1',
-        value: 1
-      }],
+      opt_hierarquia: [],
       v_: {
         id: false,
         nome: false,
@@ -407,7 +413,7 @@ export default {
         email: '',
         telefone: '',
         celular: '',
-        fk_usuario_hierarquia: 1,
+        fk_usuario_hierarquia: '',
         fk_usuario_empresa: 1,
         endereco: {
           cep: '',
