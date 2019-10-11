@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscarUsuarios" flat dense round/>
                       </template>
                     </q-input>
 
@@ -46,9 +46,6 @@
 
                     <div class="">
                       <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
-                      <q-checkbox  color="primary" left-label label="CPF" v-model="filtroPesquisa" val="cpf" />
-                      <q-checkbox  color="primary" left-label label="RG" v-model="filtroPesquisa" val="rg" />
-                      <q-checkbox  color="primary" left-label label="E-mail" v-model="filtroPesquisa" val="email" />
                     </div>
 
                     <q-btn icon="person_add" flat round dense @click="teste()"/>
@@ -115,18 +112,26 @@
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
-                      <q-btn dense icon="img:statics/file-log.png" flat round @click="props.selected = !props.selected"/>
                     </q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
                     <q-td key="cpf" :props="props">{{ props.row.cpf }}</q-td>
                     <q-td key="rg" :props="props">{{ props.row.rg }}</q-td>
                     <q-td key="aniversario" :props="props">{{ props.row.aniversario }}</q-td>
                     <q-td key="grupo" :props="props">{{ props.row.grupo }}</q-td>
+                    <q-td key="email" :props="props">{{ props.row.email }}</q-td>
+                    <q-td key="telefone" :props="props">{{ props.row.telefone }}</q-td>
+                    <q-td key="celular" :props="props">{{ props.row.celular }}</q-td>
+                    <q-td key="cep" :props="props">{{ props.row.cep }}</q-td>
+                    <q-td key="logradouro" :props="props">{{ props.row.logradouro }}</q-td>
+                    <q-td key="numero" :props="props">{{ props.row.numero }}</q-td>
+                    <q-td key="bairro" :props="props">{{ props.row.bairro }}</q-td>
+                    <q-td key="cidade" :props="props">{{ props.row.cidade }}</q-td>
+                    <q-td key="uf" :props="props">{{ props.row.uf }}</q-td>
+                    <q-td key="complemento" :props="props">{{ props.row.complemento }}</q-td>
                   </q-tr>
                 </template>
 
               </q-table>
-
               <!-- <div class="q-mt-md">
                 Usuario Selecionado: {{ JSON.stringify(selected) }}
               </div>
@@ -144,21 +149,18 @@
 </template>
 
 <script>
+import Usuario from '../../service/usuario/usuario.js'
 
 export default {
   data () {
     return {
       dados: false,
       filtroPesquisa: [],
+      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
       filter: '',
       selected: [],
-      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
       separator: 'horizontal',
-      data: [[
-        { id: '1', nome: 'Paulo Arhur', cpf: '460.224.398-33', rg: '19.406.953-9', aniversario: '20/04/1999', grupo: 'admin' },
-        { id: '2', nome: 'Polyana Feitosa', cpf: '779.636.080-09', rg: '19.251.981-5', aniversario: '20/07/2000', grupo: 'admin' },
-        { id: '3', nome: 'Natalia Pires', cpf: '919.310.680-70', rg: '27.238.588-8', aniversario: '14/08/1999', grupo: 'admin' }
-      ]],
+      data: [],
       columns: [
         { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
         { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },
@@ -173,12 +175,80 @@ export default {
         { name: 'numero', label: 'Numero', field: 'numero', align: 'left', sortable: true },
         { name: 'bairro', label: 'Bairro', field: 'bairro', align: 'left', sortable: true },
         { name: 'cidade', label: 'Cidade', field: 'cidade', align: 'left', sortable: true },
-        { name: 'estado', label: 'UF', field: 'estado', align: 'left', sortable: true },
+        { name: 'uf', label: 'UF', field: 'uf', align: 'left', sortable: true },
         { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
       ]
     }
   },
   methods: {
+    buscarUsuarios () {
+      Usuario.buscarUsuario()
+        .then((usuario) => {
+          if (usuario.data.errors) {
+            for (let i = 0; i < usuario.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: usuario.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 2000,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (usuario.data.status === 200) {
+            this.dados = true
+            this.data = usuario.data.response.map((u) => {
+              return {
+                id: u.id_usuario,
+                nome: u.nome,
+                cpf: u.cpf,
+                rg: u.rg,
+                aniversario: u.dt_nascimento,
+                grupo: u.hierarquia.nome,
+                email: u.email,
+                telefone: u.telefone,
+                celular: u.celular,
+                cep: u.endereco.cep,
+                logradouro: u.endereco.logradouro,
+                complemento: u.endereco.complemento,
+                bairro: u.endereco.bairro,
+                numero: u.endereco.numero,
+                cidade: u.endereco.cidade,
+                uf: u.endereco.uf
+              }
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$q.notify({
+            color: 'negative',
+            message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          this.$q.notify({
+            color: 'negative',
+            message: `${error}`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        })
+    },
     teste () {
       this.$router.push('/cadastro_usuario')
     }

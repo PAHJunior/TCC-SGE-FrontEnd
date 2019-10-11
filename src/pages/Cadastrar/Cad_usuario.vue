@@ -120,7 +120,7 @@
                                 class="col-12"
                                 dense
                                 outlined
-                                mask="##/##/####"
+                                mask="##-##-####"
                                 v-model="usuario.dt_nascimento"
                                 label="Data de nascimento"
                               >
@@ -128,10 +128,11 @@
                                   <!-- <q-icon name="event" /> -->
                                   <q-btn round flat dense icon="event">
                                     <q-menu fit anchor="bottom left" self="top left">
-
+                                      {{usuario.dt_nascimento}}
                                       <q-date
                                         v-model="usuario.dt_nascimento"
                                         minimal
+                                        mask="DD-MM-YYYY"
                                       />
 
                                     </q-menu>
@@ -146,8 +147,12 @@
                               <q-select
                                 :options="opt_hierarquia"
                                 class="col-12"
+                                option-value="id"
+                                option-label="desc"
                                 dense
                                 outlined
+                                map-options
+                                emit-value
                                 v-model="usuario.fk_usuario_hierarquia"
                                 label="Hierarquia"
                               />
@@ -367,9 +372,12 @@ export default {
   mounted () {
     Hierarquia.buscar()
       .then((hierarquias) => {
-        for (let i = 0; i < hierarquias.data.response.length; i++) {
-          this.opt_hierarquia.push(hierarquias.data.response[i].nome)
-        }
+        this.opt_hierarquia = hierarquias.data.response.map((h) => {
+          return {
+            id: h.id_hierarquia,
+            desc: h.nome
+          }
+        })
       })
   },
   data () {
@@ -621,34 +629,51 @@ export default {
           this.usuario.endereco.cidade = cep.cidade
           this.usuario.endereco.uf = cep.estado
         })
-      console.log(this.usuario.dt_nascimento)
       if (this.validarCampos()) {
         Usuario.cadastrar(this.usuario)
           .then((usuario) => {
             if (usuario.data.errors) {
-              this.$q.notify({
-                color: 'negative',
-                message: usuario.data.response
-              })
-              this.errors = []
               for (let i = 0; i < usuario.data.errors.length; i++) {
-                this.errors.push({ msg: usuario.data.errors[i].message, campo: null, erro: true })
+                this.$q.notify({
+                  color: 'negative',
+                  message: usuario.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
               }
             }
             if (usuario.data.status === 201) {
               this.$q.notify({
                 color: 'positive',
-                message: usuario.data.response
+                message: usuario.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
               })
               this.limparCampos()
             }
           })
-          .catch((error) => {
+          .catch(() => {
             this.$q.notify({
               color: 'negative',
               message: 'Ocorreu um erro inesperado'
             })
-            this.errors.push({ msg: 'Ocorreu um erro inesperado, entre em contato com o suporte', campo: null, erro: error })
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+            // this.errors.push({ msg: 'Ocorreu um erro inesperado, entre em contato com o suporte', campo: null, erro: error })
           })
       }
     }
