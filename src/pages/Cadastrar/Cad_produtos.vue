@@ -238,7 +238,14 @@ export default {
       }
       // Campo da descrição
       if (this.produto.descricao.length === 0) {
-        this.errors.push({ msg: 'O campo código é obrigatório', campo: 'codigo', erro: true })
+        this.errors.push({ msg: 'O campo Descrição é obrigatório', campo: 'codigo', erro: true })
+        this.v_.codProduto = true
+      } else {
+        this.v_codProduto = false
+      }
+      // Campo da categoria
+      if (this.produto.categoriaProduto.length === 0) {
+        this.errors.push({ msg: 'O campo categoria é obrigatório', campo: 'codigo', erro: true })
         this.v_.codProduto = true
       } else {
         this.v_codProduto = false
