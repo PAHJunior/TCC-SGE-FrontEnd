@@ -140,7 +140,6 @@
                               v-model="produto.estoqueMin"
                               label="Estoque mínimo"
                             />
-
                             <!-- Campo Estoque mínimo -->
                             <q-input
                               class="col-md-3"
@@ -149,7 +148,6 @@
                               v-model="produto.estoqueMax"
                               label="Estoque máximo"
                             />
-
                           </div>
 
                         </fieldset>
@@ -208,6 +206,43 @@ export default {
   methods: {
     salvar () {
       alert('Salvou')
+    },
+    LimparCampo () {
+      this.produto.nome = ''
+      this.produto.codProduto = ''
+      this.produto.descricao = ''
+      this.produto.status = ''
+      this.produto.categoriaProduto = ''
+      this.produto.unidMedida = ''
+      this.produto.estoqueMin = ''
+      this.produto.estoqueMax = ''
+      this.produto.valorVenda = ''
+      this.produto.valorCusto = ''
+      this.produto.fornecedor = ''
+    },
+    validarCampos () {
+      this.errors = []
+      // Campo do nome
+      if (this.produto.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+      // Campo docódigo
+      if (this.produto.codProduto.length === 0) {
+        this.errors.push({ msg: 'O campo código é obrigatório', campo: 'codigo', erro: true })
+        this.v_.codProduto = true
+      } else {
+        this.v_codProduto = false
+      }
+      // Campo da descrição
+      if (this.produto.descricao.length === 0) {
+        this.errors.push({ msg: 'O campo código é obrigatório', campo: 'codigo', erro: true })
+        this.v_.codProduto = true
+      } else {
+        this.v_codProduto = false
+      }
     }
   }
 }
