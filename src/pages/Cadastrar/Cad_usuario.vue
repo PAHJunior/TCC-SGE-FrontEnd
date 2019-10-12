@@ -266,6 +266,7 @@
                               <q-input
                                 class="col-12"
                                 dense
+                                v-on:keyup.enter="buscarCEP"
                                 outlined
                                 mask="#####-###"
                                 v-model="usuario.endereco.cep"
@@ -276,6 +277,7 @@
                             <!-- Campo Logradouro -->
                             <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
                               <q-input
+                                v-on:keyup.tab="buscarCEP"
                                 class="col-12"
                                 dense
                                 outlined
@@ -344,7 +346,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" @click="buscarCEP"  type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="cadastrarUsuario"  type="submit" color="primary" class="col-12"/>
                         </div>
                       </div>
                     </div>
@@ -629,6 +631,8 @@ export default {
           this.usuario.endereco.cidade = cep.cidade
           this.usuario.endereco.uf = cep.estado
         })
+    },
+    cadastrarUsuario () {
       if (this.validarCampos()) {
         Usuario.cadastrar(this.usuario)
           .then((usuario) => {
@@ -673,7 +677,6 @@ export default {
                 icon: 'close'
               }]
             })
-            // this.errors.push({ msg: 'Ocorreu um erro inesperado, entre em contato com o suporte', campo: null, erro: error })
           })
       }
     }

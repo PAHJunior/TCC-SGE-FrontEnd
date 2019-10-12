@@ -44,11 +44,12 @@
 
                   <div class="row justify-between col-md-5 ">
 
-                    <div class="">
-                      <q-checkbox  color="primary" left-label label="Ativos" v-model="filtroPesquisa" val="ativos" />
-                    </div>
-
-                    <q-btn icon="person_add" flat round dense @click="teste()"/>
+                    <!-- <q-btn
+                      flat round dense
+                      :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                      @click="props.toggleFullscreen"
+                      class="q-ml-md"
+                    /> -->
 
                   </div>
 
