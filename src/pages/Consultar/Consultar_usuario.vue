@@ -98,6 +98,7 @@
             <div class="col-12">
 
               <q-table
+                :loading="loadingUser"
                 :filter="filter"
                 :data="dados ? data : na"
                 :columns="columns"
@@ -155,6 +156,7 @@ import Usuario from '../../service/usuario/usuario.js'
 export default {
   data () {
     return {
+      loadingUser: false,
       dados: false,
       filtroPesquisa: [],
       visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
@@ -180,6 +182,78 @@ export default {
         { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
       ]
     }
+  },
+  mounted () {
+    this.loadingUser = true
+    Usuario.buscarUsuario()
+      .then((usuario) => {
+        if (usuario.data.errors) {
+          for (let i = 0; i < usuario.data.errors.length; i++) {
+            this.$q.notify({
+              color: 'negative',
+              message: usuario.data.errors[i].message,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          }
+        }
+        if (usuario.data.status === 200) {
+          this.dados = true
+          this.data = usuario.data.response.map((u) => {
+            return {
+              id: u.id_usuario,
+              nome: u.nome,
+              cpf: u.cpf,
+              rg: u.rg,
+              aniversario: u.dt_nascimento,
+              grupo: u.hierarquia.nome,
+              email: u.email,
+              telefone: u.telefone,
+              celular: u.celular,
+              cep: u.endereco.cep,
+              logradouro: u.endereco.logradouro,
+              complemento: u.endereco.complemento,
+              bairro: u.endereco.bairro,
+              numero: u.endereco.numero,
+              cidade: u.endereco.cidade,
+              uf: u.endereco.uf
+            }
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$q.notify({
+          color: 'negative',
+          message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+          position: 'top-right',
+          icon: 'warning',
+          timeout: 2000,
+          actions: [{
+            color: 'white',
+            icon: 'close'
+          }]
+        })
+        this.$q.notify({
+          color: 'negative',
+          message: `${error}`,
+          position: 'top-right',
+          icon: 'warning',
+          timeout: 2000,
+          actions: [{
+            color: 'white',
+            icon: 'close'
+          }]
+        })
+      })
+      .finally(() => {
+        this.loadingUser = false
+      })
   },
   methods: {
     buscarUsuarios () {
@@ -248,6 +322,9 @@ export default {
               icon: 'close'
             }]
           })
+        })
+        .finally(() => {
+          this.loadingUser = false
         })
     },
     teste () {
