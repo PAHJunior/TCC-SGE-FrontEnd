@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 import routes from './routes'
 
+// import { Loading, QSpinnerGears } from 'quasar'
+
 Vue.use(VueRouter)
 
 /*
@@ -20,6 +22,14 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  Router.beforeEach((to, from, next) => {
+    // Loading.show({
+    //   message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
+    //   spinner: QSpinnerGears
+    // })
+    next()
   })
 
   return Router

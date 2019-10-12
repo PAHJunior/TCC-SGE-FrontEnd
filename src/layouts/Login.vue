@@ -64,7 +64,14 @@ export default {
             for (let i = 0; i < usuarios.data.errors.length; i++) {
               this.$q.notify({
                 color: 'negative',
-                message: usuarios.data.errors[i].message
+                message: usuarios.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 2000,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
               })
             }
           }
@@ -77,7 +84,14 @@ export default {
         .catch((error) => {
           this.$q.notify({
             color: 'negative',
-            message: 'Não foi possivel realizar a conexão'
+            message: 'Não foi possivel realizar a conexão',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
           })
           this.error = true
           console.log(error)
