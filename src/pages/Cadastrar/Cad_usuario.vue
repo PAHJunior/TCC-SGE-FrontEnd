@@ -128,7 +128,7 @@
                                   <!-- <q-icon name="event" /> -->
                                   <q-btn round flat dense icon="event">
                                     <q-menu fit anchor="bottom left" self="top left">
-                                      {{usuario.dt_nascimento}}
+
                                       <q-date
                                         v-model="usuario.dt_nascimento"
                                         minimal
@@ -234,7 +234,7 @@
                                 class="col-12"
                                 dense
                                 outlined
-                                mask="(###) ####-####"
+                                mask="(##) ####-####"
                                 v-model="usuario.telefone"
                                 label="Telefone"
                               />
@@ -246,7 +246,7 @@
                                 class="col-12"
                                 dense
                                 outlined
-                                mask="(###) #####-####"
+                                mask="(##) #####-####"
                                 v-model="usuario.celular"
                                 label="Celular"
                               />
@@ -369,6 +369,8 @@
 import Cep from '../../service/cep/cep.js'
 import Usuario from '../../service/usuario/usuario.js'
 import Hierarquia from '../../service/hierarquia/hierarquia.js'
+import Validar from '../../service/validarToken/validar'
+import { Loading, QSpinnerGears } from 'quasar'
 
 export default {
   mounted () {
@@ -664,10 +666,6 @@ export default {
           .catch(() => {
             this.$q.notify({
               color: 'negative',
-              message: 'Ocorreu um erro inesperado'
-            })
-            this.$q.notify({
-              color: 'negative',
               message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
               position: 'top-right',
               icon: 'warning',
@@ -680,6 +678,34 @@ export default {
           })
       }
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    Loading.show({
+      message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
+      spinner: QSpinnerGears
+    })
+    Validar.token(localStorage.getItem('token'))
+      .then((isValid) => {
+        if (!isValid.data) {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Seu acesso ao sistema expirou, é necessário fazer o login novamente',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 5000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          next('/login/tcc')
+        } else {
+          next()
+        }
+      })
+      .finally(() => {
+        Loading.hide()
+      })
   }
 }
 

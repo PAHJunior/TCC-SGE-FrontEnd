@@ -44,13 +44,6 @@
 
                   <div class="row justify-between col-md-5 ">
 
-                    <!-- <q-btn
-                      flat round dense
-                      :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                      @click="props.toggleFullscreen"
-                      class="q-ml-md"
-                    /> -->
-
                   </div>
 
                   <div class="col-md-3">
@@ -137,9 +130,7 @@
               <!-- <div class="q-mt-md">
                 Usuario Selecionado: {{ JSON.stringify(selected) }}
               </div>
-              <div class="q-mt-md">
-                Filtro pesquisa: {{filtroPesquisa}}
-              </div> -->
+              -->
             </div>
 
           </div>

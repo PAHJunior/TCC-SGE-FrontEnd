@@ -66,7 +66,7 @@
           <div class="row items-center no-wrap">
             <q-icon left name="img:statics/user.png" />
             <div class="text-center" v-if="!$q.screen.lt.md">
-              Olá, {{ usuario }}
+              Olá, {{ usuario.login }}
             </div>
           </div>
           <q-menu  anchor="bottom middle" self="top middle">
@@ -82,10 +82,11 @@
                   <img src="https://cdn.quasar.dev/img/boy-avatar.png">
                 </q-avatar>
 
-                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ usuario }}</div>
+                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ usuario.login }}</div>
 
                 <q-btn
                   to="/"
+                  @click="sair"
                   color="red-10"
                   label="Sair"
                   size="sm"
@@ -191,17 +192,50 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import Validar from '../service/validarToken/validar'
+import { mapState } from 'vuex'
+import { openURL, Loading, QSpinnerGears } from 'quasar'
 
 export default {
+  beforeRouteUpdate (to, from, next) {
+    Loading.show({
+      message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
+      spinner: QSpinnerGears
+    })
+    Validar.token(localStorage.getItem('token'))
+      .then((isValid) => {
+        if (!isValid.data) {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Seu acesso ao sistema expirou, é necessário fazer o login novamente',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 5000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          next('/login/tcc')
+        } else {
+          next()
+        }
+      })
+      .finally(() => {
+        Loading.hide()
+      })
+  },
+  mounted () {
+    this.token = localStorage.getItem('token')
+  },
   name: 'MyLayout',
   data () {
     return {
+      token: '',
       urlImg: '../assets/logo_tcc.png',
       calendario: false,
       date: '',
       searchText: '',
-      usuario: 'Paulo',
       menu: {
         cadastros: {
           id: '0',
@@ -256,8 +290,24 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
+  computed: {
+    ...mapState('usuarios', ['usuario'])
+  },
   methods: {
-    openURL
+    openURL,
+    sair () {
+      localStorage.removeItem('token')
+      localStorage.removeItem('token')
+      localStorage.removeItem('isLogado')
+      localStorage.removeItem('id_usuario')
+      localStorage.removeItem('nome')
+      localStorage.removeItem('email')
+      localStorage.removeItem('login')
+      localStorage.removeItem('id_empresa')
+      localStorage.removeItem('nome_fantasia')
+      localStorage.removeItem('razao_social')
+      localStorage.removeItem('cnpj')
+    }
   }
 }
 </script>

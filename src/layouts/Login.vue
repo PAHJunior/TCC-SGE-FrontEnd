@@ -41,6 +41,8 @@
 
 <script>
 import Usuario from '../service/usuario/usuario.js'
+import { mapMutations } from 'vuex'
+import { Loading, QSpinnerGears } from 'quasar'
 
 export default {
   name: 'MyLayout',
@@ -57,9 +59,17 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('usuarios', ['USUARIO']),
     login () {
+      Loading.show({
+        QSpinnerGears,
+        spinnerColor: 'primary',
+        message: 'Carregando...',
+        messageColor: 'white'
+      })
       Usuario.login(this.usuario)
         .then((usuarios) => {
+          console.log(usuarios.data)
           if (usuarios.data.errors) {
             for (let i = 0; i < usuarios.data.errors.length; i++) {
               this.$q.notify({
@@ -77,6 +87,17 @@ export default {
           }
           if (usuarios.data.status === 200) {
             if (usuarios.data.response.isLogado) {
+              this.USUARIO(usuarios.data.response)
+              localStorage.setItem('token', usuarios.data.response.token)
+              localStorage.setItem('isLogado', usuarios.data.response.isLogado)
+              localStorage.setItem('id_usuario', usuarios.data.response.id_usuario)
+              localStorage.setItem('nome', usuarios.data.response.nome)
+              localStorage.setItem('email', usuarios.data.response.email)
+              localStorage.setItem('login', usuarios.data.response.login)
+              localStorage.setItem('id_empresa', usuarios.data.response.empresa.id_empresa)
+              localStorage.setItem('nome_fantasia', usuarios.data.response.empresa.nome_fantasia)
+              localStorage.setItem('razao_social', usuarios.data.response.empresa.razao_social)
+              localStorage.setItem('cnpj', usuarios.data.response.empresa.cnpj)
               this.$router.push('/dashboard')
             }
           }
@@ -96,13 +117,27 @@ export default {
           this.error = true
           console.log(error)
         })
+        .finally(() => {
+          Loading.hide()
+        })
     }
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteEnter (to, from, next) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('token')
+    localStorage.removeItem('isLogado')
+    localStorage.removeItem('id_usuario')
+    localStorage.removeItem('nome')
+    localStorage.removeItem('email')
+    localStorage.removeItem('login')
+    localStorage.removeItem('id_empresa')
+    localStorage.removeItem('nome_fantasia')
+    localStorage.removeItem('razao_social')
+    localStorage.removeItem('cnpj')
     if ((to.params.empresa === 'raotes') || (to.params.empresa === 'tcc')) {
       next()
     } else {
-      next({ path: '/home' })
+      next({ path: '/login/tcc' })
     }
   }
 }
