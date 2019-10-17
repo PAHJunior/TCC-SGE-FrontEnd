@@ -91,6 +91,7 @@
             <div class="col-12">
 
               <q-table
+                :loading="loading"
                 :filter="filter"
                 :data="dados ? data : na"
                 :columns="columns"
@@ -106,24 +107,14 @@
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
-                      <q-btn dense icon="img:statics/file-log.png" flat round @click="props.selected = !props.selected"/>
                     </q-td>
+                    <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
-                    <q-td key="cpf" :props="props">{{ props.row.cpf }}</q-td>
-                    <q-td key="rg" :props="props">{{ props.row.rg }}</q-td>
-                    <q-td key="aniversario" :props="props">{{ props.row.aniversario }}</q-td>
-                    <q-td key="grupo" :props="props">{{ props.row.grupo }}</q-td>
+                    <q-td key="status" :props="props">{{ props.row.status }}</q-td>
                   </q-tr>
                 </template>
 
               </q-table>
-
-              <!-- <div class="q-mt-md">
-                Usuario Selecionado: {{ JSON.stringify(selected) }}
-              </div>
-              <div class="q-mt-md">
-                Filtro pesquisa: {{filtroPesquisa}}
-              </div> -->
             </div>
 
           </div>
@@ -136,41 +127,92 @@
 
 <script>
 
+import Hierarquia from '../../service/hierarquia/hierarquia.js'
+
 export default {
   data () {
     return {
+      loading: false,
       dados: false,
       filtroPesquisa: [],
       filter: '',
       selected: [],
-      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
+      visibleColumns: ['nome', 'status'],
       separator: 'horizontal',
-      data: [
-        { id: '1', nome: 'Paulo Arhur', cpf: '460.224.398-33', rg: '19.406.953-9', aniversario: '20/04/1999', grupo: 'admin' },
-        { id: '2', nome: 'Polyana Feitosa', cpf: '779.636.080-09', rg: '19.251.981-5', aniversario: '20/07/2000', grupo: 'admin' },
-        { id: '3', nome: 'Natalia Pires', cpf: '919.310.680-70', rg: '27.238.588-8', aniversario: '14/08/1999', grupo: 'admin' }
-      ],
+      data: [],
       columns: [
-        { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
-        { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },
-        { name: 'rg', label: 'RG', field: 'rg', align: 'left', sortable: true },
-        { name: 'aniversario', label: 'Aniversario', field: 'aniversario', align: 'left', sortable: true },
-        { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
-        { name: 'email', label: 'E-mail', field: 'email', align: 'left', sortable: true },
-        { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left', sortable: true },
-        { name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true },
-        { name: 'cep', label: 'CEP', field: 'cep', align: 'left', sortable: true },
-        { name: 'logradouro', label: 'Logradouro', field: 'logradouro', align: 'left', sortable: true },
-        { name: 'numero', label: 'Numero', field: 'numero', align: 'left', sortable: true },
-        { name: 'bairro', label: 'Bairro', field: 'bairro', align: 'left', sortable: true },
-        { name: 'cidade', label: 'Cidade', field: 'cidade', align: 'left', sortable: true },
-        { name: 'estado', label: 'UF', field: 'estado', align: 'left', sortable: true },
-        { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
+        { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
+        { name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
+        { name: 'status', label: 'Status', field: 'status', align: 'left', sortable: true }
       ]
     }
   },
   computed: {
 
+  },
+  mounted () {
+    this.buscarHierarquias()
+  },
+  methods: {
+    buscarHierarquias () {
+      this.loading = true
+      Hierarquia.buscar()
+        .then((hierarquia) => {
+          if (hierarquia.data.errors) {
+            for (let i = 0; i < hierarquia.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: hierarquia.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 2000,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (hierarquia.data.status === 200) {
+            this.dados = true
+            this.data = hierarquia.data.response.map((h) => {
+              return {
+                id: h.id_hierarquia,
+                nome: h.nome,
+                status: h.ativo ? 'Ativo' : 'Inativo'
+              }
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$q.notify({
+            color: 'negative',
+            message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          this.$q.notify({
+            color: 'negative',
+            message: `${error}`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    }
   }
 }
 </script>

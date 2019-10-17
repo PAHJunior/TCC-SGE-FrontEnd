@@ -1,7 +1,7 @@
 import { http } from './config.js'
 
 export default {
-  token: (token) => {
-    return http.get(`/${token}`)
+  token: (id, token) => {
+    return http.get(`/${id}/${token}`)
   }
 }

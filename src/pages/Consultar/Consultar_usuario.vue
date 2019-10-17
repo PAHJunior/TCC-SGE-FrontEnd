@@ -108,6 +108,7 @@
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
                     </q-td>
+                    <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
                     <q-td key="cpf" :props="props">{{ props.row.cpf }}</q-td>
                     <q-td key="rg" :props="props">{{ props.row.rg }}</q-td>
@@ -123,6 +124,7 @@
                     <q-td key="cidade" :props="props">{{ props.row.cidade }}</q-td>
                     <q-td key="uf" :props="props">{{ props.row.uf }}</q-td>
                     <q-td key="complemento" :props="props">{{ props.row.complemento }}</q-td>
+                    <q-td key="status" :props="props">{{ props.row.ativo }}</q-td>
                   </q-tr>
                 </template>
 
@@ -150,17 +152,19 @@ export default {
       loadingUser: false,
       dados: false,
       filtroPesquisa: [],
-      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
+      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo', 'status'],
       filter: '',
       selected: [],
       separator: 'horizontal',
       data: [],
       columns: [
+        { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
         { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
         { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },
         { name: 'rg', label: 'RG', field: 'rg', align: 'left', sortable: true },
         { name: 'aniversario', label: 'Aniversario', field: 'aniversario', align: 'left', sortable: true },
         { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
+        { name: 'status', label: 'Status', field: 'status', align: 'left', sortable: true },
         { name: 'email', label: 'E-mail', field: 'email', align: 'left', sortable: true },
         { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left', sortable: true },
         { name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true },
@@ -175,79 +179,11 @@ export default {
     }
   },
   mounted () {
-    this.loadingUser = true
-    Usuario.buscarUsuario()
-      .then((usuario) => {
-        if (usuario.data.errors) {
-          for (let i = 0; i < usuario.data.errors.length; i++) {
-            this.$q.notify({
-              color: 'negative',
-              message: usuario.data.errors[i].message,
-              position: 'top-right',
-              icon: 'warning',
-              timeout: 2000,
-              actions: [{
-                color: 'white',
-                icon: 'close'
-              }]
-            })
-          }
-        }
-        if (usuario.data.status === 200) {
-          this.dados = true
-          this.data = usuario.data.response.map((u) => {
-            return {
-              id: u.id_usuario,
-              nome: u.nome,
-              cpf: u.cpf,
-              rg: u.rg,
-              aniversario: u.dt_nascimento,
-              grupo: u.hierarquia.nome,
-              email: u.email,
-              telefone: u.telefone,
-              celular: u.celular,
-              cep: u.endereco.cep,
-              logradouro: u.endereco.logradouro,
-              complemento: u.endereco.complemento,
-              bairro: u.endereco.bairro,
-              numero: u.endereco.numero,
-              cidade: u.endereco.cidade,
-              uf: u.endereco.uf
-            }
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        this.$q.notify({
-          color: 'negative',
-          message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
-          position: 'top-right',
-          icon: 'warning',
-          timeout: 2000,
-          actions: [{
-            color: 'white',
-            icon: 'close'
-          }]
-        })
-        this.$q.notify({
-          color: 'negative',
-          message: `${error}`,
-          position: 'top-right',
-          icon: 'warning',
-          timeout: 2000,
-          actions: [{
-            color: 'white',
-            icon: 'close'
-          }]
-        })
-      })
-      .finally(() => {
-        this.loadingUser = false
-      })
+    this.buscarUsuarios()
   },
   methods: {
     buscarUsuarios () {
+      this.loadingUser = true
       Usuario.buscarUsuario()
         .then((usuario) => {
           if (usuario.data.errors) {
@@ -279,6 +215,7 @@ export default {
                 telefone: u.telefone,
                 celular: u.celular,
                 cep: u.endereco.cep,
+                ativo: u.ativo ? 'Ativo' : 'Inativo',
                 logradouro: u.endereco.logradouro,
                 complemento: u.endereco.complemento,
                 bairro: u.endereco.bairro,

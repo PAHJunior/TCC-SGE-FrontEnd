@@ -82,7 +82,7 @@
                   <img src="https://cdn.quasar.dev/img/boy-avatar.png">
                 </q-avatar>
 
-                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ usuario.login }}</div>
+                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ this.userLocal.login }}</div>
 
                 <q-btn
                   to="/"
@@ -193,8 +193,9 @@
 
 <script>
 import Validar from '../service/validarToken/validar'
-import { mapState } from 'vuex'
-import { openURL, Loading, QSpinnerGears } from 'quasar'
+import Usuario from '../service/usuario/usuario'
+import { mapState, mapMutations } from 'vuex'
+import { Loading, QSpinnerGears } from 'quasar'
 
 export default {
   beforeRouteUpdate (to, from, next) {
@@ -202,9 +203,9 @@ export default {
       message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
       spinner: QSpinnerGears
     })
-    Validar.token(localStorage.getItem('token'))
-      .then((isValid) => {
-        if (!isValid.data) {
+    Validar.token(localStorage.getItem('id_usuario'), localStorage.getItem('token'))
+      .then((token) => {
+        if (token.data === false) {
           this.$q.notify({
             color: 'negative',
             message: 'Seu acesso ao sistema expirou, é necessário fazer o login novamente',
@@ -218,6 +219,11 @@ export default {
           })
           next('/login/tcc')
         } else {
+          Usuario.buscarUmUsuario(localStorage.getItem('id_usuario'))
+            .then((usuario) => {
+              this.USUARIO(usuario.data.response[0])
+            })
+          localStorage.setItem('token', token.data)
           next()
         }
       })
@@ -227,10 +233,20 @@ export default {
   },
   mounted () {
     this.token = localStorage.getItem('token')
+    this.userLocal.id_usuario = localStorage.getItem('id_usuario')
+    this.userLocal.nome = localStorage.getItem('nome')
+    this.userLocal.email = localStorage.getItem('email')
+    this.userLocal.login = localStorage.getItem('login')
   },
   name: 'MyLayout',
   data () {
     return {
+      userLocal: {
+        id_usuario: '',
+        nome: '',
+        email: '',
+        login: ''
+      },
       token: '',
       urlImg: '../assets/logo_tcc.png',
       calendario: false,
@@ -248,7 +264,7 @@ export default {
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
             { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
-            { label: 'Cadastro de Grupos', link: '/cadastro_grupo' },
+            { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' },
             { label: 'Cadastro de Movimentação', link: '/cadastro_movimentacao' }
           ]
         },
@@ -263,9 +279,8 @@ export default {
             { label: 'Consultar Fornecedor', link: '/consultar_fornecedor' },
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
-            { label: 'Consultar Grupos', link: 'consultar_grupo' },
-            { label: 'Consultar Movimentações', link: 'consultar_movimentacao' },
-            { label: 'Consultar Relatorio', link: 'consultar_relatorio' }
+            { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
+            { label: 'Consultar Movimentações', link: 'consultar_movimentacao' }
           ]
         },
         relatorio: {
@@ -294,7 +309,7 @@ export default {
     ...mapState('usuarios', ['usuario'])
   },
   methods: {
-    openURL,
+    ...mapMutations('usuarios', ['USUARIO']),
     sair () {
       localStorage.removeItem('token')
       localStorage.removeItem('token')
