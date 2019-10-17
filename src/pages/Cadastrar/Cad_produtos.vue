@@ -239,16 +239,42 @@ export default {
       // Campo da descrição
       if (this.produto.descricao.length === 0) {
         this.errors.push({ msg: 'O campo Descrição é obrigatório', campo: 'codigo', erro: true })
-        this.v_.codProduto = true
+        this.v_.descricao = true
       } else {
-        this.v_codProduto = false
+        this.v_.descricao = false
       }
       // Campo da categoria
       if (this.produto.categoriaProduto.length === 0) {
         this.errors.push({ msg: 'O campo categoria é obrigatório', campo: 'codigo', erro: true })
-        this.v_.codProduto = true
+        this.v_.categoriaProduto = true
       } else {
-        this.v_codProduto = false
+        this.v_.categoriaProduto = false
+      }
+      // Campo da unidade de medida
+      if (this.produto.unidMedida.length === 0) {
+        this.errors.push({ msg: 'O campo unidade de medida é obrigatório', campo: 'codigo', erro: true })
+        this.v_.unidMedida = true
+      } else {
+        this.v_.unidMedida = false
+      }
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
       }
     }
   }
