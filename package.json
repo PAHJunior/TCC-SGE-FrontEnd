@@ -1,6 +1,6 @@
 {
   "name": "tcc_sge",
-  "version": "0.0.1",
+  "version": "0.0.49",
   "description": "Trabalho de conclusão de curso - SISTEMA DE GERENCIAMENTO DE ESTOQUE - ETEC de Embu - curso: desenvolvimento de sistemas -  \n Integrantes \n Paulo Arthur \n Natalia Pires \n Polyana Feitosa",
   "productName": "TCC SGE",
   "cordovaId": "org.cordova.quasar.app",

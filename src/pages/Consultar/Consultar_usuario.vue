@@ -84,6 +84,12 @@
 
                     </q-select>
                   </div>
+                  <q-btn
+                    flat round dense
+                    :icon="dadosProps.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                    @click="dadosProps.toggleFullscreen"
+                    class="q-ml-md"
+                  />
                 </div>
               </q-card-section>
             </q-card>
@@ -100,6 +106,23 @@
                 selection="single"
                 :selected.sync="selected"
                 row-key="id">
+
+                <template v-slot:top="props">
+
+                  <div v-show="false">
+                    {{ dadosProps = props }}
+                  </div>
+
+                  <q-space />
+                  <div v-show="props.inFullscreen">
+                    <q-btn
+                      flat round dense
+                      :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                      @click="props.toggleFullscreen"
+                    />
+                  </div>
+
+                </template>
 
                 <!-- Corpo da tabela -->
                 <template v-slot:body="props">
@@ -129,10 +152,6 @@
                 </template>
 
               </q-table>
-              <!-- <div class="q-mt-md">
-                Usuario Selecionado: {{ JSON.stringify(selected) }}
-              </div>
-              -->
             </div>
 
           </div>
@@ -147,8 +166,12 @@
 import Usuario from '../../service/usuario/usuario.js'
 
 export default {
+  prop: {
+    props: {}
+  },
   data () {
     return {
+      dadosProps: [],
       loadingUser: false,
       dados: false,
       filtroPesquisa: [],
@@ -258,9 +281,6 @@ export default {
     teste () {
       this.$router.push('/cadastro_usuario')
     }
-  },
-  computed: {
-
   }
 }
 </script>

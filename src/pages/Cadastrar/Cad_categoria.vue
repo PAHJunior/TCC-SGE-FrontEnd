@@ -44,40 +44,44 @@
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo do código do produto -->
-                            <q-input
-                              class="col-md-9"
-                              dense
-                              outlined
-                              v-model="categoria.nomeCategoria"
-                              label="Nome da categoria"
-                            />
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9'">
+                              <q-input
+                                class="col-md-12"
+                                dense
+                                outlined
+                                v-model="categoria.nome"
+                                label="Nome da categoria"
+                              />
+                            </div>
 
                             <div class="col-md-3">
                               <q-checkbox
                                 class="float-right"
                                 left-label
-                                v-model="categoria.status"
+                                v-model="categoria.ativo"
                                 label="Status de categoria"/>
                             </div>
 
                             <!-- Campo do Descrição -->
-                            <q-input
-                              class="col-12"
-                              dense
-                              outlined
-                              autogrow
-                              counter
-                              maxlength="150"
-                              v-model="categoria.descricao"
-                              label="Descrição da categoria"
-                            />
+                            <div :class="this.v_.descricao ? 'validar-error row col-12' : 'row col-12'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                autogrow
+                                counter
+                                maxlength="150"
+                                v-model="categoria.descricao"
+                                label="Descrição da categoria"
+                              />
+                            </div>
 
                           </div>
 
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" type="submit" @click="cadastrar" color="primary" class="col-12"/>
                         </div>
 
                       </div>
@@ -99,18 +103,114 @@
 
 <script>
 
+import Categoria from '../../service/categoria_produtos/categoria_produtos.js'
+
 export default {
   data () {
     return {
+      errors: [],
+      v_: {
+        nome: false,
+        descricao: false
+      },
       categoria: {
-        nomeCategoria: '',
+        nome: '',
         descricao: '',
-        status: true
+        ativo: true
       }
     }
   },
   computed: {
 
+  },
+  methods: {
+    limparCampos () {
+      this.categoria.nome = ''
+      this.categoria.descricao = ''
+      this.categoria.status = true
+    },
+    cadastrar () {
+      if (this.validarCampos()) {
+        Categoria.cadastrar(this.categoria)
+          .then((categoria) => {
+            if (categoria.data.errors) {
+              for (let i = 0; i < categoria.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: categoria.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (categoria.data.status === 201) {
+              this.$q.notify({
+                color: 'positive',
+                message: categoria.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.limparCampos()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
+      }
+    },
+    validarCampos () {
+      this.errors = []
+      // Verificando o nome
+      if (this.categoria.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome do categoria é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+
+      // Verificando a descricao
+      if (this.categoria.descricao.length === 0) {
+        this.errors.push({ msg: 'O campo descricao é obrigátorio', campo: 'descricao', erro: true })
+        this.v_.descricao = true
+      } else {
+        this.v_.descricao = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
+    }
   }
 }
 </script>

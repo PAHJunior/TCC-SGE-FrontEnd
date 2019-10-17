@@ -77,7 +77,7 @@
                             </div>
 
                             <!-- nom completo -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-11' : 'row col-md-11' ">
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9' ">
                               <q-input
                                 ref="nome"
                                 maxlength="100"
@@ -87,6 +87,15 @@
                                 v-model="usuario.nome"
                                 label="Nome completo"
                               />
+                            </div>
+
+                            <!-- Campo de ativo -->
+                            <div class="col-md-2">
+                              <q-checkbox
+                                class="float-right"
+                                left-label
+                                v-model="usuario.ativo"
+                                label="Status do usúario"/>
                             </div>
 
                             <!-- Campo do CPF -->
@@ -416,6 +425,7 @@ export default {
       usuario: {
         id: '',
         nome: '',
+        ativo: true,
         rg: '',
         cpf: '',
         dt_nascimento: '',
