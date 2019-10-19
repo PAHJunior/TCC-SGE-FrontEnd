@@ -1,13 +1,13 @@
 import { http } from './config.js'
 
 export default {
-  login: (fornecedor) => {
-    return http.post('/fornecedor', fornecedor)
+  cadastrar: (fornecedor) => {
+    return http.post('/', fornecedor)
   },
-  buscarUmUsuario: (id) => {
+  buscarUm: (id) => {
     return http.get(`/${id}`)
   },
-  buscarUsuario: () => {
+  buscar: () => {
     return http.get(`/`)
   }
 }

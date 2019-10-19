@@ -17,7 +17,7 @@
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
                 <q-breadcrumbs-el to="/cadastro_categoria"  label="Cadastro de categorias" />
-                <q-breadcrumbs-el to="/consultar_categoria"  label="Consultar categoria" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_categoria"  label="Consultar categoria" />
 
               </q-breadcrumbs>
 
@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscarTodos" flat dense round/>
                       </template>
                     </q-input>
 

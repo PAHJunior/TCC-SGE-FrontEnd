@@ -16,8 +16,8 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el to="/cadastro_unid_medida"  label="Cadastro de unidade de medida" />
-                <q-breadcrumbs-el to="/consultar_unid_medida"  label="Consultar unidade de medida" />
+                <q-breadcrumbs-el to="/cadastro_unid_medida"  label="Cadastrar unidade de medida" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_unid_medida"  label="Consultar unidade de medida" />
 
               </q-breadcrumbs>
 
@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscar" flat dense round/>
                       </template>
                     </q-input>
 
@@ -91,6 +91,7 @@
             <div class="col-12">
 
               <q-table
+                :loading="loading"
                 :filter="filter"
                 :data="dados ? data : na"
                 :columns="columns"
@@ -132,6 +133,7 @@ export default {
   data () {
     return {
       dados: false,
+      loading: true,
       filtroPesquisa: [],
       filter: '',
       selected: [],
@@ -151,6 +153,7 @@ export default {
   },
   methods: {
     buscar () {
+      this.loading = true
       UndMedida.buscarTodos()
         .then((undMedida) => {
           if (undMedida.data.errors) {
@@ -206,7 +209,7 @@ export default {
           })
         })
         .finally(() => {
-          this.loadingUser = false
+          this.loading = false
         })
     }
   }

@@ -44,195 +44,140 @@
 
                           <div class="q-col-gutter-sm row">
 
-                            <!-- Campo do código do produto -->
-                            <q-input
-                              class="col-md-12"
-                              dense
-                              outlined
-                              v-model="produto.codProduto"
-                              label="Nome *"
-                            />
-
-                            <div class="col-12 text-left">
-                              <q-btn
-                                :icon="maisCampos ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                                label="Mais campos (Opcional)"
-                                size="sm"
-                                flat
-                                @click="maisCampos = !maisCampos"
+                            <!-- Campo do cnome do fornecedor -->
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.nome"
+                                label="Nome do fornecedor"
                               />
-
                             </div>
 
-                            <transition name="fade">
-
-                              <div class="col-12 row " v-if="maisCampos">
-
-                                <div class="col">
-
-                                  <div class="q-col-gutter-sm row col-12 ">
-
-                                    <!-- Campo Tipo pessoa, fisica ou juridica -->
-                                    <q-select
-                                      outlined
-                                      label="Tipo pessoa *"
-                                      class="col-md-3"
-                                      v-model="tipoPessoa"
-                                      dense
-                                      options-dense
-                                      :options="tipoPessoaOpt"
-                                      emit-value
-                                      map-options
-                                    />
-
-                                    <!-- Campo CNPJ / CPF-->
-                                    <q-input
-                                      class="col-md-4"
-                                      dense
-                                      outlined
-                                      v-model="produto.codProduto"
-                                      :mask="tipoPessoa == 'fisica' ? '###.###.###-##' : '##.###.###/####-##'"
-                                      :label="tipoPessoa == 'fisica' ? 'CPF' : 'CNPJ'"
-                                    />
-
-                                    <div class="col-md-5 row">
-
-                                      <q-select
-                                        outlined
-                                        label="Indicador de inscrição estadual"
-                                        class="col-md-8"
-                                        v-model="tipoIE"
-                                        dense
-                                        options-dense
-                                        :options="tipoIEOpt"
-                                        emit-value
-                                        map-options
-                                      />
-
-                                    </div>
-
-                                    <!-- Campo Razão social -->
-                                    <q-input
-                                      class="col-md-3"
-                                      dense
-                                      outlined
-                                      v-model="produto.codProduto"
-                                      label="Razão social"
-                                    />
-
-                                    <!-- Campo Inscrição estadual IE -->
-                                    <q-input
-                                      class="col-md-3"
-                                      dense
-                                      outlined
-                                      v-model="produto.codProduto"
-                                      label="Inscrição estadual"
-                                    />
-
-                                    <!-- Campo Inscrição estadual IE -->
-                                    <q-input
-                                      class="col-md-3"
-                                      dense
-                                      outlined
-                                      v-model="produto.codProduto"
-                                      label="Inscrição municipal"
-                                    />
-
-                                    <div class="row col-md-12">
-                                      <!-- Campo Identificador estrangeiro estadual IE -->
-                                      <q-input
-                                        class="col-md-3"
-                                        dense
-                                        outlined
-                                        v-model="produto.codProduto"
-                                        label="Identificador estrangeiro"
-                                      />
-
-                                    </div>
-
-                                  </div>
-                                </div>
-                              </div>
-
-                            </transition>
+                            <div class="col-md-3">
+                              <q-checkbox
+                                class="float-right"
+                                left-label
+                                v-model="fornecedor.ativo"
+                                label="Status de categoria"/>
+                            </div>
 
                           </div>
 
                         </fieldset>
 
                         <fieldset class="col-12 no-border">
-                          <legend>Endereço (opcional)</legend>
+                          <legend>Endereço</legend>
 
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo CEP -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="fornecedor.cep"
-                              label="CEP"
-                            />
+                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                mask="#####-###"
+                                outlined
+                                v-model="fornecedor.endereco.cep"
+                                label="CEP"
+                                v-on:keyup.enter="buscarCEP"
+                              />
+                            </div>
 
                             <!-- Campo Logradouro -->
-                            <q-input
-                              class="col-md-8"
-                              dense
-                              outlined
-                              v-model="fornecedor.logradouro"
-                              label="Logradouro"
-                            />
+                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                              <q-input
+                                v-on:keyup.tab="buscarCEP"
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.endereco.logradouro"
+                                label="Logradouro"
+                              />
+                            </div>
 
                             <!-- Campo Numero -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="fornecedor.numero"
-                              label="Numero"
-                            />
+                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.endereco.numero"
+                                label="Numero"
+                              />
+                            </div>
 
                             <!-- Campo Bairro -->
-                            <q-input
-                              class="col-md-5"
-                              dense
-                              outlined
-                              v-model="fornecedor.bairro"
-                              label="Bairro"
-                            />
+                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.endereco.bairro"
+                                label="Bairro"
+                              />
+                            </div>
 
                             <!-- Campo Cidade -->
-                            <q-input
-                              class="col-md-5"
-                              dense
-                              outlined
-                              v-model="fornecedor.cidade"
-                              label="Cidade"
-                            />
+                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.endereco.cidade"
+                                label="Cidade"
+                              />
+                            </div>
 
                             <!-- Campo UF -->
-                            <q-input
-                              class="col-md-2"
-                              dense
-                              outlined
-                              v-model="fornecedor.uf"
-                              label="UF"
-                            />
+                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                              <q-select
+                                class="col-12"
+                                dense
+                                mask="AA"
+                                outlined
+                                v-model="fornecedor.endereco.uf"
+                                label="UF"
+                                :options="estados"
+                                emit-value
+                                map-options
+                              />
+                            </div>
+
+                            <!-- Campo UF -->
+                            <div :class="this.v_.endereco.complemento ? 'validar-error row col-md-12' : 'row col-md-12'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="fornecedor.endereco.complemento"
+                                label="Complemento"
+                              />
+                            </div>
 
                           </div>
 
                         </fieldset>
 
                         <fieldset class="col-12 no-border">
-                          <legend>Contato (opcional)</legend>
+                          <legend>Representante (opcional)</legend>
 
                           <div class="q-col-gutter-sm row">
 
                             <q-input
-                              class="col-md-12"
+                              class="col-md-4"
                               dense
                               outlined
-                              v-model="fornecedor.email"
+                              v-model="fornecedor.representante.nome"
+                              label="Nome do contato"
+                            />
+
+                            <q-input
+                              class="col-md-8"
+                              dense
+                              outlined
+                              v-model="fornecedor.representante.email"
                               label="E-mail"
                             />
 
@@ -240,8 +185,9 @@
                             <q-input
                               class="col-md-6"
                               dense
+                              mask="(##) ####-####"
                               outlined
-                              v-model="fornecedor.telefone"
+                              v-model="fornecedor.representante.telefone"
                               label="Telefone"
                             />
 
@@ -249,8 +195,9 @@
                             <q-input
                               class="col-md-6"
                               dense
+                              mask="(##) #####-####"
                               outlined
-                              v-model="fornecedor.celular"
+                              v-model="fornecedor.representante.celular"
                               label="Celular"
                             />
 
@@ -259,7 +206,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" @click="cadastrar" type="submit" color="primary" class="col-12"/>
                         </div>
 
                       </div>
@@ -283,59 +230,298 @@
 </template>
 
 <script>
+import Fornecedor from '../../service/fornecedor/fornecedor.js'
+import Cep from '../../service/cep/cep.js'
 
 export default {
   data () {
     return {
-      maisCampos: false,
-      tipoPessoa: 'juridica',
-      tipoIE: 'nContribuinte',
-      tipoIEOpt: [
-        {
-          label: 'Não contribuinte',
-          value: 'nContribuinte'
-        },
-        {
-          label: 'Contribuinte',
-          value: 'contribuinte'
-        },
-        {
-          label: 'Contribuinte isento',
-          value: 'contribuinteIsento'
+      errors: [],
+      v_: {
+        nome: false,
+        endereco: {
+          cep: false,
+          logradouro: false,
+          numero: false,
+          bairro: false,
+          cidade: false,
+          uf: false,
+          complemento: false
         }
-      ],
-      tipoPessoaOpt: [
-        {
-          label: 'Física',
-          value: 'fisica'
-        },
-        {
-          label: 'Jurídica',
-          value: 'juridica'
-        }
-      ],
-      fornecedor: {
-        cep: '',
-        logradouro: '',
-        numero: '',
-        bairro: '',
-        cidade: '',
-        uf: '',
-        email: '',
-        telefone: '',
-        celular: ''
       },
-      produto: {
-        codProduto: '',
-        descricao: '',
-        categoriaProduto: '',
-        unidMedida: '',
-        fornecedor: '',
-        valorVenda: 0,
-        valorCusto: 1,
-        disponivel: 0,
-        estoqueMin: 1,
-        estoqueMax: 1
+      fornecedor: {
+        nome: '',
+        ativo: true,
+        endereco: {
+          cep: '',
+          logradouro: '',
+          numero: '',
+          bairro: '',
+          cidade: '',
+          uf: '',
+          complemento: ''
+        },
+        representante: {
+          nome: '',
+          email: '',
+          telefone: '',
+          celular: ''
+        }
+      },
+      estados: [{
+        value: 'AC',
+        label: 'Acre'
+      },
+      {
+        value: 'AL',
+        label: 'Alagoas'
+      },
+      {
+        value: 'AM',
+        label: 'Amazonas'
+      },
+      {
+        value: 'AP',
+        label: 'Amapá'
+      },
+      {
+        value: 'BA',
+        label: 'Bahia'
+      },
+      {
+        value: 'CE',
+        label: 'Ceará'
+      },
+      {
+        value: 'DF',
+        label: 'Distrito Federal'
+      },
+      {
+        value: 'ES',
+        label: 'Espírito Santo'
+      },
+      {
+        value: 'GO',
+        label: 'Goiás'
+      },
+      {
+        value: 'MA',
+        label: 'Maranhão'
+      },
+      {
+        value: 'MG',
+        label: 'Minas Gerais'
+      },
+      {
+        value: 'MS',
+        label: 'Mato Grosso do Sul'
+      },
+      {
+        value: 'MT',
+        label: 'Mato Grosso'
+      },
+      {
+        value: 'PA',
+        label: 'Pará'
+      },
+      {
+        value: 'PB',
+        label: 'Paraíba'
+      },
+      {
+        value: 'PE',
+        label: 'Pernambuco'
+      },
+      {
+        value: 'PI',
+        label: 'Piauí'
+      },
+      {
+        value: 'PR',
+        label: 'Paraná'
+      },
+      {
+        value: 'RJ',
+        label: 'Rio de Janeiro'
+      },
+      {
+        value: 'RN',
+        label: 'Rio Grande do Norte'
+      },
+      {
+        value: 'RO',
+        label: 'Rondônia'
+      },
+      {
+        value: 'RR',
+        label: 'Roraima'
+      },
+      {
+        value: 'RS',
+        label: 'Rio Grande do Sul'
+      },
+      {
+        value: 'SC',
+        label: 'Santa Catarina'
+      },
+      {
+        value: 'SE',
+        label: 'Sergipe'
+      },
+      {
+        value: 'SP',
+        label: 'São Paulo'
+      },
+      {
+        value: 'TO',
+        label: 'Tocantins'
+      }]
+    }
+  },
+  methods: {
+    limparCampos () {
+      this.fornecedor.nome = ''
+      this.fornecedor.ativo = true
+      this.fornecedor.endereco.cep = ''
+      this.fornecedor.endereco.logradouro = ''
+      this.fornecedor.endereco.numero = ''
+      this.fornecedor.endereco.bairro = ''
+      this.fornecedor.endereco.cidade = ''
+      this.fornecedor.endereco.uf = ''
+      this.fornecedor.endereco.complemento = ''
+      this.fornecedor.representante.nome = ''
+      this.fornecedor.representante.email = ''
+      this.fornecedor.representante.telefone = ''
+      this.fornecedor.representante.celular = ''
+    },
+    buscarCEP () {
+      Cep.cep(this.fornecedor.endereco.cep)
+        .then(resposta => {
+          const cep = resposta.data
+          this.fornecedor.endereco.logradouro = cep.logradouro
+          this.fornecedor.endereco.bairro = cep.bairro
+          this.fornecedor.endereco.cidade = cep.cidade
+          this.fornecedor.endereco.uf = cep.estado
+        })
+    },
+    isEmail (email) {
+      let emailPattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
+      return emailPattern.test(email)
+    },
+    validarCampos () {
+      this.errors = []
+      // Verificando o Nome
+      if (this.fornecedor.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome do fornecedor é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+
+      if (this.fornecedor.endereco.cep.length !== 9) {
+        this.errors.push({ msg: 'O cep informado está inválido', campo: 'cep', erro: true })
+        this.v_.endereco.cep = true
+      } else {
+        this.v_.endereco.cep = false
+      }
+
+      if (this.fornecedor.endereco.logradouro.length === 0) {
+        this.errors.push({ msg: 'O campo logradouro é obrigátorio', campo: 'logradouro', erro: true })
+        this.v_.endereco.logradouro = true
+      } else {
+        this.v_.endereco.logradouro = false
+      }
+
+      if (this.fornecedor.endereco.numero.length === 0) {
+        this.errors.push({ msg: 'O campo numero é obrigátorio', campo: 'numero', erro: true })
+        this.v_.endereco.numero = true
+      } else {
+        this.v_.endereco.numero = false
+      }
+
+      if (this.fornecedor.endereco.bairro.length === 0) {
+        this.errors.push({ msg: 'O campo bairro é obrigátorio', campo: 'bairro', erro: true })
+        this.v_.endereco.bairro = true
+      } else {
+        this.v_.endereco.bairro = false
+      }
+
+      if (this.fornecedor.endereco.cidade.length === 0) {
+        this.errors.push({ msg: 'O campo cidade é obrigátorio', campo: 'cidade', erro: true })
+        this.v_.endereco.cidade = true
+      } else {
+        this.v_.endereco.cidade = false
+      }
+
+      if (this.fornecedor.endereco.uf.length === 0) {
+        this.errors.push({ msg: 'O campo UF é obrigátorio', campo: 'uf', erro: true })
+        this.v_.endereco.uf = true
+      } else {
+        this.v_.endereco.uf = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
+    },
+    cadastrar () {
+      if (this.validarCampos()) {
+        Fornecedor.cadastrar(this.fornecedor)
+          .then((fornecedor) => {
+            if (fornecedor.data.errors) {
+              for (let i = 0; i < fornecedor.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: fornecedor.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (fornecedor.data.status === 201) {
+              this.$q.notify({
+                color: 'positive',
+                message: fornecedor.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.limparCampos()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
       }
     }
   },

@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscar" flat dense round/>
                       </template>
                     </q-input>
 
@@ -91,6 +91,7 @@
             <div class="col-12">
 
               <q-table
+                :loading="loading"
                 :filter="filter"
                 :data="dados ? data : na"
                 :columns="columns"
@@ -131,6 +132,7 @@ import Estoque from '../../service/estoque/estoque.js'
 export default {
   data () {
     return {
+      loading: false,
       dados: false,
       filtroPesquisa: [],
       filter: '',
@@ -151,64 +153,69 @@ export default {
     }
   },
   mounted () {
-    this.loadingUser = true
-    Estoque.buscarEstoque()
-      .then((estoque) => {
-        if (estoque.data.errors) {
-          for (let i = 0; i < estoque.data.errors.length; i++) {
-            this.$q.notify({
-              color: 'negative',
-              message: estoque.data.errors[i].message,
-              position: 'top-right',
-              icon: 'warning',
-              timeout: 2000,
-              actions: [{
-                color: 'white',
-                icon: 'close'
-              }]
+    this.buscar()
+  },
+  methods: {
+    buscar () {
+      this.loading = true
+      Estoque.buscarEstoque()
+        .then((estoque) => {
+          if (estoque.data.errors) {
+            for (let i = 0; i < estoque.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: estoque.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 2000,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (estoque.data.status === 200) {
+            this.dados = true
+            this.data = estoque.data.response.map((e) => {
+              return {
+                id: e.id_estoque,
+                nome_estoque: e.nome_estoque,
+                quantidade_total: e.quantidade_total,
+                ativo: e.ativo ? 'Sim' : 'Não'
+              }
             })
           }
-        }
-        if (estoque.data.status === 200) {
-          this.dados = true
-          this.data = estoque.data.response.map((e) => {
-            return {
-              id: e.id_estoque,
-              nome_estoque: e.nome_estoque,
-              quantidade_total: e.quantidade_total,
-              ativo: e.ativo ? 'Sim' : 'Não'
-            }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$q.notify({
+            color: 'negative',
+            message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
           })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        this.$q.notify({
-          color: 'negative',
-          message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
-          position: 'top-right',
-          icon: 'warning',
-          timeout: 2000,
-          actions: [{
-            color: 'white',
-            icon: 'close'
-          }]
+          this.$q.notify({
+            color: 'negative',
+            message: `${error}`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
         })
-        this.$q.notify({
-          color: 'negative',
-          message: `${error}`,
-          position: 'top-right',
-          icon: 'warning',
-          timeout: 2000,
-          actions: [{
-            color: 'white',
-            icon: 'close'
-          }]
+        .finally(() => {
+          this.loading = false
         })
-      })
-      .finally(() => {
-        this.loadingUser = false
-      })
+    }
   },
   computed: {
 
