@@ -44,31 +44,35 @@
                           <div class="q-col-gutter-sm row items-start">
 
                             <!-- Campo do código do produto -->
-                            <q-input
-                              class="col-md-5"
-                              dense
-                              outlined
-                              v-model="unidMedida.nomeUnidMedida"
-                              label="Nome unidade de medida"
-                            />
+                            <div :class="this.v_.nome ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="unidMedida.nome"
+                                label="Nome unidade de medida"
+                              />
+                            </div>
 
                             <!-- Campo do Descrição -->
-                            <q-input
-                              class="col-5"
-                              dense
-                              outlined
-                              autogrow
-                              counter
-                              maxlength="20"
-                              v-model="unidMedida.descricao"
-                              label="Descrição da unidade de medida"
-                            />
+                            <div :class="this.v_.descricao ? 'validar-error row col-md-5' : 'row col-md-5'">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                autogrow
+                                counter
+                                maxlength="20"
+                                v-model="unidMedida.descricao"
+                                label="Descrição da unidade de medida"
+                              />
+                            </div>
 
                             <div class="col-md-2">
                               <q-checkbox
                                 class="float-right"
                                 left-label
-                                v-model="unidMedida.status"
+                                v-model="unidMedida.ativo"
                                 label="Status"/>
                             </div>
 
@@ -77,7 +81,7 @@
                         </fieldset>
 
                         <div class="row col-md-6 ">
-                          <q-btn label="Cadastrar" type="submit" color="primary" class="col-12"/>
+                          <q-btn label="Cadastrar" type="submit" @click="Cadastrar" color="primary" class="col-12"/>
                         </div>
 
                       </div>
@@ -98,19 +102,102 @@
 </template>
 
 <script>
+import UndMedida from '../../service/unidade_medida/unidade_medida.js'
 
 export default {
   data () {
     return {
+      errors: [],
+      v_: {
+        nome: false,
+        descricao: false
+      },
       unidMedida: {
-        nomeUnidMedida: '',
+        nome: '',
         descricao: '',
-        status: true
+        ativo: true
       }
     }
   },
-  computed: {
+  methods: {
+    validar () {
+      this.errors = []
+      if (this.unidMedida.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
 
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
+    },
+    limparCampos () {
+      this.unidMedida.nome = ''
+      this.unidMedida.descricao = ''
+      this.unidMedida.ativo = true
+    },
+    Cadastrar () {
+      if (this.validar()) {
+        UndMedida.cadastrar(this.unidMedida)
+          .then((usuario) => {
+            if (usuario.data.errors) {
+              for (let i = 0; i < usuario.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: usuario.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (usuario.data.status === 201) {
+              this.$q.notify({
+                color: 'positive',
+                message: usuario.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.limparCampos()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
+      }
+    }
   }
 }
 </script>
