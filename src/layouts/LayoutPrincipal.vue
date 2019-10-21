@@ -156,8 +156,8 @@
           </q-item>
 
           <q-expansion-item
-            v-for="menus in menu"
-            :key="menus.id"
+            v-for="(menus, idx) in menu"
+            :key="idx"
             :icon="menus.icon"
             expand-separator
             :label="menus.label"
@@ -170,8 +170,8 @@
                 class="text-grey-1"
                 clickable
                 tag="a"
-                v-for="submenus in menus.submenu"
-                :key="submenus"
+                v-for="(submenus, idy) in menus.submenu"
+                :key="idy"
                 :to="submenus.link">
                 <q-item-section avatar />
                 <q-item-section>
@@ -254,7 +254,7 @@ export default {
       searchText: '',
       menu: {
         cadastros: {
-          id: '0',
+          id: 0,
           label: 'Cadastros Gerais',
           icon: 'img:statics/database.png',
           submenu: [
@@ -269,7 +269,7 @@ export default {
           ]
         },
         consulta: {
-          id: '1',
+          id: 1,
           label: 'Consultar',
           icon: 'img:statics/feature-search-white.png',
           submenu: [
@@ -284,7 +284,7 @@ export default {
           ]
         },
         relatorio: {
-          id: '2',
+          id: 2,
           label: 'Relatório',
           icon: 'img:statics/file-chart.png',
           submenu: [
@@ -292,7 +292,7 @@ export default {
           ]
         },
         configuracoes: {
-          id: '3',
+          id: 3,
           label: 'Configurações',
           icon: 'img:statics/settings.png',
           submenu: [

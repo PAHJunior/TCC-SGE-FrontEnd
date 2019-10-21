@@ -99,7 +99,7 @@
               <q-table
                 :loading="loadingUser"
                 :filter="filter"
-                :data="dados ? data : na"
+                :data="data"
                 :columns="columns"
                 :visible-columns="visibleColumns"
                 :separator="separator"
@@ -128,7 +128,8 @@
                 <template v-slot:body="props">
                   <q-tr :props="props" >
                     <q-td auto-width>
-                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
+                      <!-- <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/> -->
+                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected; editar(props.selected)"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
@@ -159,6 +160,11 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="modal">
+      <q-card>
+        {{ selected }}
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -171,6 +177,7 @@ export default {
   },
   data () {
     return {
+      modal: false,
       dadosProps: [],
       loadingUser: false,
       dados: false,
@@ -205,6 +212,11 @@ export default {
     this.buscarUsuarios()
   },
   methods: {
+    editar (isSelect) {
+      if (!isSelect) {
+        this.modal = true
+      }
+    },
     buscarUsuarios () {
       this.loadingUser = true
       Usuario.buscarUsuario()
@@ -277,9 +289,6 @@ export default {
         .finally(() => {
           this.loadingUser = false
         })
-    },
-    teste () {
-      this.$router.push('/cadastro_usuario')
     }
   }
 }

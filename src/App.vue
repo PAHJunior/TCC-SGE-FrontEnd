@@ -12,7 +12,7 @@ export default {
 
 <style>
   body{
-    background-color: #eaeff5
+    background-color: #eaeff5;
   }
   .validar-error .q-field--outlined .q-field__control:before {
     border: 1px solid #C10015;

@@ -76,7 +76,8 @@ module.exports = function (ctx) {
         'QTh',
         'QTr',
         'QTd',
-        'QBanner'
+        'QBanner',
+        'QDialog'
       ],
 
       directives: [
