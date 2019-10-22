@@ -129,7 +129,7 @@
                   <q-tr :props="props" >
                     <q-td auto-width>
                       <!-- <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/> -->
-                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected; editar(props.selected)"/>
+                      <q-btn dense icon="edit" flat round @click="editar(props)"/>
                       <q-btn dense icon="delete" color="red-8" flat round />
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
@@ -161,8 +161,318 @@
       </div>
     </div>
     <q-dialog v-model="modal">
-      <q-card>
-        {{ selected }}
+      <q-card class="col-12 ">
+        <q-card-section class=" q-col-gutter-sm text-center items-end">
+          <q-form>
+            <div class="row">
+              <div class="col">
+                <div class="q-gutter-y-md row justify-center">
+
+                  <fieldset class="col-12 no-border">
+
+                  <legend>Dados cadastrais</legend>
+
+                  <div class="q-col-gutter-sm row items-start">
+
+                    <div :class="this.v_.id ? 'validar-error row col-md-1' : 'row col-md-1' ">
+                      <q-input
+                        class=" col-md-12"
+                        dense
+                        outlined
+                        v-model="usuario.id"
+                        label="ID"
+                        disable
+                      />
+                    </div>
+
+                    <!-- nom completo -->
+                    <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9' ">
+                      <q-input
+                        ref="nome"
+                        maxlength="100"
+                        class="text-red col-12"
+                        dense
+                        outlined
+                        v-model="usuario.nome"
+                        label="Nome completo"
+                      />
+                    </div>
+
+                          <!-- Campo de ativo -->
+                    <div class="col-md-2">
+                      <q-checkbox
+                        class="float-right"
+                        left-label
+                        v-model="usuario.ativo"
+                        label="Status do usúario"/>
+                    </div>
+
+                    <!-- Campo do CPF -->
+                    <div :class="this.v_.cpf ? 'validar-error row col-md-3' : 'row col-md-3'">
+                      <q-input
+                        class="col-12"
+                        dense
+                        outlined
+                        mask="###.###.###-##"
+                        v-model="usuario.cpf"
+                        label="CPF"
+                      />
+                    </div>
+
+                          <!-- Campo do RG -->
+                    <div :class="this.v_.rg ? 'validar-error row col-md-3': 'row col-md-3'">
+                      <q-input
+                        ref="rg"
+                        class="col-12"
+                        mask="##.###.###-#"
+                        dense
+                        outlined
+                        v-model="usuario.rg"
+                        label="RG"
+                      />
+                    </div>
+
+                    <!-- Campo data de nascimento -->
+                    <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3' : 'row col-md-3'">
+                      <q-input
+                        class="col-12"
+                        dense
+                        outlined
+                        mask="##-##-####"
+                        v-model="usuario.dt_nascimento"
+                        label="Data de nascimento"
+                      >
+                        <template v-slot:prepend>
+                          <!-- <q-icon name="event" /> -->
+                          <q-btn round flat dense icon="event">
+                            <q-menu fit anchor="bottom left" self="top left">
+
+                              <q-date
+                                v-model="usuario.dt_nascimento"
+                                minimal
+                                mask="DD-MM-YYYY"
+                              />
+
+                            </q-menu>
+
+                          </q-btn>
+                        </template>
+                      </q-input>
+                    </div>
+
+                          <!-- Campo fk_usuario_hierarquia -->
+                    <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3': 'row col-md-3'">
+                      <q-select
+                        :options="opt_hierarquia"
+                        class="col-12"
+                        option-value="id"
+                        option-label="desc"
+                        dense
+                        outlined
+                        map-options
+                        emit-value
+                        v-model="usuario.fk_usuario_hierarquia"
+                        label="Hierarquia"
+                      />
+                    </div>
+
+                          <!-- Campo Login -->
+                    <div :class="this.v_.login ? 'validar-error row col-md-4' : 'row col-md-4'">
+                      <q-input
+                        class="col-12"
+                        dense
+                        outlined
+                        v-model="usuario.login"
+                        label="Login"
+                      />
+                    </div>
+
+                          <!-- Campo Senha -->
+                    <div :class="this.v_.senha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                      <q-input
+                        class="col-12"
+                        dense
+                        outlined
+                        :type="isPwd ? 'password' : 'text'"
+                        v-model="usuario.senha"
+                        label="Senha"
+                      >
+                        <template v-slot:append>
+                          <q-icon
+                            :name="isPwd ? 'visibility_off' : 'visibility'"
+                            class="cursor-pointer"
+                            @click="isPwd = !isPwd"
+                          />
+                        </template>
+                      </q-input>
+                    </div>
+
+                    <!-- Campo Confirmar Senha -->
+                    <div :class="this.v_.confirmarSenha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                      <q-input
+                        class="col-12"
+                        dense
+                        outlined
+                        :type="isConfirmPwd ? 'password' : 'text'"
+                        v-model="usuario.confirmarSenha"
+                        label="Confirmar senha"
+                      >
+                        <template v-slot:append>
+                          <q-icon
+                            :name="isConfirmPwd ? 'visibility_off' : 'visibility'"
+                            class="cursor-pointer"
+                            @click="isConfirmPwd = !isConfirmPwd"
+                          />
+                        </template>
+                      </q-input>
+                    </div>
+
+                  </div>
+                </fieldset>
+
+                    <!-- Dados para contato -->
+                <fieldset class="col-12 no-border">
+                  <legend>Dados para contato</legend>
+                    <div class="q-col-gutter-sm row">
+
+                        <!-- Campo do Telefone -->
+                      <div :class="this.v_.email ? 'validar-error row col-12' : 'row col-12'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.email"
+                          label="E-mail"
+                        />
+                      </div>
+
+                        <!-- Campo do Telefone -->
+                      <div :class="this.v_.telefone ? 'validar-error row col-md-6' : 'row col-md-6'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          mask="(##) ####-####"
+                          v-model="usuario.telefone"
+                          label="Telefone"
+                        />
+                      </div>
+
+                        <!-- Campo do Celular -->
+                      <div :class="this.v_.celular ? 'validar-error row col-md-6' : 'row col-md-6'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          mask="(##) #####-####"
+                          v-model="usuario.celular"
+                          label="Celular"
+                        />
+                      </div>
+
+                    </div>
+
+                  </fieldset>
+
+                  <fieldset class="col-12 no-border">
+                    <legend>Endereço</legend>
+
+                    <div class="q-col-gutter-sm row">
+
+                    <!-- Campo CEP -->
+                      <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          v-on:keyup.enter="buscarCEP"
+                          outlined
+                          mask="#####-###"
+                          v-model="usuario.endereco.cep"
+                          label="CEP"
+                        />
+                      </div>
+
+                      <!-- Campo Logradouro -->
+                      <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                        <q-input
+                          v-on:keyup.tab="buscarCEP"
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.logradouro"
+                          label="Logradouro"
+                        />
+                      </div>
+
+                      <!-- Campo Numero -->
+                      <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                        <q-input
+                          class="col-md-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.numero"
+                          label="Numero"
+                        />
+                      </div>
+
+                      <!-- Campo Bairro -->
+                      <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.bairro"
+                          label="Bairro"
+                        />
+                      </div>
+
+                      <!-- Campo Cidade -->
+                      <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.cidade"
+                          label="Cidade"
+                        />
+                      </div>
+
+                      <!-- Campo UF -->
+                      <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.uf"
+                          label="UF"
+                        />
+                      </div>
+
+                      <!-- Campo complemento -->
+                      <div :class="this.v_.endereco.complemento ? 'validar-error row col-12' : 'row col-12'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="usuario.endereco.complemento"
+                          label="Complemento"
+                        />
+                      </div>
+
+                    </div>
+
+                  </fieldset>
+
+                  <div class="row col-md-6 ">
+                    <q-btn label="Alterar" @click="cadastrarUsuario"  type="submit" color="primary" class="col-12"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </q-form>
+
+        </q-card-section>
       </q-card>
     </q-dialog>
   </q-page>
@@ -170,6 +480,7 @@
 
 <script>
 import Usuario from '../../service/usuario/usuario.js'
+import Hierarquia from '../../service/hierarquia/hierarquia.js'
 
 export default {
   prop: {
@@ -177,6 +488,55 @@ export default {
   },
   data () {
     return {
+      opt_hierarquia: [],
+      v_: {
+        id: false,
+        nome: false,
+        fk_usuario_hierarquia: false,
+        rg: false,
+        cpf: false,
+        dt_nascimento: false,
+        login: false,
+        senha: false,
+        confirmarSenha: false,
+        email: false,
+        telefone: false,
+        celular: false,
+        endereco: {
+          cep: false,
+          logradouro: false,
+          numero: false,
+          bairro: false,
+          cidade: false,
+          uf: false,
+          complemento: false
+        }
+      },
+      usuario: {
+        id: '',
+        nome: '',
+        ativo: true,
+        rg: '',
+        cpf: '',
+        dt_nascimento: '',
+        login: '',
+        senha: '',
+        confirmarSenha: '',
+        email: '',
+        telefone: '',
+        celular: '',
+        fk_usuario_hierarquia: 1,
+        fk_usuario_empresa: 1,
+        endereco: {
+          cep: '',
+          logradouro: '',
+          numero: '',
+          bairro: '',
+          cidade: '',
+          uf: '',
+          complemento: ''
+        }
+      },
       modal: false,
       dadosProps: [],
       loadingUser: false,
@@ -210,12 +570,25 @@ export default {
   },
   mounted () {
     this.buscarUsuarios()
+    Hierarquia.buscar()
+      .then((hierarquias) => {
+        this.opt_hierarquia = hierarquias.data.response.map((h) => {
+          return {
+            id: h.id_hierarquia,
+            desc: h.nome
+          }
+        })
+      })
   },
   methods: {
-    editar (isSelect) {
-      if (!isSelect) {
-        this.modal = true
-      }
+    editar (item) {
+      this.modal = !this.modal
+      this.selected = { ...item }
+      Usuario.buscarUmUsuario(item.row.id)
+        .then((user) => {
+          this.usuario = user.data.response[0]
+          this.usuario.id = user.data.response[0].id_usuario
+        })
     },
     buscarUsuarios () {
       this.loadingUser = true
