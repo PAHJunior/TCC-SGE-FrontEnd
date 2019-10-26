@@ -105,13 +105,13 @@
                 <template v-slot:body="props">
                   <q-tr :props="props" >
                     <q-td auto-width>
-                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
-                      <q-btn dense icon="delete" color="red-8" flat round />
+                      <q-btn dense icon="edit" flat round @click="openModalEdit(props)"/>
+                      <q-btn dense icon="delete" color="red-8" flat round/>
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome_estoque" :props="props">{{ props.row.nome_estoque }}</q-td>
                     <q-td key="quantidade_total" :props="props">{{ props.row.quantidade_total }}</q-td>
-                    <q-td key="ativo" :props="props">{{ props.row.ativo }}</q-td>
+                    <q-td key="ativo" :props="props">{{ props.row.ativo ? 'Sim' : 'Não' }}</q-td>
                   </q-tr>
                 </template>
 
@@ -123,6 +123,78 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="modalEdit">
+      <q-card class="col-12 ">
+        <q-card-section class=" q-col-gutter-sm text-center items-end">
+          <q-form>
+            <div class="row">
+              <div class="col">
+                <div class="q-gutter-y-md row justify-center col-12">
+                  <fieldset class="col-12 no-border">
+                    <legend>Dados do estoque</legend>
+
+                    <div class="q-col-gutter-sm row items-start">
+
+                    <div class="row col-1">
+                      <q-input
+                        class="col-md-12 col-xs-12 "
+                        dense
+                        outlined
+                        v-model="estoque.id"
+                        label="ID"
+                      />
+                    </div>
+
+                    <div :class="this.v_.nome_estoque ? 'validar-error row col-9' : 'row col-9'">
+                      <q-input
+                        class="col-md-12 col-xs-12 "
+                        dense
+                        outlined
+                        v-model="estoque.nome_estoque"
+                        label="Nome do estoque"
+                        counter
+                        maxlength="20"
+                      />
+                    </div>
+
+                    <div class="col-md-2">
+                      <q-checkbox class="float-right" left-label v-model="estoque.ativo" label="Status do estoque" />
+                    </div>
+
+                    <!-- Campo do quantidade_total -->
+                    <q-input
+                      class="col-md-6"
+                      dense
+                      outlined
+                      v-model="estoque.valor_estoque"
+                      label="Quantidade Total"
+                      disable
+                    />
+
+                    <!-- Campo data de nascimento -->
+                    <q-input
+                      class="col-md-6"
+                      dense
+                      outlined
+                      v-model="estoque.quantidade_total"
+                      label="Valor Estoque"
+                      disable
+                    />
+
+                    </div>
+                  </fieldset>
+
+                  <div class="row col-md-6 ">
+                    <q-btn label="Cadastrar" @click="cadastrarEstoque" type="submit" color="primary" class="col-12"/>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -132,6 +204,22 @@ import Estoque from '../../service/estoque/estoque.js'
 export default {
   data () {
     return {
+      errors: [],
+      v_: {
+        nome_estoque: false,
+        valor_estoque: false,
+        quantidade_total: false,
+        ativo: false
+      },
+      estoque: {
+        id: '',
+        nome_estoque: '',
+        valor_estoque: '0',
+        quantidade_total: '0',
+        fk_estoque_empresa: 1,
+        ativo: true
+      },
+      modalEdit: false,
       loading: false,
       dados: false,
       filtroPesquisa: [],
@@ -139,11 +227,7 @@ export default {
       selected: [],
       visibleColumns: ['id', 'nome_estoque', 'quantidade_total', 'ativo'],
       separator: 'horizontal',
-      data: [
-        { id: '1', nome_estoque: 'Paulo Arhur', quantidade_total: '460.224.398-33', ativo: true },
-        { id: '2', nome_estoque: 'Polyana Feitosa', quantidade_total: '779.636.080-09', ativo: true },
-        { id: '3', nome_estoque: 'Natalia Pires', quantidade_total: '919.310.680-70', ativo: true }
-      ],
+      data: [],
       columns: [
         { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
         { name: 'nome_estoque', label: 'Nome estoque', field: 'nome_estoque', align: 'left', sortable: true },
@@ -182,7 +266,7 @@ export default {
                 id: e.id_estoque,
                 nome_estoque: e.nome_estoque,
                 quantidade_total: e.quantidade_total,
-                ativo: e.ativo ? 'Sim' : 'Não'
+                ativo: e.ativo
               }
             })
           }
@@ -215,6 +299,30 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    buscarUm (id) {
+      Estoque.buscarUmEstoque(id)
+        .then((estoque) => {
+          this.estoque = estoque.data.response[0]
+          this.estoque.id = estoque.data.response[0].id_estoque
+        })
+        .catch((e) => {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Erro buscar o usuario, porfavor tente novamente.',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 1500,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        })
+    },
+    openModalEdit (props) {
+      this.modalEdit = !this.modalEdit
+      this.buscarUm(props.row.id)
     }
   },
   computed: {

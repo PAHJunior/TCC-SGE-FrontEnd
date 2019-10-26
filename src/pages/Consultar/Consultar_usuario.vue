@@ -84,12 +84,6 @@
 
                     </q-select>
                   </div>
-                  <q-btn
-                    flat round dense
-                    :icon="dadosProps.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                    @click="dadosProps.toggleFullscreen"
-                    class="q-ml-md"
-                  />
                 </div>
               </q-card-section>
             </q-card>
@@ -107,30 +101,13 @@
                 :selected.sync="selected"
                 row-key="id">
 
-                <template v-slot:top="props">
-
-                  <div v-show="false">
-                    {{ dadosProps = props }}
-                  </div>
-
-                  <q-space />
-                  <div v-show="props.inFullscreen">
-                    <q-btn
-                      flat round dense
-                      :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                      @click="props.toggleFullscreen"
-                    />
-                  </div>
-
-                </template>
-
                 <!-- Corpo da tabela -->
                 <template v-slot:body="props">
                   <q-tr :props="props" >
                     <q-td auto-width>
                       <!-- <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/> -->
-                      <q-btn dense icon="edit" flat round @click="editar(props)"/>
-                      <q-btn dense icon="delete" color="red-8" flat round />
+                      <q-btn dense icon="edit" flat round @click="openModalEdit(props)"/>
+                      <!-- <q-btn dense :icon="props.row.ativo === 'Ativo' ? 'toggle_off': 'toggle_on'" :color="props.row.ativo === 'Ativo'? 'green': 'red-8'" flat round @click="deletar(props)" /> -->
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
@@ -148,7 +125,8 @@
                     <q-td key="cidade" :props="props">{{ props.row.cidade }}</q-td>
                     <q-td key="uf" :props="props">{{ props.row.uf }}</q-td>
                     <q-td key="complemento" :props="props">{{ props.row.complemento }}</q-td>
-                    <q-td key="status" :props="props">{{ props.row.ativo }}</q-td>
+                    <q-td key="login" :props="props">{{ props.row.login }}</q-td>
+                    <q-td key="ativo" :props="props">{{ props.row.ativo ? 'Ativo' : 'Inativo' }}</q-td>
                   </q-tr>
                 </template>
 
@@ -160,7 +138,7 @@
         </div>
       </div>
     </div>
-    <q-dialog v-model="modal">
+    <q-dialog v-model="modalEdit">
       <q-card class="col-12 ">
         <q-card-section class=" q-col-gutter-sm text-center items-end">
           <q-form>
@@ -174,9 +152,9 @@
 
                   <div class="q-col-gutter-sm row items-start">
 
-                    <div :class="this.v_.id ? 'validar-error row col-md-1' : 'row col-md-1' ">
+                    <div :class="this.v_.id ? 'validar-error row col-md-1 col-sm-2 col-xs-12' : 'row col-md-1 col-sm-2 col-xs-12' ">
                       <q-input
-                        class=" col-md-12"
+                        class=" col-12"
                         dense
                         outlined
                         v-model="usuario.id"
@@ -186,7 +164,7 @@
                     </div>
 
                     <!-- nom completo -->
-                    <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9' ">
+                    <div :class="this.v_.nome ? 'validar-error row col-md-9 col-sm-6 col-xs-12' : 'row col-md-9 col-sm-6 col-xs-12' ">
                       <q-input
                         ref="nome"
                         maxlength="100"
@@ -199,7 +177,7 @@
                     </div>
 
                           <!-- Campo de ativo -->
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-sm-4 col-xs-12">
                       <q-checkbox
                         class="float-right"
                         left-label
@@ -208,7 +186,7 @@
                     </div>
 
                     <!-- Campo do CPF -->
-                    <div :class="this.v_.cpf ? 'validar-error row col-md-3' : 'row col-md-3'">
+                    <div :class="this.v_.cpf ? 'validar-error row col-md-3 col-sm-3 col-xs-12' : 'row col-md-3 col-sm-3 col-xs-12'">
                       <q-input
                         class="col-12"
                         dense
@@ -220,7 +198,7 @@
                     </div>
 
                           <!-- Campo do RG -->
-                    <div :class="this.v_.rg ? 'validar-error row col-md-3': 'row col-md-3'">
+                    <div :class="this.v_.rg ? 'validar-error row col-md-3 col-sm-3 col-xs-12': 'row col-md-3 col-sm-3 col-xs-12'">
                       <q-input
                         ref="rg"
                         class="col-12"
@@ -233,7 +211,7 @@
                     </div>
 
                     <!-- Campo data de nascimento -->
-                    <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3' : 'row col-md-3'">
+                    <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3 col-sm-3 col-xs-12' : 'row col-md-3 col-sm-3 col-xs-12'">
                       <q-input
                         class="col-12"
                         dense
@@ -261,7 +239,7 @@
                     </div>
 
                           <!-- Campo fk_usuario_hierarquia -->
-                    <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3': 'row col-md-3'">
+                    <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3 col-sm-3 col-xs-12': 'row col-md-3 col-sm-3 col-xs-12'">
                       <q-select
                         :options="opt_hierarquia"
                         class="col-12"
@@ -277,7 +255,7 @@
                     </div>
 
                           <!-- Campo Login -->
-                    <div :class="this.v_.login ? 'validar-error row col-md-4' : 'row col-md-4'">
+                    <div :class="this.v_.login ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12'">
                       <q-input
                         class="col-12"
                         dense
@@ -285,46 +263,6 @@
                         v-model="usuario.login"
                         label="Login"
                       />
-                    </div>
-
-                          <!-- Campo Senha -->
-                    <div :class="this.v_.senha ? 'validar-error row col-md-4' : 'row col-md-4'">
-                      <q-input
-                        class="col-12"
-                        dense
-                        outlined
-                        :type="isPwd ? 'password' : 'text'"
-                        v-model="usuario.senha"
-                        label="Senha"
-                      >
-                        <template v-slot:append>
-                          <q-icon
-                            :name="isPwd ? 'visibility_off' : 'visibility'"
-                            class="cursor-pointer"
-                            @click="isPwd = !isPwd"
-                          />
-                        </template>
-                      </q-input>
-                    </div>
-
-                    <!-- Campo Confirmar Senha -->
-                    <div :class="this.v_.confirmarSenha ? 'validar-error row col-md-4' : 'row col-md-4'">
-                      <q-input
-                        class="col-12"
-                        dense
-                        outlined
-                        :type="isConfirmPwd ? 'password' : 'text'"
-                        v-model="usuario.confirmarSenha"
-                        label="Confirmar senha"
-                      >
-                        <template v-slot:append>
-                          <q-icon
-                            :name="isConfirmPwd ? 'visibility_off' : 'visibility'"
-                            class="cursor-pointer"
-                            @click="isConfirmPwd = !isConfirmPwd"
-                          />
-                        </template>
-                      </q-input>
                     </div>
 
                   </div>
@@ -335,7 +273,7 @@
                   <legend>Dados para contato</legend>
                     <div class="q-col-gutter-sm row">
 
-                        <!-- Campo do Telefone -->
+                        <!-- Campo do Email -->
                       <div :class="this.v_.email ? 'validar-error row col-12' : 'row col-12'">
                         <q-input
                           class="col-12"
@@ -347,7 +285,7 @@
                       </div>
 
                         <!-- Campo do Telefone -->
-                      <div :class="this.v_.telefone ? 'validar-error row col-md-6' : 'row col-md-6'">
+                      <div :class="this.v_.telefone ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -359,7 +297,7 @@
                       </div>
 
                         <!-- Campo do Celular -->
-                      <div :class="this.v_.celular ? 'validar-error row col-md-6' : 'row col-md-6'">
+                      <div :class="this.v_.celular ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -380,7 +318,7 @@
                     <div class="q-col-gutter-sm row">
 
                     <!-- Campo CEP -->
-                      <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                      <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -393,7 +331,7 @@
                       </div>
 
                       <!-- Campo Logradouro -->
-                      <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                      <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8 col-sm-8 col-xs-12' : 'row col-md-8 col-sm-8 col-xs-12'">
                         <q-input
                           v-on:keyup.tab="buscarCEP"
                           class="col-12"
@@ -405,9 +343,9 @@
                       </div>
 
                       <!-- Campo Numero -->
-                      <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                      <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                         <q-input
-                          class="col-md-12"
+                          class="col-12"
                           dense
                           outlined
                           v-model="usuario.endereco.numero"
@@ -416,7 +354,7 @@
                       </div>
 
                       <!-- Campo Bairro -->
-                      <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                      <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5 col-sm-5 col-xs-12' : 'row col-md-5 col-sm-5 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -427,7 +365,7 @@
                       </div>
 
                       <!-- Campo Cidade -->
-                      <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                      <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5 col-sm-5 col-xs-12' : 'row col-md-5 col-sm-5 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -438,7 +376,7 @@
                       </div>
 
                       <!-- Campo UF -->
-                      <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                      <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                         <q-input
                           class="col-12"
                           dense
@@ -463,8 +401,8 @@
 
                   </fieldset>
 
-                  <div class="row col-md-6 ">
-                    <q-btn label="Alterar" @click="cadastrarUsuario"  type="submit" color="primary" class="col-12"/>
+                  <div class="row col-md-6 col-sm-6 col-xs-12 ">
+                    <q-btn label="Alterar" @click="alterarUsuario"  type="submit" color="primary" class="col-12"/>
                   </div>
                 </div>
               </div>
@@ -488,7 +426,9 @@ export default {
   },
   data () {
     return {
+      id: 0,
       opt_hierarquia: [],
+      errors: [],
       v_: {
         id: false,
         nome: false,
@@ -497,8 +437,6 @@ export default {
         cpf: false,
         dt_nascimento: false,
         login: false,
-        senha: false,
-        confirmarSenha: false,
         email: false,
         telefone: false,
         celular: false,
@@ -520,8 +458,6 @@ export default {
         cpf: '',
         dt_nascimento: '',
         login: '',
-        senha: '',
-        confirmarSenha: '',
         email: '',
         telefone: '',
         celular: '',
@@ -537,12 +473,11 @@ export default {
           complemento: ''
         }
       },
-      modal: false,
-      dadosProps: [],
+      modalEdit: false,
       loadingUser: false,
       dados: false,
       filtroPesquisa: [],
-      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo', 'status'],
+      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo', 'login', 'ativo'],
       filter: '',
       selected: [],
       separator: 'horizontal',
@@ -554,7 +489,8 @@ export default {
         { name: 'rg', label: 'RG', field: 'rg', align: 'left', sortable: true },
         { name: 'aniversario', label: 'Aniversario', field: 'aniversario', align: 'left', sortable: true },
         { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
-        { name: 'status', label: 'Status', field: 'status', align: 'left', sortable: true },
+        { name: 'login', label: 'Login', field: 'login', align: 'left', sortable: true },
+        { name: 'ativo', label: 'Status', field: 'ativo', align: 'left', sortable: true },
         { name: 'email', label: 'E-mail', field: 'email', align: 'left', sortable: true },
         { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left', sortable: true },
         { name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true },
@@ -581,13 +517,109 @@ export default {
       })
   },
   methods: {
-    editar (item) {
-      this.modal = !this.modal
-      this.selected = { ...item }
-      Usuario.buscarUmUsuario(item.row.id)
+    formartDate (date) {
+      let dt = date.split('-')
+      return `${dt[2]}-${dt[1]}-${dt[0]}`
+    },
+    isEmail (email) {
+      let emailPattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/
+      return emailPattern.test(email)
+    },
+    deletar (user) {
+      this.usuario.ativo = true
+      this.usuario = user.row
+      if (user.row.ativo === 'Ativo') {
+        this.$q.dialog({
+          title: 'Inativar',
+          message: `Você deseja mesmo inativar o usúario ${user.row.login}?`,
+          cancel: true,
+          persistent: false
+        }).onOk(() => {
+          this.usuario.ativo = false
+          this.usuario = user.row
+        }).onCancel(() => {
+        // console.log('>>>> Cancel')
+        }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+        })
+      } else {
+        this.$q.dialog({
+          title: 'Ativar',
+          message: `Você deseja mesmo ativar o usúario ${user.row.login}?`,
+          cancel: true,
+          persistent: false
+        }).onOk(() => {
+          this.usuario.ativo = true
+          this.usuario = user.row
+        }).onCancel(() => {
+        // console.log('>>>> Cancel')
+        }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+        })
+      }
+    },
+    alterarUsuario () {
+      Usuario.modificar(this.usuario.id, this.usuario)
+        .then((usuario) => {
+          if (usuario.data.errors) {
+            for (let i = 0; i < usuario.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: usuario.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 1500,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (usuario.data.status === 200) {
+            this.$q.notify({
+              color: 'positive',
+              message: usuario.data.response,
+              position: 'top-right',
+              icon: 'thumb_up',
+              timeout: 1500,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+            this.buscarUsuarios()
+          }
+        })
+        .catch(() => {
+          this.$q.notify({
+            color: 'positive',
+            message: 'Ocorreu um erro inesperado, entre em contato com o suporte',
+            position: 'top-right',
+            icon: 'thumb_up'
+          })
+        })
+    },
+    openModalEdit (usuario) {
+      this.modalEdit = !this.modalEdit
+      Usuario.buscarUmUsuario(usuario.row.id)
         .then((user) => {
           this.usuario = user.data.response[0]
+          this.usuario.dt_nascimento = this.formartDate(user.data.response[0].dt_nascimento)
           this.usuario.id = user.data.response[0].id_usuario
+        })
+        .catch((e) => {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Erro buscar o usuario, porfavor tente novamente.',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 1500,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
         })
     },
     buscarUsuarios () {
@@ -601,7 +633,7 @@ export default {
                 message: usuario.data.errors[i].message,
                 position: 'top-right',
                 icon: 'warning',
-                timeout: 2000,
+                timeout: 1500,
                 actions: [{
                   color: 'white',
                   icon: 'close'
@@ -622,8 +654,9 @@ export default {
                 email: u.email,
                 telefone: u.telefone,
                 celular: u.celular,
+                login: u.login,
+                ativo: u.ativo,
                 cep: u.endereco.cep,
-                ativo: u.ativo ? 'Ativo' : 'Inativo',
                 logradouro: u.endereco.logradouro,
                 complemento: u.endereco.complemento,
                 bairro: u.endereco.bairro,
@@ -641,7 +674,7 @@ export default {
             message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
             position: 'top-right',
             icon: 'warning',
-            timeout: 2000,
+            timeout: 1500,
             actions: [{
               color: 'white',
               icon: 'close'
@@ -652,7 +685,7 @@ export default {
             message: `${error}`,
             position: 'top-right',
             icon: 'warning',
-            timeout: 2000,
+            timeout: 1500,
             actions: [{
               color: 'white',
               icon: 'close'
@@ -662,6 +695,143 @@ export default {
         .finally(() => {
           this.loadingUser = false
         })
+    },
+    validarCampos () {
+      this.errors = []
+      // Verificando o Nome
+      if (this.usuario.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+
+      // Verificando o CPF
+      if (this.usuario.cpf.length !== 14) {
+        this.errors.push({ msg: 'O campo cpf é obrigátorio', campo: 'cpf', erro: true })
+        this.v_.cpf = true
+      } else {
+        this.v_.cpf = false
+      }
+
+      // Verificando o RG
+      if (this.usuario.rg.length !== 12) {
+        this.errors.push({ msg: 'O campo rg é obrigátorio', campo: 'rg', erro: true })
+        this.v_.rg = true
+      } else {
+        this.v_.rg = false
+      }
+
+      // Verificando a data de nascimento
+      if (this.usuario.dt_nascimento.length !== 10) {
+        this.errors.push({ msg: 'O campo data de nascimento é obrigátorio', campo: 'dt_nascimento', erro: true })
+        this.v_.dt_nascimento = true
+      } else {
+        this.v_.dt_nascimento = false
+      }
+
+      // Verificando o fk_usuario_hierarquia
+      if (this.usuario.fk_usuario_hierarquia === 0) {
+        this.errors.push({ msg: 'O campo hierarquia é obrigátorio', campo: 'hierarquia', erro: true })
+        this.v_.fk_usuario_hierarquia = true
+      } else {
+        this.v_.fk_usuario_hierarquia = false
+      }
+
+      // Verificando o login
+      if (this.usuario.login.length === 0) {
+        this.errors.push({ msg: 'O campo login é obrigátorio', campo: 'login', erro: true })
+        this.v_.login = true
+      } else {
+        this.v_.login = false
+      }
+
+      // Verificando o email
+      if (this.usuario.email.length === 0) {
+        this.errors.push({ msg: 'O campo email é obrigátorio', campo: 'email', erro: true })
+        this.v_.email = true
+      } else if (!this.isEmail(this.usuario.email)) {
+        this.errors.push({ msg: 'O email informado está inválido', campo: 'email', erro: true })
+        this.v_.email = true
+      } else {
+        this.v_.email = false
+      }
+
+      // Verificando o email
+      if (this.usuario.celular.length === 0) {
+        this.errors.push({ msg: 'O campo celular é obrigátorio', campo: 'celular', erro: true })
+        this.v_.celular = true
+      } else {
+        this.v_.celular = false
+      }
+
+      // Verificando CEP
+      if (this.usuario.endereco.cep.length !== 9) {
+        this.errors.push({ msg: 'O cep informado é inválido', campo: 'cep', erro: true })
+        this.v_.endereco.cep = true
+      } else {
+        this.v_.endereco.cep = false
+      }
+
+      // Verificando logradouro
+      if (this.usuario.endereco.logradouro.length === 0) {
+        this.errors.push({ msg: 'O campo logradouro é obrigátorio', campo: 'logradouro', erro: true })
+        this.v_.endereco.logradouro = true
+      } else {
+        this.v_.endereco.logradouro = false
+      }
+
+      // Verificando CEP
+      if (this.usuario.endereco.numero.length === 0) {
+        this.errors.push({ msg: 'O campo numero é obrigátorio', campo: 'numero', erro: true })
+        this.v_.endereco.numero = true
+      } else {
+        this.v_.endereco.numero = false
+      }
+
+      // Verificando bairro
+      if (this.usuario.endereco.bairro.length === 0) {
+        this.errors.push({ msg: 'O campo bairro é obrigátorio', campo: 'bairro', erro: true })
+        this.v_.endereco.bairro = true
+      } else {
+        this.v_.endereco.bairro = false
+      }
+
+      // Verificando cidade
+      if (this.usuario.endereco.cidade.length === 0) {
+        this.errors.push({ msg: 'O campo cidade é obrigátorio', campo: 'cidade', erro: true })
+        this.v_.endereco.cidade = true
+      } else {
+        this.v_.endereco.cidade = false
+      }
+
+      // Verificando uf
+      if (this.usuario.endereco.uf.length === 0) {
+        this.errors.push({ msg: 'O campo uf é obrigátorio', campo: 'uf', erro: true })
+        this.v_.endereco.uf = true
+      } else {
+        this.v_.endereco.uf = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 1500,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

@@ -9,5 +9,8 @@ export default {
   },
   buscarEstoque: () => {
     return http.get(`/`)
+  },
+  modificar: (id, body) => {
+    return http.patch(`/${id}`, body)
   }
 }

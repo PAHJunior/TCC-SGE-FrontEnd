@@ -43,6 +43,17 @@
 
                           <div class="q-col-gutter-sm row items-start">
 
+                            <div class="row col-1">
+                              <q-input
+                                class="col-md-12 col-xs-12 "
+                                dense
+                                outlined
+                                v-model="estoque.id"
+                                label="ID"
+                                disable
+                              />
+                            </div>
+
                             <div :class="this.v_.nome_estoque ? 'validar-error row col-9' : 'row col-9'">
                               <q-input
                                 class="col-md-12 col-xs-12 "
@@ -55,7 +66,7 @@
                               />
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                               <q-checkbox class="float-right" left-label v-model="estoque.ativo" label="Status do estoque" />
                             </div>
 
@@ -118,6 +129,7 @@ export default {
         ativo: false
       },
       estoque: {
+        id: '',
         nome_estoque: '',
         valor_estoque: '0',
         quantidade_total: '0',

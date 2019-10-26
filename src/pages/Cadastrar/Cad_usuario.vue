@@ -24,27 +24,6 @@
             </q-card>
           </div>
 
-          <!-- <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
-            <q-card v-for="error in this.errors" :key="error" class="col-12 transparent no-shadow">
-              <q-banner dense inline-actions class="text-white bg-negative">
-                {{ error.msg }}
-              </q-banner>
-            </q-card>
-          </div> -->
-
-          <!-- <div transition="expand" class="col-12 row q-gutter-y-xs" v-if="this.errors.length > 0">
-            <q-card class="col-12 transparent no-shadow">
-              <q-banner dense inline-actions class="text-white bg-negative">
-                <span class="text-h5"> Encontramos
-                  <span class="text-weight-bold"> {{ this.errors.length }} erros</span>
-                </span>
-                <ul v-for="error in this.errors" :key="error">
-                  <li>{{ error.msg }}</li>
-                </ul>
-              </q-banner>
-            </q-card>
-          </div> -->
-
           <!-- Formulario usuario -->
           <div class="col-md-12 col-sm-12 col-xs-12 row">
 
@@ -62,9 +41,9 @@
 
                           <div class="q-col-gutter-sm row items-start">
 
-                            <div :class="this.v_.id ? 'validar-error row col-md-1' : 'row col-md-1' ">
+                            <div :class="this.v_.id ? 'validar-error row col-md-1 col-sm-2 col-xs-12' : 'row col-md-1 col-sm-2 col-xs-12' ">
                               <q-input
-                                class=" col-md-12"
+                                class=" col-12"
                                 dense
                                 outlined
                                 v-model="usuario.id"
@@ -74,7 +53,7 @@
                             </div>
 
                             <!-- nom completo -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9' ">
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9 col-sm-6 col-xs-12' : 'row col-md-9 col-sm-6 col-xs-12' ">
                               <q-input
                                 ref="nome"
                                 maxlength="100"
@@ -87,7 +66,7 @@
                             </div>
 
                             <!-- Campo de ativo -->
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-4 col-xs-12">
                               <q-checkbox
                                 class="float-right"
                                 left-label
@@ -96,7 +75,7 @@
                             </div>
 
                             <!-- Campo do CPF -->
-                            <div :class="this.v_.cpf ? 'validar-error row col-md-3' : 'row col-md-3'">
+                            <div :class="this.v_.cpf ? 'validar-error row col-md-3 col-sm-3 col-xs-12' : 'row col-md-3 col-sm-3 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -108,7 +87,7 @@
                             </div>
 
                             <!-- Campo do RG -->
-                            <div :class="this.v_.rg ? 'validar-error row col-md-3': 'row col-md-3'">
+                            <div :class="this.v_.rg ? 'validar-error row col-md-3 col-sm-3 col-xs-12': 'row col-md-3 col-sm-3 col-xs-12'">
                               <q-input
                                 ref="rg"
                                 class="col-12"
@@ -121,7 +100,7 @@
                             </div>
 
                             <!-- Campo data de nascimento -->
-                            <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3' : 'row col-md-3'">
+                            <div :class="this.v_.dt_nascimento ? 'validar-error row col-md-3 col-sm-3 col-xs-12' : 'row col-md-3 col-sm-3 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -149,7 +128,7 @@
                             </div>
 
                             <!-- Campo fk_usuario_hierarquia -->
-                            <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3': 'row col-md-3'">
+                            <div :class="this.v_.fk_usuario_hierarquia ? 'validar-error row col-md-3 col-sm-3 col-xs-12': 'row col-md-3 col-sm-3 col-xs-12'">
                               <q-select
                                 :options="opt_hierarquia"
                                 class="col-12"
@@ -165,7 +144,7 @@
                             </div>
 
                             <!-- Campo Login -->
-                            <div :class="this.v_.login ? 'validar-error row col-md-4' : 'row col-md-4'">
+                            <div :class="this.v_.login ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -176,7 +155,7 @@
                             </div>
 
                             <!-- Campo Senha -->
-                            <div :class="this.v_.senha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                            <div :class="this.v_.senha ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -196,7 +175,7 @@
                             </div>
 
                             <!-- Campo Confirmar Senha -->
-                            <div :class="this.v_.confirmarSenha ? 'validar-error row col-md-4' : 'row col-md-4'">
+                            <div :class="this.v_.confirmarSenha ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -223,7 +202,7 @@
                           <legend>Dados para contato</legend>
                           <div class="q-col-gutter-sm row">
 
-                            <!-- Campo do Telefone -->
+                            <!-- Campo do Email -->
                             <div :class="this.v_.email ? 'validar-error row col-12' : 'row col-12'">
                               <q-input
                                 class="col-12"
@@ -235,7 +214,7 @@
                             </div>
 
                             <!-- Campo do Telefone -->
-                            <div :class="this.v_.telefone ? 'validar-error row col-md-6' : 'row col-md-6'">
+                            <div :class="this.v_.telefone ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -247,7 +226,7 @@
                             </div>
 
                             <!-- Campo do Celular -->
-                            <div :class="this.v_.celular ? 'validar-error row col-md-6' : 'row col-md-6'">
+                            <div :class="this.v_.celular ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -268,7 +247,7 @@
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo CEP -->
-                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -281,7 +260,7 @@
                             </div>
 
                             <!-- Campo Logradouro -->
-                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8 col-sm-8 col-xs-12' : 'row col-md-8 col-sm-8 col-xs-12'">
                               <q-input
                                 v-on:keyup.tab="buscarCEP"
                                 class="col-12"
@@ -293,9 +272,9 @@
                             </div>
 
                             <!-- Campo Numero -->
-                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                               <q-input
-                                class="col-md-12"
+                                class="col-12"
                                 dense
                                 outlined
                                 v-model="usuario.endereco.numero"
@@ -304,7 +283,7 @@
                             </div>
 
                             <!-- Campo Bairro -->
-                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5 col-sm-5 col-xs-12' : 'row col-md-5 col-sm-5 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -315,7 +294,7 @@
                             </div>
 
                             <!-- Campo Cidade -->
-                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5 col-sm-5 col-xs-12' : 'row col-md-5 col-sm-5 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -326,7 +305,7 @@
                             </div>
 
                             <!-- Campo UF -->
-                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2 col-sm-2 col-xs-12' : 'row col-md-2 col-sm-2 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -351,7 +330,7 @@
 
                         </fieldset>
 
-                        <div class="row col-md-6 ">
+                        <div class="row col-md-6 col-sm-6 col-xs-12">
                           <q-btn label="Cadastrar" @click="cadastrarUsuario"  type="submit" color="primary" class="col-12"/>
                         </div>
                       </div>
@@ -639,6 +618,19 @@ export default {
           this.usuario.endereco.bairro = cep.bairro
           this.usuario.endereco.cidade = cep.cidade
           this.usuario.endereco.uf = cep.estado
+        })
+        .catch(() => {
+          this.$q.notify({
+            color: 'negative',
+            message: 'Erro ao buscar o CEP informado.',
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
         })
     },
     cadastrarUsuario () {

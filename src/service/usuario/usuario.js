@@ -12,5 +12,8 @@ export default {
   },
   buscarUsuario: () => {
     return http.get(`/`)
+  },
+  modificar: (id, body) => {
+    return http.patch(`/${id}`, body)
   }
 }
