@@ -262,7 +262,8 @@ export default {
             { label: 'Cadastrar Estoque', link: '/cadastro_estoque' },
             { label: 'Cadastro de Produto', link: 'cadastro_produtos' },
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
-            { label: 'Cadastro de Categorias', link: '/cadastro_categoria' },
+            { label: 'Cadastro de Categorias', link: '/cadastro_categoria_produto' },
+            { label: 'Cadastro de Grupos', link: '/cadastro_grupo_produto' },
             { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
             { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' },
             { label: 'Cadastro de Movimentação', link: '/cadastro_movimentacao' }
@@ -278,6 +279,7 @@ export default {
             { label: 'Consultar Produto', link: '/consultar_produtos' },
             { label: 'Consultar Fornecedor', link: '/consultar_fornecedor' },
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
+            { label: 'Consultar Grupos', link: '/consultar_grupo' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
             { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
             { label: 'Consultar Movimentações', link: 'consultar_movimentacao' }
