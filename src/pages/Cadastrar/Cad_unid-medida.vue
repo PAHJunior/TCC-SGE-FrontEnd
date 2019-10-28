@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el to="/cadastro_unidade-medida"  label="Cadastro de unidade de medida" />
 
               </q-breadcrumbs>

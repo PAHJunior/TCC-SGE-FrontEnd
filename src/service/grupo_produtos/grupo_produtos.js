@@ -9,5 +9,8 @@ export default {
   },
   buscar: () => {
     return http.get(`/`)
+  },
+  buscarByCategoria: (idCategoria) => {
+    return http.get(`/${idCategoria}/categoria`)
   }
 }

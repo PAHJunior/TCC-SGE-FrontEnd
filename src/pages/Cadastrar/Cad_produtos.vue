@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_produtos"  label="Cadastro de produtos" />
 
               </q-breadcrumbs>
@@ -29,10 +29,7 @@
             <q-card class="col-12 ">
               <q-card-section class=" q-col-gutter-sm text-center items-end">
 
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                >
+                <q-form>
                   <div class="row">
                     <div class="col">
                       <div class="q-gutter-y-md row justify-center col-12">
@@ -43,111 +40,246 @@
 
                           <div class="q-col-gutter-sm row">
 
-                            <!-- Campo do código do produto -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.codProduto"
-                              label="código do produto"
-                            />
-
-                            <!-- Campo do Descrição -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="produto.descricao"
-                              label="Descrição"
-                            />
-
-                            <div class="col-md-3">
-                              <q-checkbox class="float-right" left-label v-model="produto.status" label="Status do produtos" />
-                            </div>
-
-                            <!-- Campo Categoria do produto -->
-                            <q-select
-                              class="col-md-3"
-                              label="Categoria do produto"
-                              outlined
-                              v-model="produto.categoriaProduto"
-                              dense
-                              options-dense
-                              :options="options"
-                            />
-
-                            <!-- Campo Unidade de medida -->
-                            <q-select
-                              outlined
-                              v-model="produto.unidMedida"
-                              dense
-                              :options="unidMeidaOpt"
-                              class="col-md-3"
-                              label="Unidade de medida"
-                            >
-                              <template v-slot:option="scope">
-                                <q-item
-                                  v-bind="scope.itemProps"
-                                  v-on="scope.itemEvents"
-                                >
-                                  <q-item-section>
-                                    <q-item-label v-html="scope.opt.label" />
-                                    <q-item-label caption>{{ scope.opt.description }}</q-item-label>
-                                  </q-item-section>
-                                </q-item>
-                              </template>
-                            </q-select>
-
-                            <!-- Campo Fornecedor -->
-                            <q-select
-                              class="col-md-3"
-                              label="Estoque"
-                              outlined
-                              v-model="produto.fornecedor"
-                              dense
-                              options-dense
-                              :options="options"
-                            />
-
-                            <!-- Campo Fornecedor -->
-                            <q-select
-                              class="col-md-3"
-                              label="Fornecedor"
-                              outlined
-                              v-model="produto.fornecedor"
-                              dense
-                              options-dense
-                              :options="options"
-                            />
-
-                            <div class="col-md-12 row">
-                              <!-- Campo Valor de venda -->
+                            <!-- Campo do ID -->
+                            <div :class="this.v_.id ? 'validar-error row col-md-1 col-sm-2 col-xs-12' : 'row col-md-1 col-sm-2 col-xs-12' ">
                               <q-input
-                                class="col-md-3"
+                                class="col-12"
                                 dense
-                                prefix="R$"
+                                disable
                                 outlined
-                                label="Valor do produto"
-                                v-model="produto.valorVenda"
+                                v-model="produto.id"
+                                label="ID"
                               />
                             </div>
 
+                            <!-- Campo do código do produto -->
+                            <div :class="this.v_.codigo_produto ? 'validar-error row col-md-2 col-sm-10 col-xs-12' : 'row col-md-2 col-sm-10 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="produto.codigo_produto"
+                                label="Código do produto"
+                              />
+                            </div>
+
+                            <!-- Campo do Nome -->
+                            <div :class="this.v_.nome_produto ? 'validar-error row col-md-6 col-sm-9 col-xs-12' : 'row col-md-6 col-sm-9 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="produto.nome_produto"
+                                label="Nome do produto"
+                              />
+                            </div>
+
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+                              <q-checkbox class="float-right" left-label v-model="produto.ativo" label="Status do produto" />
+                            </div>
+
+                            <div :class="this.v_.validade ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="##-##-####"
+                                v-model="produto.validade"
+                                label="Data de validade"
+                              >
+                                <template v-slot:prepend>
+                                <!-- <q-icon name="event" /> -->
+                                  <q-btn round flat dense icon="event">
+                                    <q-menu fit anchor="bottom left" self="top left">
+
+                                      <q-date
+                                        v-model="produto.validade"
+                                        minimal
+                                        mask="DD-MM-YYYY"
+                                      />
+
+                                    </q-menu>
+
+                                  </q-btn>
+                                </template>
+                              </q-input>
+                            </div>
+
+                            <div :class="this.v_.data_fabricacao ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                mask="##-##-####"
+                                v-model="produto.data_fabricacao"
+                                label="Data de fabricação"
+                              >
+                                <template v-slot:prepend>
+                                <!-- <q-icon name="event" /> -->
+                                  <q-btn round flat dense icon="event">
+                                    <q-menu fit anchor="bottom left" self="top left">
+
+                                      <q-date
+                                        v-model="produto.data_fabricacao"
+                                        minimal
+                                        mask="DD-MM-YYYY"
+                                      />
+
+                                    </q-menu>
+
+                                  </q-btn>
+                                </template>
+                              </q-input>
+                            </div>
+
                             <!-- Campo Estoque mínimo -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.estoqueMin"
-                              label="Estoque mínimo"
-                            />
-                            <!-- Campo Estoque mínimo -->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.estoqueMax"
-                              label="Estoque máximo"
-                            />
+                            <div :class="this.v_.quantidade_min ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                v-model="produto.quantidade_min"
+                                label="Estoque mínimo"
+                                maxlength="10"
+                              />
+                            </div>
+
+                            <!-- Campo Estoque maximo -->
+                            <div :class="this.v_.quantidade_max ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                maxlength="10"
+                                v-model="produto.quantidade_max"
+                                label="Estoque máximo"
+                              />
+                            </div>
+
+                            <!-- Campo Categoria do produto -->
+                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Categoria do produto"
+                                outlined
+                                v-model="produto.fk_produto_categoria"
+                                dense
+                                options-dense
+                                :options="categoriaOpt"
+                                map-options
+                                emit-value
+                                option-value="id"
+                                option-label="desc"
+                              />
+                            </div>
+
+                            <!-- Campo grupo do produto -->
+                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Grupo do produto"
+                                outlined
+                                v-model="produto.fk_produto_grupo"
+                                dense
+                                options-dense
+                                :options="grupoOpt"
+                                map-options
+                                emit-value
+                                option-value="id"
+                                option-label="desc"
+                              />
+                            </div>
+
+                            <!-- Campo Unidade de medida -->
+                            <div :class="this.v_.fk_produto_unid_medida ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
+                              <q-select
+                                outlined
+                                v-model="produto.fk_produto_unid_medida"
+                                dense
+                                :options="unidMeidaOpt"
+                                map-options
+                                emit-value
+                                option-value="value"
+                                option-label="label"
+                                class="col-12"
+                                label="Unidade de medida"
+                              >
+                                <template v-slot:option="scope">
+                                  <q-item
+                                    v-bind="scope.itemProps"
+                                    v-on="scope.itemEvents"
+                                  >
+                                    <q-item-section>
+                                      <q-item-label v-html="scope.opt.label" />
+                                      <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
+                            </div>
+
+                            <!-- Campo Estoque -->
+                            <div :class="this.v_.fk_produto_estoque ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Estoque"
+                                outlined
+                                v-model="produto.fk_produto_estoque"
+                                dense
+                                options-dense
+                                :options="estoqueOpt"
+                                option-value="id"
+                                option-label="desc"
+                                map-options
+                                emit-value
+                              />
+                            </div>
+
+                            <!-- Campo Fornecedor -->
+                            <div :class="this.v_.fk_produto_fornecedor ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Fornecedor"
+                                outlined
+                                v-model="produto.fk_produto_fornecedor"
+                                dense
+                                options-dense
+                                :options="fornecedorOpt"
+                                option-value="id"
+                                option-label="desc"
+                                map-options
+                                emit-value
+                              />
+                            </div>
+
+                            <!-- Campo preço unitario -->
+                            <div :class="this.v_.preco_unitario ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                label="Valor unitário do produto"
+                                reverse-fill-mask
+                                input-class="text-right"
+                                fill-mask="0"
+                                maxlength="17"
+                                mask="#.##"
+                                v-model="produto.preco_unitario"
+                              />
+                            </div>
+
+                            <!-- Campo Preço -->
+                            <div :class="this.v_.saldo ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
+                              <q-input
+                                disable
+                                class="col-12"
+                                dense
+                                outlined
+                                label="Saldo"
+                                v-model="produto.saldo"
+                              />
+                            </div>
+
                           </div>
 
                         </fieldset>
@@ -174,89 +306,263 @@
 </template>
 
 <script>
+import Categoria from '../../service/categoria_produtos/categoria_produtos.js'
+import Grupo from '../../service/grupo_produtos/grupo_produtos.js'
+import UndMedida from '../../service/unidade_medida/unidade_medida.js'
+import Estoque from '../../service/estoque/estoque.js'
+import Fornecedor from '../../service/fornecedor/fornecedor.js'
+import Produto from '../../service/produto/produto.js'
 
 export default {
+  mounted () {
+    Categoria.buscar()
+      .then((und) => {
+        this.categoriaOpt = und.data.response.map((cat) => {
+          return {
+            id: cat.id_categoria_produto,
+            desc: cat.nome
+          }
+        })
+      })
+    UndMedida.buscar()
+      .then((und) => {
+        this.unidMeidaOpt = und.data.response.map((und) => {
+          return {
+            value: und.id_unid_medida,
+            label: und.nome,
+            description: und.descricao
+          }
+        })
+      })
+    Estoque.buscarEstoque()
+      .then((estoque) => {
+        this.estoqueOpt = estoque.data.response.map((e) => {
+          return {
+            id: e.id_estoque,
+            desc: e.nome_estoque
+          }
+        })
+      })
+    Fornecedor.buscar()
+      .then((fornecedor) => {
+        this.fornecedorOpt = fornecedor.data.response.map((f) => {
+          return {
+            id: f.id_fornecedor,
+            desc: f.nome
+          }
+        })
+      })
+  },
   data () {
     return {
-      unidMeidaOpt: [
-        { label: 'Metro', value: 'm', description: 'metro - m' },
-        { label: 'Litro', value: 'l', description: 'Litro - l' },
-        { label: 'Quilograma', value: 'kg', description: 'Quilograma - kg' },
-        { label: 'Metro quadrado', value: 'm2', description: 'Metro quadrado - m²' },
-        { label: 'Metro cúbico', value: 'm3', description: 'Metro cúbico - m³' }
-      ],
+      errors: [],
+      categoriaOpt: [],
+      grupoOpt: [],
+      unidMeidaOpt: [],
+      estoqueOpt: [],
+      fornecedorOpt: [],
       produto: {
-        codProduto: '',
-        descricao: '',
-        categoriaProduto: '',
-        unidMedida: '',
-        fornecedor: '',
-        valorVenda: 0,
-        valorCusto: 1,
-        disponivel: 0,
-        estoqueMin: 1,
-        estoqueMax: 1,
-        status: true
+        id: '',
+        codigo_produto: '',
+        nome_produto: '',
+        preco_unitario: 0.00,
+        data_fabricacao: '',
+        validade: '',
+        saldo: 0,
+        quantidade_min: 1,
+        quantidade_max: 100,
+        ativo: true,
+        fk_produto_unid_medida: '',
+        fk_produto_categoria: '',
+        fk_produto_grupo: '',
+        fk_produto_fornecedor: '',
+        fk_produto_estoque: ''
+      },
+      v_: {
+        id: false,
+        codigo_produto: false,
+        nome_produto: false,
+        preco_unitario: false,
+        data_fabricacao: false,
+        validade: false,
+        saldo: false,
+        quantidade_min: false,
+        quantidade_max: false,
+        ativo: false,
+        fk_produto_unid_medida: false,
+        fk_produto_categoria: false,
+        fk_produto_grupo: false,
+        fk_produto_fornecedor: false,
+        fk_produto_estoque: false
       }
     }
   },
-  computed: {
-
+  watch: {
+    'produto.fk_produto_categoria': function (val) {
+      Grupo.buscarByCategoria(val)
+        .then((grupo) => {
+          if (grupo.data.status === 404) {
+            this.produto.fk_produto_grupo = ''
+            this.grupoOpt = []
+            this.$q.notify({
+              color: 'negative',
+              message: grupo.data.response,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          } else {
+            this.grupoOpt = grupo.data.response.map((cat) => {
+              return {
+                id: cat.id_grupo_produto,
+                desc: cat.nome
+              }
+            })
+          }
+        })
+    }
   },
   methods: {
     salvar () {
-      alert('Salvou')
+      if (this.validarCampos()) {
+        Produto.Cadastrar(this.produto)
+          .then((produto) => {
+            console.log(produto)
+            if (produto.data.errors) {
+              for (let i = 0; i < produto.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: produto.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (produto.data.status === 201) {
+              this.$q.notify({
+                color: 'positive',
+                message: produto.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.limparCampos()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
+      }
     },
-    LimparCampo () {
-      this.produto.nome = ''
-      this.produto.codProduto = ''
-      this.produto.descricao = ''
-      this.produto.status = ''
-      this.produto.categoriaProduto = ''
-      this.produto.unidMedida = ''
-      this.produto.estoqueMin = ''
-      this.produto.estoqueMax = ''
-      this.produto.valorVenda = ''
-      this.produto.valorCusto = ''
-      this.produto.fornecedor = ''
+    limparCampos () {
+      this.produto.id = ''
+      this.produto.codigo_produto = ''
+      this.produto.nome_produto = ''
+      this.produto.preco_unitario = 0.00
+      this.produto.data_fabricacao = ''
+      this.produto.validade = ''
+      this.produto.saldo = 0
+      this.produto.quantidade_min = 1
+      this.produto.quantidade_max = 100
+      this.produto.ativo = true
+      this.produto.fk_produto_unid_medida = ''
+      this.produto.fk_produto_categoria = ''
+      this.produto.fk_produto_grupo = ''
+      this.produto.fk_produto_fornecedor = ''
+      this.produto.fk_produto_estoque = ''
     },
     validarCampos () {
       this.errors = []
+      // Campo do saldo
+      if (parseFloat(this.produto.preco_unitario) <= parseFloat('0.00')) {
+        this.errors.push({ msg: 'O valor unitario deve ser maior que 0', campo: 'preco_unitario', erro: true })
+        this.v_.preco_unitario = true
+      } else {
+        this.v_.preco_unitario = false
+      }
+
       // Campo do nome
-      if (this.produto.nome.length === 0) {
+      if (this.produto.nome_produto.length === 0) {
         this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
-        this.v_.nome = true
+        this.v_.nome_produto = true
       } else {
-        this.v_.nome = false
+        this.v_.nome_produto = false
       }
-      // Campo docódigo
-      if (this.produto.codProduto.length === 0) {
-        this.errors.push({ msg: 'O campo código é obrigatório', campo: 'codigo', erro: true })
-        this.v_.codProduto = true
+
+      // Campo do quantidade_min
+      if (this.produto.quantidade_min < 1) {
+        this.errors.push({ msg: 'O quantidade miníma é obrigátorio', campo: 'quantidade_min', erro: true })
+        this.v_.quantidade_min = true
       } else {
-        this.v_codProduto = false
+        this.v_.quantidade_min = false
       }
-      // Campo da descrição
-      if (this.produto.descricao.length === 0) {
-        this.errors.push({ msg: 'O campo Descrição é obrigatório', campo: 'codigo', erro: true })
-        this.v_.descricao = true
+
+      // Campo do quantidade_max
+      if (this.produto.quantidade_max <= 10) {
+        this.errors.push({ msg: 'A quantidade maxíma deve ser maior que 10', campo: 'quantidade_max', erro: true })
+        this.v_.quantidade_max = true
       } else {
-        this.v_.descricao = false
+        this.v_.quantidade_max = false
       }
-      // Campo da categoria
-      if (this.produto.categoriaProduto.length === 0) {
-        this.errors.push({ msg: 'O campo categoria é obrigatório', campo: 'codigo', erro: true })
-        this.v_.categoriaProduto = true
+
+      // Campo do fk_produto_unid_medida
+      if (this.produto.fk_produto_unid_medida.length === 0) {
+        this.errors.push({ msg: 'Selecione uma unidade de medida', campo: 'quantidade_max', erro: true })
+        this.v_.fk_produto_unid_medida = true
       } else {
-        this.v_.categoriaProduto = false
+        this.v_.fk_produto_unid_medida = false
       }
-      // Campo da unidade de medida
-      if (this.produto.unidMedida.length === 0) {
-        this.errors.push({ msg: 'O campo unidade de medida é obrigatório', campo: 'codigo', erro: true })
-        this.v_.unidMedida = true
+
+      // Campo do fk_produto_estoque
+      if (this.produto.fk_produto_estoque.length === 0) {
+        this.errors.push({ msg: 'Selecione um estoque', campo: 'fk_produto_estoque', erro: true })
+        this.v_.fk_produto_estoque = true
       } else {
-        this.v_.unidMedida = false
+        this.v_.fk_produto_estoque = false
       }
+
+      // Campo do fk_produto_grupo
+      if (this.produto.fk_produto_grupo.length === 0) {
+        this.errors.push({ msg: 'Selecione um grupo', campo: 'fk_produto_grupo', erro: true })
+        this.v_.fk_produto_grupo = true
+      } else {
+        this.v_.fk_produto_grupo = false
+      }
+
+      // Campo do fk_produto_categoria
+      if (this.produto.fk_produto_categoria.length === 0) {
+        this.errors.push({ msg: 'Selecione uma categoria', campo: 'fk_produto_categoria', erro: true })
+        this.v_.fk_produto_categoria = true
+      } else {
+        this.v_.fk_produto_categoria = false
+      }
+
+      // Campo do fk_produto_categoria
+      if (this.produto.fk_produto_fornecedor.length === 0) {
+        this.errors.push({ msg: 'Selecione um fornecedor', campo: 'fk_produto_fornecedor', erro: true })
+        this.v_.fk_produto_fornecedor = true
+      } else {
+        this.v_.fk_produto_fornecedor = false
+      }
+
       // Exibindo os erros
       if (this.errors.length > 0) {
         for (let i = 0; i < this.errors.length; i++) {
@@ -288,5 +594,11 @@ legend {
   font-size:90%;
   color: grey;
   text-align:left;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>

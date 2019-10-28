@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_movimentacao"  label="Cadastro de movimentações" />
                 <q-breadcrumbs-el icon="fas fa-search" to="/consultar_movimentacao"  label="Consultar movimentações" />
 
@@ -117,13 +117,6 @@
                 </template>
 
               </q-table>
-
-              <!-- <div class="q-mt-md">
-                Usuario Selecionado: {{ JSON.stringify(selected) }}
-              </div>
-              <div class="q-mt-md">
-                Filtro pesquisa: {{filtroPesquisa}}
-              </div> -->
             </div>
 
           </div>

@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el to="/cadastro_hierarquia"  label="Cadastrar hierarquia" />
                 <q-breadcrumbs-el icon="fas fa-search" to="/consultar_grupo"  label="Consultar hierarquia" />
 

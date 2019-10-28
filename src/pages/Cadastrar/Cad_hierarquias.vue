@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el icon="fas fa-user" to="/cadastro_grupo"  label="Cadastro de grupos" />
 
               </q-breadcrumbs>
@@ -29,10 +29,7 @@
             <q-card class="col-12 ">
               <q-card-section class=" q-col-gutter-sm text-center items-end">
 
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                >
+                <q-form>
                   <div class="row">
                     <div class="col">
                       <div class="q-gutter-y-md row justify-center">

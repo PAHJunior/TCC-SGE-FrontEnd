@@ -7,7 +7,7 @@ export default {
   buscarUm: (id) => {
     return http.get(`/${id}`) // retorna pelo ID
   },
-  buscarTodos: () => {
+  buscar: () => {
     return http.get(`/`)
   }
 }

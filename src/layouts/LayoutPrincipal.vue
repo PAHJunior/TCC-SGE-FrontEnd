@@ -21,12 +21,44 @@
       <!-- Toolbar para barra de busca -->
       <q-toolbar class="col-md-7 col-xs-5 col-sm-7 text-white bg-secondary row">
 
-        <q-input dark dense standout v-model="searchText" input-class="text-right" class="absolute-center col-md-10 col-xs-12 col-sm-12" >
+        <q-select
+          use-input
+          hide-dropdown-icon
+          dark
+          dense
+          standout
+          v-model="searchText"
+          @filter="filterFn"
+          :options="optSearch"
+          input-class="text-right"
+          class="absolute-center col-md-10 col-xs-12 col-sm-12"
+        >
           <template v-slot:append>
             <q-icon v-if="searchText === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="searchText = ''" />
           </template>
-        </q-input>
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:option="scope">
+            <q-item
+              v-bind="scope.itemProps"
+              v-on="scope.itemEvents"
+            >
+              <q-item-section thumbnail>
+                <q-icon :name="scope.opt.icon" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="scope.opt.label" />
+                <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
 
       </q-toolbar>
 
@@ -140,7 +172,7 @@
             class="text-grey-1"
             clickable
             tag="a"
-            to="/dashboard"
+            to="/cadastro_movimentacao"
           >
 
             <q-item-section avatar>
@@ -196,6 +228,10 @@ import Validar from '../service/validarToken/validar'
 import Usuario from '../service/usuario/usuario'
 import { mapState, mapMutations } from 'vuex'
 import { Loading, QSpinnerGears } from 'quasar'
+const stringOptions = [
+  { label: 'Dashboard', link: '/dashboard', description: 'Ir para dashboard', icon: 'dashboard' },
+  { label: 'Cadastrar usuario', link: '/cadastro_usuario', description: 'Ir para cadastro do usuario', icon: 'fas fa-database' }
+]
 
 export default {
   beforeRouteUpdate (to, from, next) {
@@ -241,6 +277,7 @@ export default {
   name: 'MyLayout',
   data () {
     return {
+      optSearch: [],
       userLocal: {
         id_usuario: '',
         nome: '',
@@ -265,8 +302,7 @@ export default {
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria_produto' },
             { label: 'Cadastro de Grupos', link: '/cadastro_grupo_produto' },
             { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
-            { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' },
-            { label: 'Cadastro de Movimentação', link: '/cadastro_movimentacao' }
+            { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' }
           ]
         },
         consulta: {
@@ -324,6 +360,19 @@ export default {
       localStorage.removeItem('nome_fantasia')
       localStorage.removeItem('razao_social')
       localStorage.removeItem('cnpj')
+    },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.optSearch = stringOptions
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.optSearch = stringOptions.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
     }
   }
 }

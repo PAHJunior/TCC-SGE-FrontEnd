@@ -15,7 +15,7 @@
                   />
                 </template>
 
-                <q-breadcrumbs-el icon="home" label="Home" to="/" />
+                <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
                 <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_produtos"  label="Cadastro de produto" />
                 <q-breadcrumbs-el icon="fas fa-search" to="/consultar_produtos"  label="Consultar produto" />
 
@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="dados = !dados" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscarProdutos" flat dense round/>
                       </template>
                     </q-input>
 
@@ -91,6 +91,7 @@
             <div class="col-12">
 
               <q-table
+                :loading="loading"
                 :filter="filter"
                 :data="dados ? data : na"
                 :columns="columns"
@@ -105,25 +106,27 @@
                   <q-tr :props="props" >
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
-                      <q-btn dense icon="delete" color="red-8" flat round />
-                      <q-btn dense icon="img:statics/file-log.png" flat round @click="props.selected = !props.selected"/>
                     </q-td>
-                    <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
-                    <q-td key="cpf" :props="props">{{ props.row.cpf }}</q-td>
-                    <q-td key="rg" :props="props">{{ props.row.rg }}</q-td>
-                    <q-td key="aniversario" :props="props">{{ props.row.aniversario }}</q-td>
+                    <q-td key="id" :props="props">{{ props.row.id }}</q-td>
+                    <q-td key="codigo_produto" :props="props">{{ props.row.codigo_produto }}</q-td>
+                    <q-td key="nome_produto" :props="props">{{ props.row.nome_produto }}</q-td>
+                    <q-td key="preco_unitario" :props="props">{{ props.row.preco_unitario }}</q-td>
+                    <q-td key="data_fabricacao" :props="props">{{ props.row.data_fabricacao }}</q-td>
+                    <q-td key="validacao" :props="props">{{ props.row.validacao }}</q-td>
+                    <q-td key="saldo" :props="props">{{ props.row.saldo }}</q-td>
+                    <q-td key="quantidade_min" :props="props">{{ props.row.quantidade_min }}</q-td>
+                    <q-td key="quantidade_max" :props="props">{{ props.row.quantidade_max }}</q-td>
+                    <q-td key="ativo" :props="props">{{ props.row.ativo ? 'Ativo' : 'Inativo' }}</q-td>
+                    <q-td key="unidade_medida" :props="props">{{ props.row.unidade_medida }}</q-td>
+                    <q-td key="categoria" :props="props">{{ props.row.categoria }}</q-td>
                     <q-td key="grupo" :props="props">{{ props.row.grupo }}</q-td>
+                    <q-td key="fornecedor" :props="props">{{ props.row.fornecedor }}</q-td>
+                    <q-td key="estoque" :props="props">{{ props.row.estoque }}</q-td>
                   </q-tr>
                 </template>
 
               </q-table>
 
-              <!-- <div class="q-mt-md">
-                Usuario Selecionado: {{ JSON.stringify(selected) }}
-              </div>
-              <div class="q-mt-md">
-                Filtro pesquisa: {{filtroPesquisa}}
-              </div> -->
             </div>
 
           </div>
@@ -135,42 +138,116 @@
 </template>
 
 <script>
+import Produto from '../../service/produto/produto.js'
 
 export default {
   data () {
     return {
+      loading: false,
       dados: false,
       filtroPesquisa: [],
       filter: '',
       selected: [],
-      visibleColumns: ['id', 'nome', 'cpf', 'rg', 'aniversario', 'grupo'],
+      visibleColumns: ['id', 'codigo_produto', 'nome_produto', 'preco_unitario', 'saldo', 'quantidade_min', 'quantidade_max', 'ativo'],
       separator: 'horizontal',
-      data: [
-        { id: '1', nome: 'Paulo Arhur', cpf: '460.224.398-33', rg: '19.406.953-9', aniversario: '20/04/1999', grupo: 'admin' },
-        { id: '2', nome: 'Polyana Feitosa', cpf: '779.636.080-09', rg: '19.251.981-5', aniversario: '20/07/2000', grupo: 'admin' },
-        { id: '3', nome: 'Natalia Pires', cpf: '919.310.680-70', rg: '27.238.588-8', aniversario: '14/08/1999', grupo: 'admin' }
-      ],
+      data: [],
       columns: [
-        { required: true, name: 'nome', label: 'Nome', field: 'nome', align: 'left', sortable: true },
-        { name: 'cpf', label: 'CPF', field: 'cpf', align: 'left', sortable: true },
-        { name: 'rg', label: 'RG', field: 'rg', align: 'left', sortable: true },
-        { name: 'aniversario', label: 'Aniversario', field: 'aniversario', align: 'left', sortable: true },
+        { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
+        { name: 'codigo_produto', label: 'Cod. Produto', field: 'codigo_produto', align: 'left', sortable: true },
+        { name: 'nome_produto', label: 'Produto', field: 'nome_produto', align: 'left', sortable: true },
+        { name: 'preco_unitario', label: 'Preço unit.', field: 'preco_unitario', align: 'left', sortable: true },
+        { name: 'data_fabricacao', label: 'Fabricação', field: 'data_fabricacao', align: 'left', sortable: true },
+        { name: 'validade', label: 'Validade', field: 'validade', align: 'left', sortable: true },
+        { name: 'saldo', label: 'Saldo', field: 'saldo', align: 'left', sortable: true },
+        { name: 'quantidade_min', label: 'Quantidade min.', field: 'quantidade_min', align: 'left', sortable: true },
+        { name: 'quantidade_max', label: 'Quantidade max.', field: 'quantidade_max', align: 'left', sortable: true },
+        { name: 'ativo', label: 'Status', field: 'ativo', align: 'left', sortable: true },
+        { name: 'unidade_medida', label: 'Unidade medida', field: 'unidade_medida', align: 'left', sortable: true },
+        { name: 'categoria', label: 'Categoria', field: 'categoria', align: 'left', sortable: true },
         { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
-        { name: 'email', label: 'E-mail', field: 'email', align: 'left', sortable: true },
-        { name: 'telefone', label: 'Telefone', field: 'telefone', align: 'left', sortable: true },
-        { name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true },
-        { name: 'cep', label: 'CEP', field: 'cep', align: 'left', sortable: true },
-        { name: 'logradouro', label: 'Logradouro', field: 'logradouro', align: 'left', sortable: true },
-        { name: 'numero', label: 'Numero', field: 'numero', align: 'left', sortable: true },
-        { name: 'bairro', label: 'Bairro', field: 'bairro', align: 'left', sortable: true },
-        { name: 'cidade', label: 'Cidade', field: 'cidade', align: 'left', sortable: true },
-        { name: 'estado', label: 'UF', field: 'estado', align: 'left', sortable: true },
-        { name: 'complemento', label: 'Complemento', field: 'complemento', align: 'left', sortable: true }
+        { name: 'fornecedor', label: 'Fornecedor', field: 'fornecedor', align: 'left', sortable: true },
+        { name: 'estoque', label: 'Estoque', field: 'estoque', align: 'left', sortable: true }
       ]
     }
   },
   computed: {
 
+  },
+  mounted () {
+    this.buscarProdutos()
+  },
+  methods: {
+    buscarProdutos () {
+      this.loading = true
+      Produto.buscarProduto()
+        .then((produto) => {
+          if (produto.data.errors) {
+            for (let i = 0; i < produto.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: produto.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 1500,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (produto.data.status === 200) {
+            this.dados = true
+            this.data = produto.data.response.map((p) => {
+              return {
+                id: p.id_usuario,
+                codigo_produto: p.codigo_produto,
+                nome_produto: p.nome_produto,
+                preco_unitario: p.preco_unitario,
+                data_fabricacao: p.data_fabricacao,
+                validade: p.validade,
+                saldo: p.saldo,
+                quantidade_min: p.quantidade_min,
+                quantidade_max: p.quantidade_max,
+                ativo: p.ativo,
+                unidade_medida: p.unidade_medida.nome,
+                categoria: p.categoria.nome,
+                grupo: p.grupo.nome,
+                fornecedor: p.fornecedor.nome,
+                estoque: p.estoque.nome_estoque
+              }
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$q.notify({
+            color: 'negative',
+            message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 1500,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          this.$q.notify({
+            color: 'negative',
+            message: `${error}`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 1500,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    }
   }
 }
 </script>
