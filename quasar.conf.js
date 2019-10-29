@@ -54,7 +54,6 @@ module.exports = function (ctx) {
         'QCardSection',
         'QCardActions',
         'QImg',
-        'QAvatar',
         'QSpace',
         'QExpansionItem',
         'QScrollArea',
@@ -77,7 +76,10 @@ module.exports = function (ctx) {
         'QTr',
         'QTd',
         'QBanner',
-        'QDialog'
+        'QDialog',
+        'QBadge',
+        'QChip',
+        'QAvatar'
       ],
 
       directives: [

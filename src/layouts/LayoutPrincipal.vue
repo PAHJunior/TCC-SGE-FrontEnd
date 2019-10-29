@@ -68,17 +68,65 @@
         <q-space />
 
         <q-btn  flat round dense icon="notifications">
+          <q-badge color="red" floating>
+            2
+          </q-badge>
           <q-menu fit anchor="bottom right" self="top right">
-            <q-list style="min-width: 100px">
-              <q-item clickable>
-                <q-item-section>Having fun</q-item-section>
+            <q-item-label header>Notificações</q-item-label>
+            <q-list bordered class="rounded-borders" style="max-width: 350px">
+
+              <q-item v-ripple>
+                <q-item-section>
+                  <q-item-label caption lines="2">
+                    <span class="text-weight-bold">Aviso</span>
+                    -- O produto <span class="text-bold">Coca-Cola</span> está abaixo do nivel definido no estoque minímo
+                  </q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-btn flat round size="sm" icon="fas fa-ellipsis-v">
+                    <q-menu anchor="center right" self="center left">
+                      <q-list bordered class="rounded-borders">
+                        <q-item clickable v-ripple>
+                          <q-item-section>
+                            Deletar
+                          </q-item-section>
+                          <q-item-section side top>
+                            <q-btn flat round size="sm" icon="delete"/>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </q-item-section>
               </q-item>
-              <q-item clickable>
-                <q-item-section>Crazy for transitions</q-item-section>
-              </q-item>
+
               <q-separator />
-              <q-item clickable>
-                <q-item-section>Mind blown</q-item-section>
+
+              <q-item v-ripple>
+                <q-item-section>
+                  <q-item-label caption lines="2">
+                    <span class="text-weight-bold">Aviso</span>
+                    -- O produto <span class="text-bold">Camisa Branca Nike</span> está abaixo do nivel definido no estoque minímo
+                  </q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-btn flat round size="sm" icon="fas fa-ellipsis-v">
+                    <q-menu anchor="center right" self="center left">
+                      <q-list bordered class="rounded-borders">
+                        <q-item clickable v-ripple>
+                          <q-item-section>
+                            Deletar
+                          </q-item-section>
+                          <q-item-section side top>
+                            <q-btn flat round size="sm" icon="delete"/>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </q-item-section>
               </q-item>
             </q-list>
           </q-menu>
