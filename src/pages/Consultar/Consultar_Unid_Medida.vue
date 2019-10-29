@@ -154,7 +154,7 @@ export default {
   methods: {
     buscar () {
       this.loading = true
-      UndMedida.buscarTodos()
+      UndMedida.buscar()
         .then((undMedida) => {
           if (undMedida.data.errors) {
             for (let i = 0; i < undMedida.data.errors.length; i++) {

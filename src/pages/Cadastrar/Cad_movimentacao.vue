@@ -47,7 +47,7 @@
                               class="col-md-6"
                               outlined
                               dense
-                              v-model="model"
+                              v-model="nome_produto"
                               use-input
                               input-debounce="0"
                               label="Produto"
@@ -114,8 +114,8 @@
                               class="col-md-3"
                               dense
                               outlined
-                              v-model="produto.operacao"
-                              label="Valor"
+                              v-model="produto.preco_unitario"
+                              label="Valor unitario"
                             />
 
                             <!-- Campo do tipo de documento-->
@@ -316,7 +316,7 @@
                                 dense
                                 outlined
                                 label="Valor"
-                                v-model="produto.saldo"
+                                v-model="produto.preco_unitario"
                               />
                             </div>
 
@@ -358,15 +358,59 @@
 
 <script>
 import Produto from '../../service/produto/produto.js'
+import Categoria from '../../service/categoria_produtos/categoria_produtos.js'
+import Grupo from '../../service/grupo_produtos/grupo_produtos.js'
+import UndMedida from '../../service/unidade_medida/unidade_medida.js'
+import Estoque from '../../service/estoque/estoque.js'
+import Fornecedor from '../../service/fornecedor/fornecedor.js'
 
 export default {
+  mounted () {
+    Categoria.buscar()
+      .then((und) => {
+        this.categoriaOpt = und.data.response.map((cat) => {
+          return {
+            id: cat.id_categoria_produto,
+            desc: cat.nome
+          }
+        })
+      })
+    UndMedida.buscar()
+      .then((und) => {
+        this.unidMeidaOpt = und.data.response.map((und) => {
+          return {
+            value: und.id_unid_medida,
+            label: und.nome,
+            description: und.descricao
+          }
+        })
+      })
+    Estoque.buscarEstoque()
+      .then((estoque) => {
+        this.estoqueOpt = estoque.data.response.map((e) => {
+          return {
+            id: e.id_estoque,
+            desc: e.nome_estoque
+          }
+        })
+      })
+    Fornecedor.buscar()
+      .then((fornecedor) => {
+        this.fornecedorOpt = fornecedor.data.response.map((f) => {
+          return {
+            id: f.id_fornecedor,
+            desc: f.nome
+          }
+        })
+      })
+  },
   data () {
     return {
       fornecedorOpt: [],
       estoqueOpt: [],
       grupoOpt: [],
       categoriaOpt: [],
-      model: null,
+      nome_produto: null,
       optProdutos: [],
       produto: {
         id: '',
@@ -420,7 +464,61 @@ export default {
       ]
     }
   },
-  computed: {},
+  watch: {
+    'produto.fk_produto_categoria': function (val) {
+      Grupo.buscarByCategoria(val)
+        .then((grupo) => {
+          if (grupo.data.status === 404) {
+            this.produto.fk_produto_grupo = ''
+            this.grupoOpt = []
+            this.$q.notify({
+              color: 'negative',
+              message: grupo.data.response,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          } else {
+            this.grupoOpt = grupo.data.response.map((cat) => {
+              return {
+                id: cat.id_grupo_produto,
+                desc: cat.nome
+              }
+            })
+          }
+        })
+    },
+    'nome_produto': function (val) {
+      Produto.buscarUmProduto(val.value)
+        .then((produtos) => {
+          this.produto = produtos.data.response[0]
+          // this.produto = produtos.data.response.map((produto) => {
+          //   return {
+          //     id: produto.id_produto,
+          //     codigo_produto: produto.codigo_produto,
+          //     nome_produto: produto.nome_produto,
+          //     preco_unitario: produto.preco_unitario,
+          //     data_fabricacao: produto.data_fabricacao,
+          //     validade: produto.validade,
+          //     saldo: produto.saldo,
+          //     quantidade_min: produto.quantidade_min,
+          //     quantidade_max: produto.quantidade_max,
+          //     ativo: produto.ativo,
+          //     fk_produto_unid_medida: produto.fk_produto_unid_medida,
+          //     fk_produto_categoria: produto.fk_produto_categoria,
+          //     fk_produto_grupo: produto.fk_produto_grupo,
+          //     fk_produto_fornecedor: produto.fk_produto_fornecedor,
+          //     fk_produto_estoque: produto.fk_produto_estoque
+          //   }
+          // })
+          console.log(this.produto)
+        })
+    }
+  },
   methods: {
     salvar () {
       Produto.salvar(this.produto).then(resposta => {

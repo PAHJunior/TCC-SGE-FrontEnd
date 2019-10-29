@@ -78,7 +78,7 @@
                               <q-checkbox class="float-right" left-label v-model="produto.ativo" label="Status do produto" />
                             </div>
 
-                            <div :class="this.v_.validade ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                            <div v-show="1 == 0" :class="this.v_.validade ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-input
                                 class="col-12"
                                 dense
@@ -105,7 +105,7 @@
                               </q-input>
                             </div>
 
-                            <div :class="this.v_.data_fabricacao ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                            <div v-show="1 == 0" :class="this.v_.data_fabricacao ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-input
                                 class="col-12"
                                 dense
@@ -280,6 +280,10 @@
                               />
                             </div>
 
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                              <q-checkbox class="float-right" left-label v-model="produto.controlaLote" label="Controla lote?" />
+                            </div>
+
                           </div>
 
                         </fieldset>
@@ -372,6 +376,7 @@ export default {
         quantidade_min: 1,
         quantidade_max: 100,
         ativo: true,
+        controlaLote: false,
         fk_produto_unid_medida: '',
         fk_produto_categoria: '',
         fk_produto_grupo: '',
