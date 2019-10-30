@@ -118,42 +118,8 @@
                               label="Valor unitario"
                             />
 
-                            <!-- Campo do tipo de documento-->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.documento"
-                              label="Tipo de Documento"
-                            />
-
-                            <!-- Campo do tipo de documento-->
-                            <q-input
-                              class="col-md-3"
-                              dense
-                              outlined
-                              v-model="produto.documento"
-                              label="Documento"
-                            />
-
-                            <!-- Campo do Descrição -->
-                            <q-input
-                              class="col-md-12"
-                              dense
-                              outlined
-                              v-model="produto.descricao"
-                              label="Descrição"
-                            />
-                          </div>
-                        </fieldset>
-
-                        <fieldset class="col-12 no-border">
-                          <legend>Dados do produto</legend>
-                          <div class="q-col-gutter-sm row">
-
-                            <div :class="this.v_.validade ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.validade ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
                               <q-input
-                                disable
                                 class="col-12"
                                 dense
                                 outlined
@@ -179,9 +145,8 @@
                               </q-input>
                             </div>
 
-                            <div :class="this.v_.data_fabricacao ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.data_fabricacao ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
                               <q-input
-                                disable
                                 class="col-12"
                                 dense
                                 outlined
@@ -205,6 +170,62 @@
                                   </q-btn>
                                 </template>
                               </q-input>
+                            </div>
+
+                            <!-- Campo do tipo de documento-->
+                            <q-input
+                              class="col-md-4"
+                              dense
+                              outlined
+                              v-model="produto.documento"
+                              label="Tipo de Documento"
+                            />
+
+                            <!-- Campo do tipo de documento-->
+                            <q-input
+                              class="col-md-8"
+                              dense
+                              outlined
+                              v-model="produto.documento"
+                              label="Documento"
+                            />
+
+                            <!-- Campo do Descrição -->
+                            <q-input
+                              class="col-md-12"
+                              dense
+                              outlined
+                              v-model="produto.descricao"
+                              label="Descrição"
+                            />
+                          </div>
+                        </fieldset>
+
+                        <fieldset class="col-12 no-border">
+                          <legend>Dados do produto</legend>
+                          <div class="q-col-gutter-sm row">
+                            <!-- Campo Preço -->
+                            <div :class="this.v_.saldo ? 'validar-error row col-md-6 col-sm-4 col-xs-12' : 'row col-md-6 col-sm-4 col-xs-12' ">
+                              <q-input
+                                disable
+                                class="col-12"
+                                dense
+                                outlined
+                                label="Valor"
+                                v-model="produto.preco_unitario"
+                              />
+                            </div>
+
+                            <!-- Campo Preço -->
+                            <div :class="this.v_.saldo ? 'validar-error row col-md-6 col-sm-4 col-xs-12' : 'row col-md-6 col-sm-4 col-xs-12' ">
+                              <q-input
+                                disable
+                                class="col-12"
+                                dense
+                                outlined
+                                label="Saldo"
+                                v-model="produto.saldo"
+                              />
                             </div>
 
                             <!-- Campo Unidade de medida -->
@@ -237,7 +258,7 @@
                             </div>
 
                             <!-- Campo Categoria do produto -->
-                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-select
                                 disable
                                 class="col-12"
@@ -255,7 +276,7 @@
                             </div>
 
                             <!-- Campo grupo do produto -->
-                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-select
                                 disable
                                 class="col-12"
@@ -308,33 +329,10 @@
                               />
                             </div>
 
-                            <!-- Campo Preço -->
-                            <div :class="this.v_.saldo ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
-                              <q-input
-                                disable
-                                class="col-12"
-                                dense
-                                outlined
-                                label="Valor"
-                                v-model="produto.preco_unitario"
-                              />
-                            </div>
-
-                            <!-- Campo Preço -->
-                            <div :class="this.v_.saldo ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
-                              <q-input
-                                disable
-                                class="col-12"
-                                dense
-                                outlined
-                                label="Saldo"
-                                v-model="produto.saldo"
-                              />
-                            </div>
-
                           </div>
                         </fieldset>
                         <div class="row col-md-6">
+                          {{ movimentacao.dt_movimentacao }}
                           <q-btn
                             label="Salvar"
                             @click="salvar"
@@ -363,6 +361,7 @@ import Grupo from '../../service/grupo_produtos/grupo_produtos.js'
 import UndMedida from '../../service/unidade_medida/unidade_medida.js'
 import Estoque from '../../service/estoque/estoque.js'
 import Fornecedor from '../../service/fornecedor/fornecedor.js'
+import { date } from 'quasar'
 
 export default {
   mounted () {
@@ -413,7 +412,7 @@ export default {
       nome_produto: null,
       optProdutos: [],
       produto: {
-        id: '',
+        id_produto: '',
         codigo_produto: '',
         nome_produto: '',
         preco_unitario: 0.00,
@@ -461,10 +460,22 @@ export default {
           description: 'Metro quadrado - m²'
         },
         { label: 'Metro cúbico', value: 'm3', description: 'Metro cúbico - m³' }
-      ]
+      ],
+      movimentacao: {
+        tipo_operacao: '',
+        dt_movimentacao: '',
+        quantidade: 0,
+        fk_movimentacao_produto: ''
+      }
     }
   },
   watch: {
+    'produto.id_produto': function (val) {
+      let timeStamp = Date.now()
+      this.movimentacao.dt_movimentacao = date.formatDate(timeStamp, 'YYYY-MM-DDHH:mm:ss')
+      console.log(this.movimentacao.dt_movimentacao)
+      this.movimentacao.fk_movimentacao_produto = val
+    },
     'produto.fk_produto_categoria': function (val) {
       Grupo.buscarByCategoria(val)
         .then((grupo) => {
@@ -496,26 +507,6 @@ export default {
       Produto.buscarUmProduto(val.value)
         .then((produtos) => {
           this.produto = produtos.data.response[0]
-          // this.produto = produtos.data.response.map((produto) => {
-          //   return {
-          //     id: produto.id_produto,
-          //     codigo_produto: produto.codigo_produto,
-          //     nome_produto: produto.nome_produto,
-          //     preco_unitario: produto.preco_unitario,
-          //     data_fabricacao: produto.data_fabricacao,
-          //     validade: produto.validade,
-          //     saldo: produto.saldo,
-          //     quantidade_min: produto.quantidade_min,
-          //     quantidade_max: produto.quantidade_max,
-          //     ativo: produto.ativo,
-          //     fk_produto_unid_medida: produto.fk_produto_unid_medida,
-          //     fk_produto_categoria: produto.fk_produto_categoria,
-          //     fk_produto_grupo: produto.fk_produto_grupo,
-          //     fk_produto_fornecedor: produto.fk_produto_fornecedor,
-          //     fk_produto_estoque: produto.fk_produto_estoque
-          //   }
-          // })
-          console.log(this.produto)
         })
     }
   },

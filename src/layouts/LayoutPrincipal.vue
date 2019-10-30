@@ -136,7 +136,7 @@
           <q-menu  anchor="bottom middle" self="top middle">
             <q-date
               class="text-black"
-              v-model="date"
+              v-model="dia_atual"
               minimal
             />
           </q-menu>
@@ -334,8 +334,7 @@ export default {
       },
       token: '',
       urlImg: '../assets/logo_tcc.png',
-      calendario: false,
-      date: '',
+      dia_atual: '',
       searchText: '',
       menu: {
         cadastros: {
