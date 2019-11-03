@@ -4,7 +4,7 @@
       <q-card style="height: 300px;">
         <q-card-section class="fit row justify-center items-center content-center  q-gutter-y-xl">
           <div class="brand_logo_container absolute-center">
-            <img src="../assets/logo_tcc.png" class="brand_logo" alt="Logo">
+            <img src="~assets/logo_tcc.png" class="brand_logo" alt="Logo">
           </div>
           <div class="col-md-12 q-gutter-y-md row" >
             <div class="row col-12">
@@ -88,16 +88,7 @@ export default {
           if (usuarios.data.status === 200) {
             if (usuarios.data.response.isLogado) {
               this.USUARIO(usuarios.data.response)
-              localStorage.setItem('token', usuarios.data.response.token)
-              localStorage.setItem('isLogado', usuarios.data.response.isLogado)
-              localStorage.setItem('id_usuario', usuarios.data.response.id_usuario)
-              localStorage.setItem('nome', usuarios.data.response.nome)
-              localStorage.setItem('email', usuarios.data.response.email)
-              localStorage.setItem('login', usuarios.data.response.login)
-              localStorage.setItem('id_empresa', usuarios.data.response.empresa.id_empresa)
-              localStorage.setItem('nome_fantasia', usuarios.data.response.empresa.nome_fantasia)
-              localStorage.setItem('razao_social', usuarios.data.response.empresa.razao_social)
-              localStorage.setItem('cnpj', usuarios.data.response.empresa.cnpj)
+              localStorage.setItem('usuario', JSON.stringify(usuarios.data.response))
               this.$router.push('/dashboard')
             }
           }
@@ -123,17 +114,7 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    localStorage.removeItem('token')
-    localStorage.removeItem('token')
-    localStorage.removeItem('isLogado')
-    localStorage.removeItem('id_usuario')
-    localStorage.removeItem('nome')
-    localStorage.removeItem('email')
-    localStorage.removeItem('login')
-    localStorage.removeItem('id_empresa')
-    localStorage.removeItem('nome_fantasia')
-    localStorage.removeItem('razao_social')
-    localStorage.removeItem('cnpj')
+    localStorage.removeItem('usuario')
     if ((to.params.empresa === 'raotes') || (to.params.empresa === 'tcc')) {
       next()
     } else {

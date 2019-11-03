@@ -68,22 +68,32 @@
         <q-space />
 
         <q-btn  flat round dense icon="notifications">
-          <q-badge color="red" floating>
-            2
+          <q-badge v-if="notificacoes.length > 0" color="red" floating>
+            {{ notificacoes.length }}
           </q-badge>
           <q-menu fit anchor="bottom right" self="top right">
             <q-item-label header>Notificações</q-item-label>
-            <q-list bordered class="rounded-borders" style="max-width: 350px">
+            <q-list bordered class="rounded-borders" style="max-width: 400px" v-for="notify in notificacoes" :key="notify">
 
-              <q-item v-ripple>
-                <q-item-section>
-                  <q-item-label caption lines="2">
-                    <span class="text-weight-bold">Aviso</span>
-                    -- O produto <span class="text-bold">Coca-Cola</span> está abaixo do nivel definido no estoque minímo
+              <q-item>
+                <q-item-section avatar top>
+                  <!-- <q-icon name="img:statics/logo_tcc.png" size="34px" /> -->
+                  <q-icon name="o_feedback" size="34px" />
+                </q-item-section>
+
+                <q-item-section top>
+                  <q-item-label caption>
+                    {{notify.descricao}}
                   </q-item-label>
                 </q-item-section>
 
-                <q-item-section side top>
+                <q-item-section top side>
+                  <div class="text-grey-8 q-gutter-xs">
+                    <q-btn size="12px" flat dense round icon="more_vert" />
+                  </div>
+                </q-item-section>
+
+                <!-- <q-item-section side top>
                   <q-btn flat round size="sm" icon="fas fa-ellipsis-v">
                     <q-menu anchor="center right" self="center left">
                       <q-list bordered class="rounded-borders">
@@ -98,35 +108,7 @@
                       </q-list>
                     </q-menu>
                   </q-btn>
-                </q-item-section>
-              </q-item>
-
-              <q-separator />
-
-              <q-item v-ripple>
-                <q-item-section>
-                  <q-item-label caption lines="2">
-                    <span class="text-weight-bold">Aviso</span>
-                    -- O produto <span class="text-bold">Camisa Branca Nike</span> está abaixo do nivel definido no estoque minímo
-                  </q-item-label>
-                </q-item-section>
-
-                <q-item-section side top>
-                  <q-btn flat round size="sm" icon="fas fa-ellipsis-v">
-                    <q-menu anchor="center right" self="center left">
-                      <q-list bordered class="rounded-borders">
-                        <q-item clickable v-ripple>
-                          <q-item-section>
-                            Deletar
-                          </q-item-section>
-                          <q-item-section side top>
-                            <q-btn flat round size="sm" icon="delete"/>
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
-                </q-item-section>
+                </q-item-section> -->
               </q-item>
             </q-list>
           </q-menu>
@@ -146,7 +128,7 @@
           <div class="row items-center no-wrap">
             <q-icon left name="img:statics/user.png" />
             <div class="text-center" v-if="!$q.screen.lt.md">
-              Olá, {{ usuario.login }}
+              Olá, {{ usuario.login ? usuario.login : usuarioLocal.login }}
             </div>
           </div>
           <q-menu  anchor="bottom middle" self="top middle">
@@ -274,8 +256,10 @@
 <script>
 import Validar from '../service/validarToken/validar'
 import Usuario from '../service/usuario/usuario'
+import Notificacao from '../service/notificacao/notificacoes'
 import { mapState, mapMutations } from 'vuex'
 import { Loading, QSpinnerGears } from 'quasar'
+
 const stringOptions = [
   { label: 'Dashboard', link: '/dashboard', description: 'Ir para dashboard', icon: 'dashboard' },
   { label: 'Cadastrar usuario', link: '/cadastro_usuario', description: 'Ir para cadastro do usuario', icon: 'fas fa-database' }
@@ -287,7 +271,7 @@ export default {
       message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
       spinner: QSpinnerGears
     })
-    Validar.token(localStorage.getItem('id_usuario'), localStorage.getItem('token'))
+    Validar.token(this.usuarioLocal.id_usuario, this.usuarioLocal.token)
       .then((token) => {
         if (token.data === false) {
           this.$q.notify({
@@ -303,7 +287,7 @@ export default {
           })
           next('/login/tcc')
         } else {
-          Usuario.buscarUmUsuario(localStorage.getItem('id_usuario'))
+          Usuario.buscarUmUsuario(this.usuarioLocal.id_usuario)
             .then((usuario) => {
               this.USUARIO(usuario.data.response[0])
             })
@@ -316,15 +300,17 @@ export default {
       })
   },
   mounted () {
-    this.token = localStorage.getItem('token')
-    this.userLocal.id_usuario = localStorage.getItem('id_usuario')
-    this.userLocal.nome = localStorage.getItem('nome')
-    this.userLocal.email = localStorage.getItem('email')
-    this.userLocal.login = localStorage.getItem('login')
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
+    this.getNotificacoes()
+  },
+  watch: {
+
   },
   name: 'MyLayout',
   data () {
     return {
+      notificacoes: [],
+      usuarioLocal: null,
       optSearch: [],
       userLocal: {
         id_usuario: '',
@@ -396,17 +382,36 @@ export default {
   methods: {
     ...mapMutations('usuarios', ['USUARIO']),
     sair () {
-      localStorage.removeItem('token')
-      localStorage.removeItem('token')
-      localStorage.removeItem('isLogado')
-      localStorage.removeItem('id_usuario')
-      localStorage.removeItem('nome')
-      localStorage.removeItem('email')
-      localStorage.removeItem('login')
-      localStorage.removeItem('id_empresa')
-      localStorage.removeItem('nome_fantasia')
-      localStorage.removeItem('razao_social')
-      localStorage.removeItem('cnpj')
+      localStorage.removeItem('usuario')
+    },
+    getNotificacoes () {
+      Notificacao.buscarByUser(this.usuarioLocal.id_usuario, this.usuarioLocal.hierarquia.id_hierarquia)
+        .then((notificacao) => {
+          if (notificacao.data.errors) {
+            for (let i = 0; i < notificacao.data.errors.length; i++) {
+              this.$q.notify({
+                color: 'negative',
+                message: notificacao.data.errors[i].message,
+                position: 'top-right',
+                icon: 'warning',
+                timeout: 1500,
+                actions: [{
+                  color: 'white',
+                  icon: 'close'
+                }]
+              })
+            }
+          }
+          if (notificacao.data.status === 200) {
+            this.notificacoes = notificacao.data.response.map((u) => {
+              return {
+                id: u.id_notificacao,
+                descricao: u.descricao,
+                ativo: u.ativo
+              }
+            })
+          }
+        })
     },
     filterFn (val, update) {
       if (val === '') {

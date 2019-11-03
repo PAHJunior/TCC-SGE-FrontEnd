@@ -192,12 +192,16 @@
 
                             <!-- Campo do Descrição -->
                             <q-input
-                              class="col-md-12"
+                              class="col-md-9"
                               dense
                               outlined
                               v-model="produto.descricao"
                               label="Descrição"
                             />
+
+                            <div class="col-md-3 col-sm-8 col-xs-12">
+                              <q-checkbox class="float-right" left-label v-model="produto.ajuste" label="Ajustar estoque" />
+                            </div>
                           </div>
                         </fieldset>
 
@@ -421,6 +425,7 @@ export default {
         saldo: 0,
         quantidade_min: 1,
         quantidade_max: 100,
+        ajuste: false,
         ativo: true,
         fk_produto_unid_medida: '',
         fk_produto_categoria: '',

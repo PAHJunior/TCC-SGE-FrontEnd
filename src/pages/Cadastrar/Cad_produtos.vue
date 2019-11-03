@@ -156,38 +156,25 @@
                               />
                             </div>
 
-                            <!-- Campo Categoria do produto -->
-                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
+                            <!-- Campo Estoque -->
+                            <div :class="this.v_.fk_produto_estoque ? 'validar-error row col-md-3 col-sm-4 col-xs-12' : 'row col-md-3 col-sm-4 col-xs-12' ">
                               <q-select
                                 class="col-12"
-                                label="Categoria do produto"
+                                label="Estoque"
                                 outlined
-                                v-model="produto.fk_produto_categoria"
+                                v-model="produto.fk_produto_estoque"
                                 dense
                                 options-dense
-                                :options="categoriaOpt"
-                                map-options
-                                emit-value
+                                :options="estoqueOpt"
                                 option-value="id"
                                 option-label="desc"
+                                map-options
+                                emit-value
                               />
                             </div>
 
-                            <!-- Campo grupo do produto -->
-                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12' ">
-                              <q-select
-                                class="col-12"
-                                label="Grupo do produto"
-                                outlined
-                                v-model="produto.fk_produto_grupo"
-                                dense
-                                options-dense
-                                :options="grupoOpt"
-                                map-options
-                                emit-value
-                                option-value="id"
-                                option-label="desc"
-                              />
+                            <div class="col-md-3 col-sm-8 col-xs-12">
+                              <q-checkbox class="float-right" left-label v-model="produto.controlaLote" label="Controla lote?" />
                             </div>
 
                             <!-- Campo Unidade de medida -->
@@ -235,6 +222,40 @@
                               />
                             </div>
 
+                            <!-- Campo Categoria do produto -->
+                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Categoria do produto"
+                                outlined
+                                v-model="produto.fk_produto_categoria"
+                                dense
+                                options-dense
+                                :options="categoriaOpt"
+                                map-options
+                                emit-value
+                                option-value="id"
+                                option-label="desc"
+                              />
+                            </div>
+
+                            <!-- Campo grupo do produto -->
+                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                              <q-select
+                                class="col-12"
+                                label="Grupo do produto"
+                                outlined
+                                v-model="produto.fk_produto_grupo"
+                                dense
+                                options-dense
+                                :options="grupoOpt"
+                                map-options
+                                emit-value
+                                option-value="id"
+                                option-label="desc"
+                              />
+                            </div>
+
                             <!-- Campo Fornecedor -->
                             <div :class="this.v_.fk_produto_fornecedor ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
                               <q-select
@@ -278,10 +299,6 @@
                                 label="Saldo"
                                 v-model="produto.saldo"
                               />
-                            </div>
-
-                            <div class="col-md-8 col-sm-8 col-xs-12">
-                              <q-checkbox class="float-right" left-label v-model="produto.controlaLote" label="Controla lote?" />
                             </div>
 
                           </div>

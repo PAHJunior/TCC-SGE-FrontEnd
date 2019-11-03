@@ -683,7 +683,8 @@ export default {
       message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
       spinner: QSpinnerGears
     })
-    Validar.token(localStorage.getItem('token'))
+    let usuario = JSON.parse(localStorage.getItem('usuario'))
+    Validar.token(usuario.token)
       .then((isValid) => {
         if (!isValid.data) {
           this.$q.notify({
