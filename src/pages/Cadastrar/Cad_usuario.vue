@@ -251,7 +251,6 @@
                               <q-input
                                 class="col-12"
                                 dense
-                                v-on:keyup.enter="buscarCEP"
                                 outlined
                                 mask="#####-###"
                                 v-model="usuario.endereco.cep"
@@ -262,7 +261,6 @@
                             <!-- Campo Logradouro -->
                             <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8 col-sm-8 col-xs-12' : 'row col-md-8 col-sm-8 col-xs-12'">
                               <q-input
-                                v-on:keyup.tab="buscarCEP"
                                 class="col-12"
                                 dense
                                 outlined
@@ -427,6 +425,19 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    'usuario.endereco.cep': function (val) {
+      if (val.length > 8) {
+        this.buscarCEP(val)
+      } else {
+        this.usuario.endereco.logradouro = ''
+        this.usuario.endereco.numero = ''
+        this.usuario.endereco.bairro = ''
+        this.usuario.endereco.uf = ''
+        this.usuario.endereco.complemento = ''
+      }
+    }
   },
   methods: {
     isEmail (email) {
@@ -609,8 +620,8 @@ export default {
         return true
       }
     },
-    buscarCEP () {
-      Cep.cep(this.usuario.endereco.cep)
+    buscarCEP (cep) {
+      Cep.cep(cep)
         .then(resposta => {
           console.log(resposta.data)
           const cep = resposta.data

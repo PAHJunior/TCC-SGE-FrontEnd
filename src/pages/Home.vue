@@ -102,6 +102,13 @@
           <div class="col-12 row">
 
             <q-card class="col-12">
+              <div class="row">
+                <q-select class="col-4" dense borderless :options="year" v-model="yearGrafico">
+                  <template v-slot:prepend>
+                    <q-icon name="event" />
+                  </template>
+                </q-select>
+              </div>
               <q-card-section>
                 <apexchart type=bar height=350 :options="chartOptionsBarra" :series="seriesBarra" />
               </q-card-section>
@@ -123,7 +130,18 @@ export default {
     apexchart: VueApexCharts
   },
   data () {
+    const year = []
+    const yearAtual = new Date().getFullYear()
+    for (let i = 2000; i <= yearAtual; i++) {
+      year.push(i)
+    }
+    const yearGrafico = []
+    yearGrafico.push(this.yearGrafico)
     return {
+      yearGrafico: 0,
+      year: Object.freeze(year),
+      model2: '',
+      denseOpts: [],
       buscaEstoque: 'Estoque A',
       options: [
         'Estoque A', 'Estoque B'
@@ -221,7 +239,7 @@ export default {
           }
         },
         title: {
-          text: 'Grafico - Movimentação do estoque 2019',
+          text: 'Grafico - Movimentação do estoque - ' + Object.freeze(yearGrafico),
           style: {
             fontSize: '18px',
             color: '#444'

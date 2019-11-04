@@ -72,14 +72,16 @@
             {{ notificacoes.length }}
           </q-badge>
           <q-menu fit anchor="bottom right" self="top right">
-            <q-item-label header>Notificações</q-item-label>
-            <q-list bordered class="rounded-borders" style="max-width: 400px" v-for="notify in notificacoes" :key="notify">
+            <q-toolbar class="shadow-2">
+              <q-toolbar-title class="text-center">Notificações</q-toolbar-title>
+            </q-toolbar>
+            <!-- <q-item-label header>Notificações</q-item-label> -->
+            <q-list bordered class="rounded-borders" style="max-width: 400px" v-for="(notify, nid) in notificacoes" :key="nid">
 
               <q-item>
-                <q-item-section avatar top>
-                  <!-- <q-icon name="img:statics/logo_tcc.png" size="34px" /> -->
-                  <q-icon name="o_feedback" size="34px" />
-                </q-item-section>
+                <!-- <q-item-section avatar top>
+                  <q-icon name="feedback" size="34px" />
+                </q-item-section> -->
 
                 <q-item-section top>
                   <q-item-label caption>
@@ -92,23 +94,6 @@
                     <q-btn size="12px" flat dense round icon="more_vert" />
                   </div>
                 </q-item-section>
-
-                <!-- <q-item-section side top>
-                  <q-btn flat round size="sm" icon="fas fa-ellipsis-v">
-                    <q-menu anchor="center right" self="center left">
-                      <q-list bordered class="rounded-borders">
-                        <q-item clickable v-ripple>
-                          <q-item-section>
-                            Deletar
-                          </q-item-section>
-                          <q-item-section side top>
-                            <q-btn flat round size="sm" icon="delete"/>
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
-                </q-item-section> -->
               </q-item>
             </q-list>
           </q-menu>
@@ -334,8 +319,8 @@ export default {
             { label: 'Cadastro do Fornecedor', link: '/cadastro_fornecedor' },
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria_produto' },
             { label: 'Cadastro de Grupos', link: '/cadastro_grupo_produto' },
-            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
-            { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' }
+            // { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' },
+            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' }
           ]
         },
         consulta: {
@@ -350,7 +335,7 @@ export default {
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
             { label: 'Consultar Grupos', link: '/consultar_grupo' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
-            { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
+            // { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
             { label: 'Consultar Movimentações', link: 'consultar_movimentacao' }
           ]
         },

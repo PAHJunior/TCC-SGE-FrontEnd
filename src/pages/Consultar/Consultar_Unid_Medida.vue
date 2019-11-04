@@ -106,7 +106,6 @@
                   <q-tr :props="props" >
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
-                      <q-btn dense icon="delete" color="red-8" flat round />
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>

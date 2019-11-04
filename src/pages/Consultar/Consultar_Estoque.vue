@@ -106,7 +106,6 @@
                   <q-tr :props="props" >
                     <q-td auto-width>
                       <q-btn dense icon="edit" flat round @click="openModalEdit(props)"/>
-                      <q-btn dense icon="delete" color="red-8" flat round/>
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome_estoque" :props="props">{{ props.row.nome_estoque }}</q-td>

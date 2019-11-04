@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-12 q-gutter-y-md row" >
             <div class="row col-12">
-              <q-input class="col-12" filled v-model="usuario.login" label="Login" dense>
+              <q-input class="col-12" v-on:keyup.enter="login" filled v-model="usuario.login" label="Login" dense>
                 <template v-slot:append>
                   <q-icon
                     name="fas fa-user"
@@ -19,7 +19,7 @@
               </q-input>
             </div>
             <div class="row col-12">
-              <q-input class="col-12" filled v-model="usuario.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
+              <q-input class="col-12" v-on:keyup.enter="login" filled v-model="usuario.senha" label="Senha" dense :type="isPwd ? 'password' : 'text'">
                 <template v-slot:append>
                   <q-icon
                     :name="isPwd ? 'visibility_off' : 'visibility'"
