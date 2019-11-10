@@ -22,6 +22,7 @@ const routes = [
       { path: '/cadastro_unid_medida', component: () => import('pages/cadastrar/Cad_unid-medida.vue') },
       { path: '/cadastro_hierarquia', component: () => import('pages/cadastrar/Cad_hierarquias.vue') },
       { path: '/cadastro_movimentacao', component: () => import('pages/cadastrar/Cad_Movimentacao.vue') },
+      { path: '/cadastrar_tipo_documento', component: () => import('pages/cadastrar/Cad_tipo-documento.vue') },
       // Consultar
 
       { path: '/consultar_usuario', component: () => import('pages/consultar/Consultar_usuario.vue') },
@@ -33,7 +34,8 @@ const routes = [
       { path: '/consultar_unid_medida', component: () => import('pages/consultar/Consultar_Unid_Medida.vue') },
       { path: '/consultar_hierarquia', component: () => import('pages/consultar/Consultar_hierarquia.vue') },
       { path: '/consultar_movimentacao', component: () => import('pages/consultar/Consultar_Movimentacao.vue') },
-      { path: '/consultar_relatório', component: () => import('pages/consultar/Consultar_relatorio.vue') }
+      { path: '/consultar_relatório', component: () => import('pages/consultar/Consultar_relatorio.vue') },
+      { path: '/consultar_tipo_documento', component: () => import('pages/consultar/Consultar_tipo-documento.vue') }
     ]
   },
   {

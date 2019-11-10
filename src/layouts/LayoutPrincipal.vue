@@ -320,7 +320,8 @@ export default {
             { label: 'Cadastro de Categorias', link: '/cadastro_categoria_produto' },
             { label: 'Cadastro de Grupos', link: '/cadastro_grupo_produto' },
             // { label: 'Cadastro de Hierarquias', link: '/cadastro_hierarquia' },
-            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' }
+            { label: 'Cadastro de Unid. de Medidas', link: '/cadastro_unid_medida' },
+            { label: 'Cadastrar tipo de doc.', link: '/cadastrar_tipo_documento' }
           ]
         },
         consulta: {
@@ -335,8 +336,9 @@ export default {
             { label: 'Consultar Categorias', link: '/consultar_categoria' },
             { label: 'Consultar Grupos', link: '/consultar_grupo' },
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
+            { label: 'Consultar Tipo do doc.', link: '/consultar_tipo_documento' },
             // { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
-            { label: 'Consultar Movimentações', link: 'consultar_movimentacao' }
+            { label: 'Consultar Movimentações', link: '/consultar_tipo_documento' }
           ]
         },
         relatorio: {

@@ -78,60 +78,6 @@
                               <q-checkbox class="float-right" left-label v-model="produto.ativo" label="Status do produto" />
                             </div>
 
-                            <div v-show="1 == 0" :class="this.v_.validade ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
-                              <q-input
-                                class="col-12"
-                                dense
-                                outlined
-                                mask="##-##-####"
-                                v-model="produto.validade"
-                                label="Data de validade"
-                              >
-                                <template v-slot:prepend>
-                                <!-- <q-icon name="event" /> -->
-                                  <q-btn round flat dense icon="event">
-                                    <q-menu fit anchor="bottom left" self="top left">
-
-                                      <q-date
-                                        v-model="produto.validade"
-                                        minimal
-                                        mask="DD-MM-YYYY"
-                                      />
-
-                                    </q-menu>
-
-                                  </q-btn>
-                                </template>
-                              </q-input>
-                            </div>
-
-                            <div v-show="1 == 0" :class="this.v_.data_fabricacao ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
-                              <q-input
-                                class="col-12"
-                                dense
-                                outlined
-                                mask="##-##-####"
-                                v-model="produto.data_fabricacao"
-                                label="Data de fabricação"
-                              >
-                                <template v-slot:prepend>
-                                <!-- <q-icon name="event" /> -->
-                                  <q-btn round flat dense icon="event">
-                                    <q-menu fit anchor="bottom left" self="top left">
-
-                                      <q-date
-                                        v-model="produto.data_fabricacao"
-                                        minimal
-                                        mask="DD-MM-YYYY"
-                                      />
-
-                                    </q-menu>
-
-                                  </q-btn>
-                                </template>
-                              </q-input>
-                            </div>
-
                             <!-- Campo Estoque mínimo -->
                             <div :class="this.v_.quantidade_min ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
                               <q-input
@@ -205,25 +151,8 @@
                               </q-select>
                             </div>
 
-                            <!-- Campo Estoque -->
-                            <div :class="this.v_.fk_produto_estoque ? 'validar-error row col-md-4 col-sm-4 col-xs-12' : 'row col-md-4 col-sm-4 col-xs-12' ">
-                              <q-select
-                                class="col-12"
-                                label="Estoque"
-                                outlined
-                                v-model="produto.fk_produto_estoque"
-                                dense
-                                options-dense
-                                :options="estoqueOpt"
-                                option-value="id"
-                                option-label="desc"
-                                map-options
-                                emit-value
-                              />
-                            </div>
-
                             <!-- Campo Categoria do produto -->
-                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.fk_produto_categoria ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-select
                                 class="col-12"
                                 label="Categoria do produto"
@@ -240,7 +169,7 @@
                             </div>
 
                             <!-- Campo grupo do produto -->
-                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-3 col-sm-6 col-xs-12' : 'row col-md-3 col-sm-6 col-xs-12' ">
+                            <div :class="this.v_.fk_produto_grupo ? 'validar-error row col-md-4 col-sm-6 col-xs-12' : 'row col-md-4 col-sm-6 col-xs-12' ">
                               <q-select
                                 class="col-12"
                                 label="Grupo do produto"
@@ -251,8 +180,8 @@
                                 :options="grupoOpt"
                                 map-options
                                 emit-value
-                                option-value="id"
                                 option-label="desc"
+                                option-value="id"
                               />
                             </div>
 
@@ -387,8 +316,6 @@ export default {
         codigo_produto: '',
         nome_produto: '',
         preco_unitario: 0.00,
-        data_fabricacao: '',
-        validade: '',
         saldo: 0,
         quantidade_min: 1,
         quantidade_max: 100,
@@ -405,8 +332,6 @@ export default {
         codigo_produto: false,
         nome_produto: false,
         preco_unitario: false,
-        data_fabricacao: false,
-        validade: false,
         saldo: false,
         quantidade_min: false,
         quantidade_max: false,
@@ -421,6 +346,7 @@ export default {
   },
   watch: {
     'produto.fk_produto_categoria': function (val) {
+      this.produto.fk_produto_grupo = ''
       Grupo.buscarByCategoria(val)
         .then((grupo) => {
           if (grupo.data.status === 404) {
@@ -438,10 +364,10 @@ export default {
               }]
             })
           } else {
-            this.grupoOpt = grupo.data.response.map((cat) => {
+            this.grupoOpt = grupo.data.response.map((grupo) => {
               return {
-                id: cat.id_grupo_produto,
-                desc: cat.nome
+                id: grupo.id_grupo_produto,
+                desc: grupo.nome
               }
             })
           }
@@ -499,12 +425,15 @@ export default {
       this.produto.codigo_produto = ''
       this.produto.nome_produto = ''
       this.produto.preco_unitario = 0.00
-      this.produto.data_fabricacao = ''
+      this.produto.fabricacao = ''
       this.produto.validade = ''
       this.produto.saldo = 0
       this.produto.quantidade_min = 1
       this.produto.quantidade_max = 100
       this.produto.ativo = true
+      this.produto.fabricacao = ''
+      this.produto.validade = ''
+      this.produto.controlaLote = false
       this.produto.fk_produto_unid_medida = ''
       this.produto.fk_produto_categoria = ''
       this.produto.fk_produto_grupo = ''
@@ -513,6 +442,7 @@ export default {
     },
     validarCampos () {
       this.errors = []
+
       // Campo do saldo
       if (parseFloat(this.produto.preco_unitario) <= parseFloat('0.00')) {
         this.errors.push({ msg: 'O valor unitario deve ser maior que 0', campo: 'preco_unitario', erro: true })

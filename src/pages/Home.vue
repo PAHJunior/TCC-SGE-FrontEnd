@@ -102,13 +102,13 @@
           <div class="col-12 row">
 
             <q-card class="col-12">
-              <div class="row">
+              <!-- <div class="row">
                 <q-select class="col-4" dense borderless :options="year" v-model="yearGrafico">
                   <template v-slot:prepend>
                     <q-icon name="event" />
                   </template>
                 </q-select>
-              </div>
+              </div> -->
               <q-card-section>
                 <apexchart type=bar height=350 :options="chartOptionsBarra" :series="seriesBarra" />
               </q-card-section>
@@ -239,7 +239,7 @@ export default {
           }
         },
         title: {
-          text: 'Grafico - Movimentação do estoque - ' + Object.freeze(yearGrafico),
+          text: 'Grafico - Movimentação do estoque - 2019',
           style: {
             fontSize: '18px',
             color: '#444'

@@ -16,8 +16,8 @@
                 </template>
 
                 <q-breadcrumbs-el icon="dashboard" label="Dashboard" to="/dashboard" />
-                <q-breadcrumbs-el icon="fas fa-box" to="/cadastro_produtos"  label="Cadastro de produto" />
-                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_produtos"  label="Consultar produto" />
+                <q-breadcrumbs-el to="/cadastrar_tipo_documento"  label="Cadastrar tipo de documento" />
+                <q-breadcrumbs-el icon="fas fa-search" to="/consultar_tipo_documento"  label="Consultar tipo do documento" />
 
               </q-breadcrumbs>
 
@@ -36,7 +36,7 @@
 
                     <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
                       <template v-slot:prepend>
-                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscarProdutos" flat dense round/>
+                        <q-btn :icon="dados ? 'refresh' : 'search'" @click="buscar" flat dense round/>
                       </template>
                     </q-input>
 
@@ -108,24 +108,12 @@
                       <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
-                    <q-td key="codigo_produto" :props="props">{{ props.row.codigo_produto }}</q-td>
-                    <q-td key="nome_produto" :props="props">{{ props.row.nome_produto }}</q-td>
-                    <q-td key="preco_unitario" :props="props">{{ props.row.preco_unitario }}</q-td>
-                    <q-td key="saldo" :props="props">{{ props.row.saldo }}</q-td>
-                    <q-td key="quantidade_min" :props="props">{{ props.row.quantidade_min }}</q-td>
-                    <q-td key="quantidade_max" :props="props">{{ props.row.quantidade_max }}</q-td>
-                    <q-td key="ativo" :props="props">{{ props.row.ativo ? 'Ativo' : 'Inativo' }}</q-td>
-                    <q-td key="controlaLote" :props="props">{{ props.row.controlaLote ? 'Sim' : 'Não' }}</q-td>
-                    <q-td key="unidade_medida" :props="props">{{ props.row.unidade_medida }}</q-td>
-                    <q-td key="categoria" :props="props">{{ props.row.categoria }}</q-td>
-                    <q-td key="grupo" :props="props">{{ props.row.grupo }}</q-td>
-                    <q-td key="fornecedor" :props="props">{{ props.row.fornecedor }}</q-td>
-                    <q-td key="estoque" :props="props">{{ props.row.estoque }}</q-td>
+                    <q-td key="tipo_documento" :props="props">{{ props.row.tipo_documento }}</q-td>
+                    <q-td key="ativo" :props="props">{{ props.row.ativo }}</q-td>
                   </q-tr>
                 </template>
 
               </q-table>
-
             </div>
 
           </div>
@@ -137,56 +125,42 @@
 </template>
 
 <script>
-import Produto from '../../service/produto/produto.js'
+import TipoDoc from '../../service/tipo_documento/tipo_documento.js'
 
 export default {
   data () {
     return {
-      loading: false,
       dados: false,
+      loading: true,
       filtroPesquisa: [],
       filter: '',
       selected: [],
-      visibleColumns: ['id', 'codigo_produto', 'nome_produto', 'preco_unitario', 'saldo', 'quantidade_min', 'quantidade_max', 'ativo'],
+      visibleColumns: ['id', 'tipo_documento', 'ativo'],
       separator: 'horizontal',
       data: [],
       columns: [
         { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
-        { name: 'codigo_produto', label: 'Cod. Produto', field: 'codigo_produto', align: 'left', sortable: true },
-        { name: 'nome_produto', label: 'Produto', field: 'nome_produto', align: 'left', sortable: true },
-        { name: 'preco_unitario', label: 'Preço unit.', field: 'preco_unitario', align: 'left', sortable: true },
-        { name: 'saldo', label: 'Saldo', field: 'saldo', align: 'left', sortable: true },
-        { name: 'quantidade_min', label: 'Quantidade min.', field: 'quantidade_min', align: 'left', sortable: true },
-        { name: 'quantidade_max', label: 'Quantidade max.', field: 'quantidade_max', align: 'left', sortable: true },
-        { name: 'ativo', label: 'Status', field: 'ativo', align: 'left', sortable: true },
-        { name: 'controlaLote', label: 'Controla Lote?', field: 'controlaLote', align: 'left', sortable: true },
-        { name: 'unidade_medida', label: 'Unidade medida', field: 'unidade_medida', align: 'left', sortable: true },
-        { name: 'categoria', label: 'Categoria', field: 'categoria', align: 'left', sortable: true },
-        { name: 'grupo', label: 'Grupo', field: 'grupo', align: 'left', sortable: true },
-        { name: 'fornecedor', label: 'Fornecedor', field: 'fornecedor', align: 'left', sortable: true },
-        { name: 'estoque', label: 'Estoque', field: 'estoque', align: 'left', sortable: true }
+        { name: 'tipo_documento', label: 'Tipo documento', field: 'tipo_documento', align: 'left', sortable: true },
+        { name: 'ativo', label: 'Status', field: 'ativo', align: 'left', sortable: true }
       ]
     }
   },
-  computed: {
-
-  },
   mounted () {
-    this.buscarProdutos()
+    this.buscar()
   },
   methods: {
-    buscarProdutos () {
+    buscar () {
       this.loading = true
-      Produto.buscarProduto()
-        .then((produto) => {
-          if (produto.data.errors) {
-            for (let i = 0; i < produto.data.errors.length; i++) {
+      TipoDoc.Buscar()
+        .then((tipoDoc) => {
+          if (tipoDoc.data.errors) {
+            for (let i = 0; i < tipoDoc.data.errors.length; i++) {
               this.$q.notify({
                 color: 'negative',
-                message: produto.data.errors[i].message,
+                message: tipoDoc.data.errors[i].message,
                 position: 'top-right',
                 icon: 'warning',
-                timeout: 1500,
+                timeout: 2000,
                 actions: [{
                   color: 'white',
                   icon: 'close'
@@ -194,24 +168,13 @@ export default {
               })
             }
           }
-          if (produto.data.status === 200) {
+          if (tipoDoc.data.status === 200) {
             this.dados = true
-            this.data = produto.data.response.map((p) => {
+            this.data = tipoDoc.data.response.map((u) => {
               return {
-                id: p.id_produto,
-                codigo_produto: p.codigo_produto,
-                nome_produto: p.nome_produto,
-                preco_unitario: p.preco_unitario,
-                saldo: p.saldo,
-                quantidade_min: p.quantidade_min,
-                quantidade_max: p.quantidade_max,
-                ativo: p.ativo,
-                controlaLote: p.controlaLote,
-                unidade_medida: p.unidade_medida.nome,
-                categoria: p.categoria.nome,
-                grupo: p.grupo.nome,
-                fornecedor: p.fornecedor.nome,
-                estoque: p.estoque.nome_estoque
+                id: u.id_tipo_documento,
+                tipo_documento: u.tipo_documento,
+                ativo: u.ativo ? 'Ativo' : 'Inativo'
               }
             })
           }
@@ -223,7 +186,7 @@ export default {
             message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
             position: 'top-right',
             icon: 'warning',
-            timeout: 1500,
+            timeout: 2000,
             actions: [{
               color: 'white',
               icon: 'close'
@@ -234,7 +197,7 @@ export default {
             message: `${error}`,
             position: 'top-right',
             icon: 'warning',
-            timeout: 1500,
+            timeout: 2000,
             actions: [{
               color: 'white',
               icon: 'close'

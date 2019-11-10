@@ -91,7 +91,7 @@
                               <q-input
                                 ref="rg"
                                 class="col-12"
-                                mask="##.###.###-#"
+                                mask="##.###.###-X"
                                 dense
                                 outlined
                                 v-model="usuario.rg"
