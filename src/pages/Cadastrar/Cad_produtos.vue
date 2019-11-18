@@ -116,7 +116,15 @@
                                 option-label="desc"
                                 map-options
                                 emit-value
-                              />
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      Nenhum estoque
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
                             </div>
 
                             <div class="col-md-3 col-sm-8 col-xs-12">
@@ -137,6 +145,13 @@
                                 class="col-12"
                                 label="Unidade de medida"
                               >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      Nenhuma unidade de medida
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
                                 <template v-slot:option="scope">
                                   <q-item
                                     v-bind="scope.itemProps"
@@ -165,7 +180,15 @@
                                 emit-value
                                 option-value="id"
                                 option-label="desc"
-                              />
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      Nenhuma categoria
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
                             </div>
 
                             <!-- Campo grupo do produto -->
@@ -182,7 +205,15 @@
                                 emit-value
                                 option-label="desc"
                                 option-value="id"
-                              />
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      Nenhum grupo
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
                             </div>
 
                             <!-- Campo Fornecedor -->
@@ -199,7 +230,15 @@
                                 option-label="desc"
                                 map-options
                                 emit-value
-                              />
+                              >
+                                <template v-slot:no-option>
+                                  <q-item>
+                                    <q-item-section class="text-grey">
+                                      Nenhum fornecedor
+                                    </q-item-section>
+                                  </q-item>
+                                </template>
+                              </q-select>
                             </div>
 
                             <!-- Campo preço unitario -->
@@ -284,7 +323,7 @@ export default {
           }
         })
       })
-    Estoque.buscarEstoque()
+    Estoque.buscarEstoqueAtivo()
       .then((estoque) => {
         this.estoqueOpt = estoque.data.response.map((e) => {
           return {

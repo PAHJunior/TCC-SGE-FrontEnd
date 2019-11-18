@@ -10,6 +10,9 @@ export default {
   buscarEstoque: () => {
     return http.get(`/`)
   },
+  buscarEstoqueAtivo: () => {
+    return http.get(`/ativos`)
+  },
   modificar: (id, body) => {
     return http.patch(`/${id}`, body)
   }

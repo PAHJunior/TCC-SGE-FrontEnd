@@ -29,10 +29,7 @@
             <q-card class="col-12 ">
               <q-card-section class=" q-col-gutter-sm text-center items-end">
 
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                >
+                <q-form>
                   <div class="row">
                     <div class="col">
                       <div class="q-gutter-y-md row justify-center col-12">
@@ -43,10 +40,21 @@
 
                           <div class="q-col-gutter-sm row">
 
-                            <!-- Campo do código do produto -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9'">
+                            <div class="row col-md-1 col-sm-1 col-xs-1">
                               <q-input
-                                class="col-md-12"
+                                class="col-12"
+                                dense
+                                outlined
+                                disable
+                                v-model="categoria.id"
+                                label="ID"
+                              />
+                            </div>
+
+                            <!-- Campo do código do produto -->
+                            <div :class="this.v_.nome ? 'validar-error row col-md-8 col-sm-8 col-xs-12' : 'row col-md-8 col-sm-8 col-xs-12'">
+                              <q-input
+                                class="col-12"
                                 dense
                                 outlined
                                 v-model="categoria.nome"
@@ -54,7 +62,7 @@
                               />
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-3 col-xs-12">
                               <q-checkbox
                                 class="float-right"
                                 left-label

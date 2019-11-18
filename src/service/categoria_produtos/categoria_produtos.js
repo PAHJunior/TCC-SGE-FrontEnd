@@ -4,10 +4,13 @@ export default {
   cadastrar: (categoria) => {
     return http.post('/', categoria)
   },
-  buscarID: (id) => {
+  buscarUm: (id) => {
     return http.get(`/${id}`)
   },
   buscar: () => {
     return http.get(`/`)
+  },
+  modificar: (id, categoria) => {
+    return http.patch(`/${id}`, categoria)
   }
 }

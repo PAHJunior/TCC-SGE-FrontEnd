@@ -44,7 +44,19 @@
                           <div class="q-col-gutter-sm row items-start">
 
                             <!-- Campo do código do produto -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div class="row col-md-1 col-xs-2 col-sm-1">
+                              <q-input
+                                class="col-12"
+                                dense
+                                disable
+                                outlined
+                                v-model="unidMedida.id"
+                                label="ID"
+                              />
+                            </div>
+
+                            <!-- Campo do código do produto -->
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9 col-xs-9 col-sm-8' : 'row col-md-9 col-xs-9 col-sm-8'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -54,8 +66,16 @@
                               />
                             </div>
 
+                            <div class="col-md-2 col-xs-12 col-sm-3">
+                              <q-checkbox
+                                class="float-right"
+                                left-label
+                                v-model="unidMedida.ativo"
+                                label="Status"/>
+                            </div>
+
                             <!-- Campo do Descrição -->
-                            <div :class="this.v_.descricao ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div :class="this.v_.descricao ? 'validar-error row col-12' : 'row col-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -68,19 +88,11 @@
                               />
                             </div>
 
-                            <div class="col-md-2">
-                              <q-checkbox
-                                class="float-right"
-                                left-label
-                                v-model="unidMedida.ativo"
-                                label="Status"/>
-                            </div>
-
                           </div>
 
                         </fieldset>
 
-                        <div class="row col-md-6 ">
+                        <div class="row col-6 ">
                           <q-btn label="Cadastrar" type="submit" @click="Cadastrar" color="primary" class="col-12"/>
                         </div>
 
@@ -113,6 +125,7 @@ export default {
         descricao: false
       },
       unidMedida: {
+        id: '',
         nome: '',
         descricao: '',
         ativo: true

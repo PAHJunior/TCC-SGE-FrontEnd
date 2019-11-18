@@ -40,10 +40,22 @@
 
                           <div class="q-col-gutter-sm row">
 
-                            <!-- Campo do código do produto -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9'">
+                            <!-- Campo do ID -->
+                            <div class="row col-md-1 col-sm-1 col-xs-12">
                               <q-input
-                                class="col-md-12"
+                                class="col-12"
+                                dense
+                                disable
+                                outlined
+                                v-model="grupo.id"
+                                label="ID"
+                              />
+                            </div>
+
+                            <!-- Campo do código do produto -->
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9 col-sm-9 col-xs-12' : 'row col-md-9 col-sm-9 col-xs-12'">
+                              <q-input
+                                class="col-12"
                                 dense
                                 outlined
                                 v-model="grupo.nome"
@@ -51,7 +63,7 @@
                               />
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
                               <q-checkbox
                                 class="float-right"
                                 left-label
@@ -60,7 +72,7 @@
                             </div>
 
                             <!-- Campo do Descrição -->
-                            <div :class="this.v_.descricao ? 'validar-error row col-md-6' : 'row col-md-6'">
+                            <div :class="this.v_.descricao ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -71,7 +83,7 @@
                               />
                             </div>
 
-                            <div :class="this.v_.fk_categoria_produto ? 'validar-error row col-md-6' : 'row col-md-6'">
+                            <div :class="this.v_.fk_categoria_produto ? 'validar-error row col-md-6 col-sm-6 col-xs-12' : 'row col-md-6 col-sm-6 col-xs-12'">
                               <q-select
                                 class="col-12"
                                 label="Categoria do produto"
@@ -90,7 +102,7 @@
 
                         </fieldset>
 
-                        <div class="row col-md-6 ">
+                        <div class="row col-6 ">
                           <q-btn label="Cadastrar" type="submit" @click="cadastrar" color="primary" class="col-12"/>
                         </div>
 
@@ -138,6 +150,7 @@ export default {
         fk_categoria_produto: false
       },
       grupo: {
+        id: '',
         nome: '',
         descricao: '',
         ativo: true,

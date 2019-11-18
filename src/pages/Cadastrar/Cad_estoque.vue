@@ -29,10 +29,7 @@
             <q-card class="col-12 ">
               <q-card-section class=" q-col-gutter-sm text-center items-end">
 
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                >
+                <q-form>
                   <div class="row">
                     <div class="col">
                       <div class="q-gutter-y-md row justify-center col-12">
@@ -43,9 +40,9 @@
 
                           <div class="q-col-gutter-sm row items-start">
 
-                            <div class="row col-1">
+                            <div class="row col-md-1 col-xs-2 col-sm-2">
                               <q-input
-                                class="col-md-12 col-xs-12 "
+                                class="col-12 "
                                 dense
                                 outlined
                                 v-model="estoque.id"
@@ -54,9 +51,9 @@
                               />
                             </div>
 
-                            <div :class="this.v_.nome_estoque ? 'validar-error row col-9' : 'row col-9'">
+                            <div :class="this.v_.nome_estoque ? 'validar-error row col-md-11 col-xs-10 col-sm-10' : 'row col-md-11 col-xs-10 col-sm-10'">
                               <q-input
-                                class="col-md-12 col-xs-12 "
+                                class="col-12"
                                 dense
                                 outlined
                                 v-model="estoque.nome_estoque"
@@ -66,34 +63,14 @@
                               />
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-12 col-xs-12 col-sm-12">
                               <q-checkbox class="float-right" left-label v-model="estoque.ativo" label="Status do estoque" />
                             </div>
-
-                            <!-- Campo do quantidade_total -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.valor_estoque"
-                              label="Quantidade Total"
-                              disable
-                            />
-
-                            <!-- Campo data de nascimento -->
-                            <q-input
-                              class="col-md-6"
-                              dense
-                              outlined
-                              v-model="estoque.quantidade_total"
-                              label="Valor Estoque"
-                              disable
-                            />
 
                           </div>
                         </fieldset>
 
-                        <div class="row col-md-6 ">
+                        <div class="row col-md-6 col-sm-6 col-xs-6 ">
                           <q-btn label="Cadastrar" @click="cadastrarEstoque" type="submit" color="primary" class="col-12"/>
                         </div>
 

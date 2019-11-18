@@ -434,6 +434,7 @@ export default {
         this.usuario.endereco.logradouro = ''
         this.usuario.endereco.numero = ''
         this.usuario.endereco.bairro = ''
+        this.usuario.endereco.cidade = ''
         this.usuario.endereco.uf = ''
         this.usuario.endereco.complemento = ''
       }

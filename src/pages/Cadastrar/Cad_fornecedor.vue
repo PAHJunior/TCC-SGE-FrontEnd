@@ -29,10 +29,7 @@
             <q-card class="col-12 ">
               <q-card-section class=" q-col-gutter-sm text-center items-end">
 
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                >
+                <q-form>
                   <div class="row">
 
                     <div class="col">
@@ -45,7 +42,7 @@
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo do cnome do fornecedor -->
-                            <div :class="this.v_.nome ? 'validar-error row col-md-9' : 'row col-md-9'">
+                            <div :class="this.v_.nome ? 'validar-error row col-md-9 col-xs-12 col-sm-12' : 'row col-md-9 col-xs-12 col-sm-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -55,7 +52,7 @@
                               />
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-xs-12 col-sm-12">
                               <q-checkbox
                                 class="float-right"
                                 left-label
@@ -73,7 +70,7 @@
                           <div class="q-col-gutter-sm row">
 
                             <!-- Campo CEP -->
-                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.cep ? 'validar-error row col-md-2 col-xs-12 col-sm-3' : 'row col-md-2 col-xs-12 col-sm-3'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -81,14 +78,12 @@
                                 outlined
                                 v-model="fornecedor.endereco.cep"
                                 label="CEP"
-                                v-on:keyup.enter="buscarCEP"
                               />
                             </div>
 
                             <!-- Campo Logradouro -->
-                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8' : 'row col-md-8'">
+                            <div :class="this.v_.endereco.logradouro ? 'validar-error row col-md-8 col-xs-12 col-sm-9' : 'row col-md-8 col-xs-12 col-sm-9'">
                               <q-input
-                                v-on:keyup.tab="buscarCEP"
                                 class="col-12"
                                 dense
                                 outlined
@@ -98,7 +93,7 @@
                             </div>
 
                             <!-- Campo Numero -->
-                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.numero ? 'validar-error row col-md-2 col-xs-12 col-sm-3' : 'row col-md-2 col-xs-12 col-sm-3'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -109,7 +104,7 @@
                             </div>
 
                             <!-- Campo Bairro -->
-                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div :class="this.v_.endereco.bairro ? 'validar-error row col-md-5 col-xs-12 col-sm-9' : 'row col-md-5 col-xs-12 col-sm-9'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -120,7 +115,7 @@
                             </div>
 
                             <!-- Campo Cidade -->
-                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5' : 'row col-md-5'">
+                            <div :class="this.v_.endereco.cidade ? 'validar-error row col-md-5 col-xs-12 col-sm-9' : 'row col-md-5 col-xs-12 col-sm-9'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -131,7 +126,7 @@
                             </div>
 
                             <!-- Campo UF -->
-                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2' : 'row col-md-2'">
+                            <div :class="this.v_.endereco.uf ? 'validar-error row col-md-2 col-xs-12 col-sm-3' : 'row col-md-2 col-xs-12 col-sm-3'">
                               <q-select
                                 class="col-12"
                                 dense
@@ -146,7 +141,7 @@
                             </div>
 
                             <!-- Campo UF -->
-                            <div :class="this.v_.endereco.complemento ? 'validar-error row col-md-12' : 'row col-md-12'">
+                            <div :class="this.v_.endereco.complemento ? 'validar-error row col-md-12 col-xs-12 col-sm-12' : 'row col-md-12 col-xs-12 col-sm-12'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -166,7 +161,7 @@
                           <div class="q-col-gutter-sm row">
 
                             <q-input
-                              class="col-md-4"
+                              class="col-md-4 col-xs-12 col-sm-4"
                               dense
                               outlined
                               v-model="fornecedor.representante.nome"
@@ -174,7 +169,7 @@
                             />
 
                             <q-input
-                              class="col-md-8"
+                              class="col-md-8 col-xs-12 col-sm-8"
                               dense
                               outlined
                               v-model="fornecedor.representante.email"
@@ -183,7 +178,7 @@
 
                             <!-- Campo do Telefone -->
                             <q-input
-                              class="col-md-6"
+                              class="col-md-6 col-xs-12 col-sm-6"
                               dense
                               mask="(##) ####-####"
                               outlined
@@ -193,7 +188,7 @@
 
                             <!-- Campo do Celular -->
                             <q-input
-                              class="col-md-6"
+                              class="col-md-6 col-xs-12 col-sm-6"
                               dense
                               mask="(##) #####-####"
                               outlined
@@ -205,7 +200,7 @@
 
                         </fieldset>
 
-                        <div class="row col-md-6 ">
+                        <div class="row col-md-6 col-xs-6 col-sm-6 ">
                           <q-btn label="Cadastrar" @click="cadastrar" type="submit" color="primary" class="col-12"/>
                         </div>
 
@@ -268,114 +263,130 @@ export default {
           celular: ''
         }
       },
-      estados: [{
-        value: 'AC',
-        label: 'Acre'
-      },
-      {
-        value: 'AL',
-        label: 'Alagoas'
-      },
-      {
-        value: 'AM',
-        label: 'Amazonas'
-      },
-      {
-        value: 'AP',
-        label: 'Amapá'
-      },
-      {
-        value: 'BA',
-        label: 'Bahia'
-      },
-      {
-        value: 'CE',
-        label: 'Ceará'
-      },
-      {
-        value: 'DF',
-        label: 'Distrito Federal'
-      },
-      {
-        value: 'ES',
-        label: 'Espírito Santo'
-      },
-      {
-        value: 'GO',
-        label: 'Goiás'
-      },
-      {
-        value: 'MA',
-        label: 'Maranhão'
-      },
-      {
-        value: 'MG',
-        label: 'Minas Gerais'
-      },
-      {
-        value: 'MS',
-        label: 'Mato Grosso do Sul'
-      },
-      {
-        value: 'MT',
-        label: 'Mato Grosso'
-      },
-      {
-        value: 'PA',
-        label: 'Pará'
-      },
-      {
-        value: 'PB',
-        label: 'Paraíba'
-      },
-      {
-        value: 'PE',
-        label: 'Pernambuco'
-      },
-      {
-        value: 'PI',
-        label: 'Piauí'
-      },
-      {
-        value: 'PR',
-        label: 'Paraná'
-      },
-      {
-        value: 'RJ',
-        label: 'Rio de Janeiro'
-      },
-      {
-        value: 'RN',
-        label: 'Rio Grande do Norte'
-      },
-      {
-        value: 'RO',
-        label: 'Rondônia'
-      },
-      {
-        value: 'RR',
-        label: 'Roraima'
-      },
-      {
-        value: 'RS',
-        label: 'Rio Grande do Sul'
-      },
-      {
-        value: 'SC',
-        label: 'Santa Catarina'
-      },
-      {
-        value: 'SE',
-        label: 'Sergipe'
-      },
-      {
-        value: 'SP',
-        label: 'São Paulo'
-      },
-      {
-        value: 'TO',
-        label: 'Tocantins'
-      }]
+      estados: [
+        {
+          value: 'AC',
+          label: 'Acre'
+        },
+        {
+          value: 'AL',
+          label: 'Alagoas'
+        },
+        {
+          value: 'AM',
+          label: 'Amazonas'
+        },
+        {
+          value: 'AP',
+          label: 'Amapá'
+        },
+        {
+          value: 'BA',
+          label: 'Bahia'
+        },
+        {
+          value: 'CE',
+          label: 'Ceará'
+        },
+        {
+          value: 'DF',
+          label: 'Distrito Federal'
+        },
+        {
+          value: 'ES',
+          label: 'Espírito Santo'
+        },
+        {
+          value: 'GO',
+          label: 'Goiás'
+        },
+        {
+          value: 'MA',
+          label: 'Maranhão'
+        },
+        {
+          value: 'MG',
+          label: 'Minas Gerais'
+        },
+        {
+          value: 'MS',
+          label: 'Mato Grosso do Sul'
+        },
+        {
+          value: 'MT',
+          label: 'Mato Grosso'
+        },
+        {
+          value: 'PA',
+          label: 'Pará'
+        },
+        {
+          value: 'PB',
+          label: 'Paraíba'
+        },
+        {
+          value: 'PE',
+          label: 'Pernambuco'
+        },
+        {
+          value: 'PI',
+          label: 'Piauí'
+        },
+        {
+          value: 'PR',
+          label: 'Paraná'
+        },
+        {
+          value: 'RJ',
+          label: 'Rio de Janeiro'
+        },
+        {
+          value: 'RN',
+          label: 'Rio Grande do Norte'
+        },
+        {
+          value: 'RO',
+          label: 'Rondônia'
+        },
+        {
+          value: 'RR',
+          label: 'Roraima'
+        },
+        {
+          value: 'RS',
+          label: 'Rio Grande do Sul'
+        },
+        {
+          value: 'SC',
+          label: 'Santa Catarina'
+        },
+        {
+          value: 'SE',
+          label: 'Sergipe'
+        },
+        {
+          value: 'SP',
+          label: 'São Paulo'
+        },
+        {
+          value: 'TO',
+          label: 'Tocantins'
+        }
+      ]
+    }
+  },
+  watch: {
+    'fornecedor.endereco.cep': function (val) {
+      if (val.length > 8) {
+        this.buscarCEP(val)
+      } else {
+        this.fornecedor.endereco.logradouro = ''
+        this.fornecedor.endereco.numero = ''
+        this.fornecedor.endereco.bairro = ''
+        this.fornecedor.endereco.cidade = ''
+        this.fornecedor.endereco.uf = ''
+        this.fornecedor.endereco.complemento = ''
+      }
     }
   },
   methods: {
@@ -394,8 +405,8 @@ export default {
       this.fornecedor.representante.telefone = ''
       this.fornecedor.representante.celular = ''
     },
-    buscarCEP () {
-      Cep.cep(this.fornecedor.endereco.cep)
+    buscarCEP (value) {
+      Cep.cep(value)
         .then(resposta => {
           const cep = resposta.data
           this.fornecedor.endereco.logradouro = cep.logradouro

@@ -42,9 +42,7 @@
 
                   </div>
 
-                  <div class="row justify-between col-md-5 ">
-
-                  </div>
+                  <q-space />
 
                   <div class="col-md-3">
 
@@ -105,7 +103,7 @@
                 <template v-slot:body="props">
                   <q-tr :props="props" >
                     <q-td auto-width>
-                      <q-btn dense icon="edit" flat round @click="props.selected = !props.selected"/>
+                      <q-btn dense icon="edit" flat round @click="openModalEdit(props)"/>
                     </q-td>
                     <q-td key="id" :props="props">{{ props.row.id }}</q-td>
                     <q-td key="nome" :props="props">{{ props.row.nome }}</q-td>
@@ -122,6 +120,79 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="modalEdit">
+      <q-card class="col-12 ">
+        <q-card-section class=" q-col-gutter-sm text-center items-end">
+          <q-form>
+            <div class="row">
+              <div class="col">
+                <div class="q-gutter-y-md row justify-center col-12">
+                  <fieldset class="col-12 no-border">
+
+                    <legend>Dados para categoria</legend>
+
+                    <div class="q-col-gutter-sm row items-start">
+
+                      <!-- Campo do código do produto -->
+                      <div class="row col-md-1 col-xs-2 col-sm-1">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          disable
+                          v-model="unidMedida.id"
+                          label="ID"
+                        />
+                      </div>
+
+                      <!-- Campo do código do produto -->
+                      <div :class="this.v_.nome ? 'validar-error row col-md-9 col-xs-10 col-sm-8' : 'row col-md-9 col-xs-10 col-sm-8'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          v-model="unidMedida.nome"
+                          label="Nome unidade de medida"
+                        />
+                      </div>
+
+                      <div class="col-md-2 col-xs-12 col-sm-3">
+                        <q-checkbox
+                          class="float-right"
+                          left-label
+                          v-model="unidMedida.ativo"
+                          label="Status"/>
+                      </div>
+
+                      <!-- Campo do Descrição -->
+                      <div :class="this.v_.descricao ? 'validar-error row col-12' : 'row col-12'">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          autogrow
+                          counter
+                          maxlength="20"
+                          v-model="unidMedida.descricao"
+                          label="Descrição da unidade de medida"
+                        />
+                      </div>
+
+                    </div>
+
+                  </fieldset>
+
+                  <div class="row col-md-6 col-sm-6 col-xs-6">
+                    <q-btn label="Alterar" @click="alterar" type="submit" color="primary" class="col-12"/>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -131,6 +202,17 @@ import UndMedida from '../../service/unidade_medida/unidade_medida.js'
 export default {
   data () {
     return {
+      v_: {
+        nome: false,
+        descricao: false
+      },
+      unidMedida: {
+        id: '',
+        nome: '',
+        descricao: '',
+        ativo: true
+      },
+      modalEdit: false,
       dados: false,
       loading: true,
       filtroPesquisa: [],
@@ -148,10 +230,43 @@ export default {
     }
   },
   mounted () {
-    this.buscar()
+    this.buscarTodos()
   },
   methods: {
-    buscar () {
+    validarCampos () {
+      this.errors = []
+      if (this.unidMedida.nome.length === 0) {
+        this.errors.push({ msg: 'O campo nome é obrigátorio', campo: 'nome', erro: true })
+        this.v_.nome = true
+      } else {
+        this.v_.nome = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
+    },
+    openModalEdit (props) {
+      this.modalEdit = !this.modalEdit
+      this.buscarUm(props.row.id)
+    },
+    buscarTodos () {
       this.loading = true
       UndMedida.buscar()
         .then((undMedida) => {
@@ -210,6 +325,87 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    buscarUm (id) {
+      this.loading = true
+      UndMedida.buscarUm(id)
+        .then((und) => {
+          this.unidMedida = und.data.response[0]
+          this.unidMedida.id = und.data.response[0].id_unid_medida
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$q.notify({
+            color: 'negative',
+            message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+          this.$q.notify({
+            color: 'negative',
+            message: `${error}`,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    alterar () {
+      if (this.validarCampos()) {
+        UndMedida.modificar(this.unidMedida.id, this.unidMedida)
+          .then((und) => {
+            if (und.data.errors) {
+              for (let i = 0; i < und.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: und.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (und.data.status === 200) {
+              this.$q.notify({
+                color: 'positive',
+                message: und.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.modalEdit = false
+              this.buscarTodos()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
+      }
     }
   }
 }

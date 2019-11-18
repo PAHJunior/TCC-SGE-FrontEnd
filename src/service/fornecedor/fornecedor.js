@@ -9,5 +9,8 @@ export default {
   },
   buscar: () => {
     return http.get(`/`)
+  },
+  modificar: (id, fornecedor) => {
+    return http.patch(`/${id}`, fornecedor)
   }
 }

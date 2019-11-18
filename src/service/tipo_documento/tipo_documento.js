@@ -7,10 +7,10 @@ export default {
   Cadastrar: (tipodoc) => {
     return http.post('/', tipodoc)
   },
-  BuscarUm: (id) => {
+  buscarUm: (id) => {
     return http.get(`/${id}`)
   },
-  Modificar: (id, body) => {
-    return http.patch(`/${id}`, body)
+  modificar: (id, tipoDoc) => {
+    return http.patch(`/${id}`, tipoDoc)
   }
 }

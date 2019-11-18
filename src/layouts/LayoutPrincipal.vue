@@ -79,9 +79,6 @@
             <q-list bordered class="rounded-borders" style="max-width: 400px" v-for="(notify, nid) in notificacoes" :key="nid">
 
               <q-item>
-                <!-- <q-item-section avatar top>
-                  <q-icon name="feedback" size="34px" />
-                </q-item-section> -->
 
                 <q-item-section top>
                   <q-item-label caption>
@@ -338,7 +335,7 @@ export default {
             { label: 'Consultar Unid. de Medida', link: '/consultar_unid_medida' },
             { label: 'Consultar Tipo do doc.', link: '/consultar_tipo_documento' },
             // { label: 'Consultar Hierarquia', link: 'consultar_hierarquia' },
-            { label: 'Consultar Movimentações', link: '/consultar_tipo_documento' }
+            { label: 'Consultar Movimentações', link: '/consultar_movimentacao' }
           ]
         },
         relatorio: {

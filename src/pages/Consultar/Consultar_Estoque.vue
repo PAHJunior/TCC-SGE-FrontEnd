@@ -42,9 +42,7 @@
 
                   </div>
 
-                  <div class="row justify-between col-md-5 ">
-
-                  </div>
+                  <q-space />
 
                   <div class="col-md-3">
 
@@ -134,57 +132,38 @@
 
                     <div class="q-col-gutter-sm row items-start">
 
-                    <div class="row col-1">
-                      <q-input
-                        class="col-md-12 col-xs-12 "
-                        dense
-                        outlined
-                        v-model="estoque.id"
-                        label="ID"
-                      />
-                    </div>
+                      <div class="row col-md-1 col-sm-1 col-xs-1">
+                        <q-input
+                          class="col-12"
+                          dense
+                          outlined
+                          disable
+                          v-model="estoque.id"
+                          label="ID"
+                        />
+                      </div>
 
-                    <div :class="this.v_.nome_estoque ? 'validar-error row col-9' : 'row col-9'">
-                      <q-input
-                        class="col-md-12 col-xs-12 "
-                        dense
-                        outlined
-                        v-model="estoque.nome_estoque"
-                        label="Nome do estoque"
-                        counter
-                        maxlength="20"
-                      />
-                    </div>
+                      <div :class="this.v_.nome_estoque ? 'validar-error row col-md-11 col-sm-11 col-xs-11' : 'row col-md-11 col-sm-11 col-xs-11'">
+                        <q-input
+                          class="col-12 "
+                          dense
+                          outlined
+                          v-model="estoque.nome_estoque"
+                          label="Nome do estoque"
+                          counter
+                          maxlength="20"
+                        />
+                      </div>
 
-                    <div class="col-md-2">
-                      <q-checkbox class="float-right" left-label v-model="estoque.ativo" label="Status do estoque" />
-                    </div>
-
-                    <!-- Campo do quantidade_total -->
-                    <q-input
-                      class="col-md-6"
-                      dense
-                      outlined
-                      v-model="estoque.valor_estoque"
-                      label="Quantidade Total"
-                      disable
-                    />
-
-                    <!-- Campo data de nascimento -->
-                    <q-input
-                      class="col-md-6"
-                      dense
-                      outlined
-                      v-model="estoque.quantidade_total"
-                      label="Valor Estoque"
-                      disable
-                    />
+                      <div class="col-md-12">
+                        <q-checkbox class="float-right" left-label v-model="estoque.ativo" label="Status do estoque" />
+                      </div>
 
                     </div>
                   </fieldset>
 
-                  <div class="row col-md-6 ">
-                    <q-btn label="Cadastrar" @click="cadastrarEstoque" type="submit" color="primary" class="col-12"/>
+                  <div class="row col-md-6 col-sm-6 col-xs-6">
+                    <q-btn label="Cadastrar" @click="alterarEstoque" type="submit" color="primary" class="col-12"/>
                   </div>
 
                 </div>
@@ -203,6 +182,9 @@ import Estoque from '../../service/estoque/estoque.js'
 export default {
   data () {
     return {
+      filtro: {
+        ativo: false
+      },
       errors: [],
       v_: {
         nome_estoque: false,
@@ -230,7 +212,6 @@ export default {
       columns: [
         { required: true, name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true },
         { name: 'nome_estoque', label: 'Nome estoque', field: 'nome_estoque', align: 'left', sortable: true },
-        { name: 'quantidade_total', label: 'Quantidade', field: 'quantidade', align: 'left', sortable: true },
         { name: 'ativo', label: 'Ativo', field: 'ativo', align: 'left', sortable: true }
       ]
     }
@@ -322,6 +303,81 @@ export default {
     openModalEdit (props) {
       this.modalEdit = !this.modalEdit
       this.buscarUm(props.row.id)
+    },
+    alterarEstoque () {
+      if (this.validarCampos()) {
+        Estoque.modificar(this.estoque.id, this.estoque)
+          .then((estoque) => {
+            if (estoque.data.errors) {
+              for (let i = 0; i < estoque.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: estoque.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 2000,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (estoque.data.status === 200) {
+              this.$q.notify({
+                color: 'positive',
+                message: estoque.data.response,
+                position: 'top-right',
+                icon: 'thumb_up'
+              })
+              this.modalEdit = false
+              this.buscar()
+            }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              message: `Ocorreu um erro inesperado, entre em contato com o suporte`,
+              position: 'top-right',
+              icon: 'warning',
+              timeout: 2000,
+              actions: [{
+                color: 'white',
+                icon: 'close'
+              }]
+            })
+          })
+      }
+    },
+    validarCampos () {
+      this.errors = []
+      // Verificando o nome_estoque
+      if (this.estoque.nome_estoque.length === 0) {
+        this.errors.push({ msg: 'O campo nome do estoque é obrigátorio', campo: 'nome_estoque', erro: true })
+        this.v_.nome_estoque = true
+      } else {
+        this.v_.nome_estoque = false
+      }
+
+      // Exibindo os erros
+      if (this.errors.length > 0) {
+        for (let i = 0; i < this.errors.length; i++) {
+          this.$q.notify({
+            color: 'negative',
+            message: this.errors[i].msg,
+            position: 'top-right',
+            icon: 'warning',
+            timeout: 2000,
+            actions: [{
+              color: 'white',
+              icon: 'close'
+            }]
+          })
+        }
+        return false
+      } else {
+        return true
+      }
     }
   },
   computed: {

@@ -42,9 +42,7 @@
 
                   </div>
 
-                  <div class="row justify-between col-md-5 ">
-
-                  </div>
+                  <q-space />
 
                   <div class="col-md-3">
 
@@ -461,7 +459,7 @@ export default {
         email: '',
         telefone: '',
         celular: '',
-        fk_usuario_hierarquia: 1,
+        fk_usuario_hierarquia: '',
         fk_usuario_empresa: 1,
         endereco: {
           cep: '',
@@ -559,50 +557,52 @@ export default {
       }
     },
     alterarUsuario () {
-      Usuario.modificar(this.usuario.id, this.usuario)
-        .then((usuario) => {
-          if (usuario.data.errors) {
-            for (let i = 0; i < usuario.data.errors.length; i++) {
+      if (this.validarCampos()) {
+        Usuario.modificar(this.usuario.id, this.usuario)
+          .then((usuario) => {
+            if (usuario.data.errors) {
+              for (let i = 0; i < usuario.data.errors.length; i++) {
+                this.$q.notify({
+                  color: 'negative',
+                  message: usuario.data.errors[i].message,
+                  position: 'top-right',
+                  icon: 'warning',
+                  timeout: 1500,
+                  actions: [{
+                    color: 'white',
+                    icon: 'close'
+                  }]
+                })
+              }
+            }
+            if (usuario.data.status === 200) {
               this.$q.notify({
-                color: 'negative',
-                message: usuario.data.errors[i].message,
+                color: 'positive',
+                message: usuario.data.response,
                 position: 'top-right',
-                icon: 'warning',
+                icon: 'thumb_up',
                 timeout: 1500,
                 actions: [{
                   color: 'white',
                   icon: 'close'
                 }]
               })
+              this.modalEdit = false
+              this.buscarUsuarios()
             }
-          }
-          if (usuario.data.status === 200) {
+          })
+          .catch(() => {
             this.$q.notify({
               color: 'positive',
-              message: usuario.data.response,
+              message: 'Ocorreu um erro inesperado, entre em contato com o suporte',
               position: 'top-right',
-              icon: 'thumb_up',
-              timeout: 1500,
-              actions: [{
-                color: 'white',
-                icon: 'close'
-              }]
+              icon: 'thumb_up'
             })
-            this.buscarUsuarios()
-          }
-        })
-        .catch(() => {
-          this.$q.notify({
-            color: 'positive',
-            message: 'Ocorreu um erro inesperado, entre em contato com o suporte',
-            position: 'top-right',
-            icon: 'thumb_up'
           })
-        })
+      }
     },
-    openModalEdit (usuario) {
-      this.modalEdit = !this.modalEdit
-      Usuario.buscarUmUsuario(usuario.row.id)
+    buscarUm (id) {
+      Usuario.buscarUmUsuario(id)
         .then((user) => {
           this.usuario = user.data.response[0]
           this.usuario.dt_nascimento = this.formartDate(user.data.response[0].dt_nascimento)
@@ -621,6 +621,11 @@ export default {
             }]
           })
         })
+    },
+    openModalEdit (usuario) {
+      this.falseValidate()
+      this.modalEdit = !this.modalEdit
+      this.buscarUm(usuario.row.id)
     },
     buscarUsuarios () {
       this.loadingUser = true
@@ -832,6 +837,25 @@ export default {
       } else {
         return true
       }
+    },
+    falseValidate () {
+      this.v_.id = false
+      this.v_.nome = false
+      this.v_.fk_usuario_hierarquia = false
+      this.v_.rg = false
+      this.v_.cpf = false
+      this.v_.dt_nascimento = false
+      this.v_.login = false
+      this.v_.email = false
+      this.v_.telefone = false
+      this.v_.celular = false
+      this.v_.endereco.cep = false
+      this.v_.endereco.logradouro = false
+      this.v_.endereco.numero = false
+      this.v_.endereco.bairro = false
+      this.v_.endereco.cidade = false
+      this.v_.endereco.uf = false
+      this.v_.endereco.complemento = false
     }
   }
 }

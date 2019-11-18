@@ -42,9 +42,7 @@
 
                   </div>
 
-                  <div class="row justify-between col-md-5 ">
-
-                  </div>
+                  <q-space />
 
                   <div class="col-md-3">
 

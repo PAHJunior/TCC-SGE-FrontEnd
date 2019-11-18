@@ -41,7 +41,19 @@
                           <div class="q-col-gutter-sm row items-start">
 
                             <!-- Campo do código do produto -->
-                            <div :class="this.v_.tipo_documento ? 'validar-error row col-md-10' : 'row col-md-10'">
+                            <div class="row col-md-1 col-xs-12 col-sm-3">
+                              <q-input
+                                class="col-12"
+                                dense
+                                outlined
+                                disable
+                                v-model="tipoDoc.id"
+                                label="ID"
+                              />
+                            </div>
+
+                            <!-- Campo do código do produto -->
+                            <div :class="this.v_.tipo_documento ? 'validar-error row col-md-9 col-xs-12 col-sm-9' : 'row col-md-9 col-xs-12 col-sm-9'">
                               <q-input
                                 class="col-12"
                                 dense
@@ -51,7 +63,7 @@
                               />
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-xs-12 col-sm-12">
                               <q-checkbox
                                 class="float-right"
                                 left-label
@@ -92,9 +104,10 @@ export default {
     return {
       errors: [],
       v_: {
-        tipoDoc: false
+        tipo_documento: false
       },
       tipoDoc: {
+        id: '',
         tipo_documento: '',
         ativo: true
       }
@@ -105,9 +118,9 @@ export default {
       this.errors = []
       if (this.tipoDoc.tipo_documento.length === 0) {
         this.errors.push({ msg: 'O campo tipo do documento é obrigátorio', campo: 'nome', erro: true })
-        this.v_.tipoDoc = true
+        this.v_.tipo_documento = true
       } else {
-        this.v_.tipoDoc = false
+        this.v_.tipo_documento = false
       }
 
       // Exibindo os erros
