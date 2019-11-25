@@ -11,6 +11,10 @@ export default {
       nome_fantasia: '',
       razao_social: '',
       cnpj: ''
+    },
+    hierarquia: {
+      id_hierarquia: 0,
+      nome: ''
     }
   }
 }

@@ -22,7 +22,7 @@
                 </template>
 
                 <q-breadcrumbs-el icon="home" label="Home" to="/" />
-                <q-breadcrumbs-el icon="dashboard" to="/dashboard"  :label=title />
+                <q-breadcrumbs-el icon="dashboard" to="/dashboard"  label="Dashboard" />
 
               </q-breadcrumbs>
 
@@ -36,7 +36,25 @@
             <q-card class="col-12">
               <q-card-section class="text-center">
                 <span class="text-weight-medium text-h5">Selecionar Estoque</span>
-                <q-select outlined v-model="buscaEstoque" dense options-dense :options="options"/>
+                <q-select
+                  outlined
+                  v-model="home.estoque"
+                  dense
+                  options-dense
+                  :options="estoqueOpt"
+                  option-value="id"
+                  option-label="desc"
+                  map-options
+                  emit-value
+                  >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        Nenhum estoque encontrado
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </q-card-section>
             </q-card>
 
@@ -47,7 +65,24 @@
             <q-card class="col-12">
               <q-card-section class="text-center">
                 <span class="text-weight-medium text-h5">Selecionar Produto</span>
-                <q-select outlined v-model="produto" dense :options-dense="denseOpts"/>
+                <q-select
+                  outlined
+                  v-model="home.produto"
+                  option-value="id"
+                  option-label="desc"
+                  map-options
+                  emit-value
+                  dense
+                  options-dense
+                  :options="produtoOpt">
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        Nenhum produto encontrado
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </q-card-section>
             </q-card>
 
@@ -124,33 +159,24 @@
 <script>
 // import ApexCharts from 'apexcharts' // Gráfico
 import VueApexCharts from 'vue-apexcharts'
+import Estoque from '../service/estoque/estoque.js'
+import Produto from '../service/produto/produto.js'
 
 export default {
   components: {
     apexchart: VueApexCharts
   },
   data () {
-    const year = []
-    const yearAtual = new Date().getFullYear()
-    for (let i = 2000; i <= yearAtual; i++) {
-      year.push(i)
-    }
-    const yearGrafico = []
-    yearGrafico.push(this.yearGrafico)
     return {
-      yearGrafico: 0,
-      year: Object.freeze(year),
-      model2: '',
-      denseOpts: [],
-      buscaEstoque: 'Estoque A',
-      options: [
-        'Estoque A', 'Estoque B'
-      ],
-      produto: 'Prego',
+      estoqueOpt: [],
+      produtoOpt: [],
+      home: {
+        estoque: '',
+        produto: ''
+      },
       entrada: 500,
       saida: 348,
       valorEstoque: '100.000.00',
-      title: 'Dashboard',
       seriesBarra: [{
         name: 'Entrada',
         data: [10, 31, 40, 101, 50, 36, 32, 23, 24, 15, 34, 32]
@@ -245,32 +271,36 @@ export default {
             color: '#444'
           }
         }
-      },
-
-      // Donut
-      seriesDonut: [44, 55, 41, 17, 15],
-      chartOptionsDonut: {
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }],
-        labels: [ 'Produto A', 'Produto B', 'Produto C', 'Produto D', 'Produto E' ],
-        legend: {
-          position: 'left',
-          horizontalAlign: 'center'
-        }
       }
     }
   },
   computed: {
 
+  },
+  mounted () {
+    Estoque.buscarEstoqueAtivo()
+      .then((estoque) => {
+        this.estoqueOpt = estoque.data.response.map((e) => {
+          return {
+            id: e.id_estoque,
+            desc: e.nome_estoque
+          }
+        })
+      })
+  },
+  watch: {
+    'home.estoque': function (val) {
+      this.produtoOpt = []
+      Produto.buscarProdEstoque(val)
+        .then((produto) => {
+          this.produtoOpt = produto.data.response.map((produto) => {
+            return {
+              id: produto.id_produto,
+              desc: produto.nome_produto
+            }
+          })
+        })
+    }
   }
 }
 </script>

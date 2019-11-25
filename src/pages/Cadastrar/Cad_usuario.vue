@@ -354,6 +354,7 @@ import Usuario from '../../service/usuario/usuario.js'
 import Hierarquia from '../../service/hierarquia/hierarquia.js'
 import Validar from '../../service/validarToken/validar'
 import { Loading, QSpinnerGears } from 'quasar'
+import { validateBr } from 'js-brasil'
 
 export default {
   mounted () {
@@ -482,6 +483,14 @@ export default {
         this.v_.cpf = false
       }
 
+      // Validando CPF
+      if (!validateBr.cpf(this.usuario.cpf)) {
+        this.errors.push({ msg: 'CPF informado é inválido', campo: 'cpf', erro: true })
+        this.v_.cpf = true
+      } else {
+        this.v_.cpf = false
+      }
+
       // Verificando o RG
       if (this.usuario.rg.length !== 12) {
         this.errors.push({ msg: 'O campo rg é obrigátorio', campo: 'rg', erro: true })
@@ -489,6 +498,14 @@ export default {
       } else {
         this.v_.rg = false
       }
+
+      // Validando RG
+      // if (!validateBr.rg(this.usuario.rg)) {
+      //   this.errors.push({ msg: 'RG informado é inválido', campo: 'rg', erro: true })
+      //   this.v_.rg = true
+      // } else {
+      //   this.v_.rg = false
+      // }
 
       // Verificando a data de nascimento
       if (this.usuario.dt_nascimento.length !== 10) {
@@ -551,6 +568,30 @@ export default {
         this.v_.celular = true
       } else {
         this.v_.celular = false
+      }
+
+      // Validando o numero do celular
+      // if (!validateBr.celular(this.usuario.celular)) {
+      //   this.errors.push({ msg: 'O numero de celular informado é inválido', campo: 'celular', erro: true })
+      //   this.v_.celular = true
+      // } else {
+      //   this.v_.celular = false
+      // }
+
+      // Validando o numero do telefone se ele for informado
+      if (this.usuario.telefone.length > 0) {
+        if (this.usuario.telefone.length !== 14) {
+          this.errors.push({ msg: 'Informe o telefone ou apague para continuar', campo: 'telefone', erro: true })
+          this.v_.telefone = true
+        } else {
+          this.v_.telefone = false
+        }
+        // else if (!validateBr.telefone(this.usuario.telefone)) {
+        //   this.errors.push({ msg: 'O numero de telefone informado é inválido', campo: 'telefone', erro: true })
+        //   this.v_.telefone = true
+        // }
+      } else {
+        this.v_.telefone = false
       }
 
       // Verificando CEP

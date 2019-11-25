@@ -69,7 +69,6 @@ export default {
       })
       Usuario.login(this.usuario)
         .then((usuarios) => {
-          console.log(usuarios.data)
           if (usuarios.data.errors) {
             for (let i = 0; i < usuarios.data.errors.length; i++) {
               this.$q.notify({

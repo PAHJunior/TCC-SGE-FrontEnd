@@ -7,6 +7,9 @@ export default {
   buscarUmProduto: (id) => {
     return http.get(`/${id}`) // retorna pelo ID
   },
+  buscarProdEstoque: (fkestoque) => {
+    return http.get(`/estoque/${fkestoque}`) // retorna pelo ID
+  },
   buscarProduto: () => {
     return http.get(`/`) // retorna tudo
   }
