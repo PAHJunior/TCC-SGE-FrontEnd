@@ -35,7 +35,10 @@ const routes = [
       { path: '/consultar_hierarquia', component: () => import('pages/consultar/Consultar_hierarquia.vue') },
       { path: '/consultar_movimentacao', component: () => import('pages/consultar/Consultar_Movimentacao.vue') },
       { path: '/consultar_relatório', component: () => import('pages/consultar/Consultar_relatorio.vue') },
-      { path: '/consultar_tipo_documento', component: () => import('pages/consultar/Consultar_tipo-documento.vue') }
+      { path: '/consultar_tipo_documento', component: () => import('pages/consultar/Consultar_tipo-documento.vue') },
+
+      // Alterar
+      { path: '/alterar_senha', component: () => import('pages/alterar/Alter_user-senha.vue') }
     ]
   },
   {

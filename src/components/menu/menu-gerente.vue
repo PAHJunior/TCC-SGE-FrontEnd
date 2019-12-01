@@ -121,7 +121,7 @@ export default {
           label: 'Relatório',
           icon: 'img:statics/file-chart.png',
           submenu: [
-            { label: 'Emitir Relatório', link: 'consultar_relatorio' }
+            { label: 'Relatório de produtos', link: 'consultar_relatorio' }
           ]
         }
       }

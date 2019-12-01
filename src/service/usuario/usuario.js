@@ -15,5 +15,8 @@ export default {
   },
   modificar: (id, body) => {
     return http.patch(`/${id}`, body)
+  },
+  modSenha: (id, body) => {
+    return http.patch(`/${id}/senha`, body)
   }
 }

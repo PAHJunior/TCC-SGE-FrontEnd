@@ -105,10 +105,12 @@ module.exports = function (ctx) {
       // extractCSS: false,
       env: ctx.dev ? {
         VERSAO: JSON.stringify(require('./package.json').version),
-        API: JSON.stringify('http://localhost:3000/api')
+        API: JSON.stringify('http://localhost:3000/api'),
+        APIREPORT: JSON.stringify('http://localhost:5488/api/report')
       } : {
         VERSAO: JSON.stringify(require('./package.json').version),
-        API: JSON.stringify('https://api-sge.herokuapp.com/api')
+        API: JSON.stringify('https://api-sge.herokuapp.com/api'),
+        APIREPORT: JSON.stringify('http://localhost:5488/api/report')
       },
       extendWebpack (cfg) {
         cfg.module.rules.push({
