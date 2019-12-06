@@ -135,6 +135,7 @@ export default {
     },
     cadastrar () {
       if (this.validar()) {
+        this.hierarquia['loglogin'] = this.usuarioLocal.login
         Hierarquia.cadastrar(this.hierarquia)
           .then((hierarquia) => {
             if (hierarquia.data.errors) {
@@ -177,6 +178,9 @@ export default {
           })
       }
     }
+  },
+  mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   }
 }
 </script>

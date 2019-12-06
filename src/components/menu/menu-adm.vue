@@ -102,10 +102,11 @@
       <q-item
         class="text-grey-1"
         clickable
+        to="/logs"
         tag="a">
         <q-item-section avatar />
         <q-item-section>
-          <q-item-label>Administrador</q-item-label>
+          <q-item-label>Log do Sistema</q-item-label>
         </q-item-section>
       </q-item>
       <q-item

@@ -169,6 +169,7 @@ export default {
     },
     cadastrar () {
       if (this.validarCampos()) {
+        this.grupo['loglogin'] = this.usuarioLocal.login
         Grupo.cadastrar(this.grupo)
           .then((grupo) => {
             if (grupo.data.errors) {
@@ -256,6 +257,9 @@ export default {
       } else {
         return true
       }
+    },
+    mounted () {
+      this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
     }
   }
 }

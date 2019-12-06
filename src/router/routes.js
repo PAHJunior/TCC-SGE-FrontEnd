@@ -38,7 +38,10 @@ const routes = [
       { path: '/consultar_tipo_documento', component: () => import('pages/consultar/Consultar_tipo-documento.vue') },
 
       // Alterar
-      { path: '/alterar_senha', component: () => import('pages/alterar/Alter_user-senha.vue') }
+      { path: '/alterar_senha', component: () => import('pages/alterar/Alter_user-senha.vue') },
+
+      // Log
+      { path: '/logs', component: () => import('pages/log.vue') }
     ]
   },
   {

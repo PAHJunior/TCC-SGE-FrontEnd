@@ -355,6 +355,7 @@ import Hierarquia from '../../service/hierarquia/hierarquia.js'
 import Validar from '../../service/validarToken/validar'
 import { Loading, QSpinnerGears } from 'quasar'
 import { validateBr } from 'js-brasil'
+import validar from 'cpf-rg-validator'
 
 export default {
   mounted () {
@@ -367,6 +368,7 @@ export default {
           }
         })
       })
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   },
   data () {
     return {
@@ -484,7 +486,7 @@ export default {
       }
 
       // Validando CPF
-      if (!validateBr.cpf(this.usuario.cpf)) {
+      if (!validar.cpf(this.usuario.cpf)) {
         this.errors.push({ msg: 'CPF informado é inválido', campo: 'cpf', erro: true })
         this.v_.cpf = true
       } else {
@@ -500,12 +502,12 @@ export default {
       }
 
       // Validando RG
-      // if (!validateBr.rg(this.usuario.rg)) {
-      //   this.errors.push({ msg: 'RG informado é inválido', campo: 'rg', erro: true })
-      //   this.v_.rg = true
-      // } else {
-      //   this.v_.rg = false
-      // }
+      if (!validar.rg(this.usuario.rg)) {
+        this.errors.push({ msg: 'RG informado é inválido', campo: 'rg', erro: true })
+        this.v_.rg = true
+      } else {
+        this.v_.rg = false
+      }
 
       // Verificando a data de nascimento
       if (this.usuario.dt_nascimento.length !== 10) {
@@ -571,25 +573,24 @@ export default {
       }
 
       // Validando o numero do celular
-      // if (!validateBr.celular(this.usuario.celular)) {
-      //   this.errors.push({ msg: 'O numero de celular informado é inválido', campo: 'celular', erro: true })
-      //   this.v_.celular = true
-      // } else {
-      //   this.v_.celular = false
-      // }
+      if (!validateBr.celular(this.usuario.celular)) {
+        this.errors.push({ msg: 'O numero de celular informado é inválido', campo: 'celular', erro: true })
+        this.v_.celular = true
+      } else {
+        this.v_.celular = false
+      }
 
       // Validando o numero do telefone se ele for informado
       if (this.usuario.telefone.length > 0) {
         if (this.usuario.telefone.length !== 14) {
           this.errors.push({ msg: 'Informe o telefone ou apague para continuar', campo: 'telefone', erro: true })
           this.v_.telefone = true
+        } else if (!validateBr.telefone(this.usuario.telefone)) {
+          this.errors.push({ msg: 'O numero de telefone informado é inválido', campo: 'telefone', erro: true })
+          this.v_.telefone = true
         } else {
           this.v_.telefone = false
         }
-        // else if (!validateBr.telefone(this.usuario.telefone)) {
-        //   this.errors.push({ msg: 'O numero de telefone informado é inválido', campo: 'telefone', erro: true })
-        //   this.v_.telefone = true
-        // }
       } else {
         this.v_.telefone = false
       }
@@ -688,6 +689,7 @@ export default {
     },
     cadastrarUsuario () {
       if (this.validarCampos()) {
+        this.usuario['loglogin'] = this.usuarioLocal.login
         Usuario.cadastrar(this.usuario)
           .then((usuario) => {
             if (usuario.data.errors) {

@@ -456,6 +456,7 @@ export default {
           }
         })
       })
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   },
   data () {
     return {
@@ -554,6 +555,7 @@ export default {
   methods: {
     salvar () {
       if (this.validarCampos()) {
+        this.movimentacao['loglogin'] = this.usuarioLocal.login
         Mov.Cadastrar(this.movimentacao)
           .then((movimentacao) => {
             if (movimentacao.data.errors) {

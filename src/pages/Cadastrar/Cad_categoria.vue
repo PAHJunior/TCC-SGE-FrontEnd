@@ -139,6 +139,7 @@ export default {
     },
     cadastrar () {
       if (this.validarCampos()) {
+        this.categoria['loglogin'] = this.usuarioLocal.login
         Categoria.cadastrar(this.categoria)
           .then((categoria) => {
             if (categoria.data.errors) {
@@ -219,6 +220,9 @@ export default {
         return true
       }
     }
+  },
+  mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   }
 }
 </script>

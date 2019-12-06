@@ -493,6 +493,7 @@ export default {
     },
     cadastrar () {
       if (this.validarCampos()) {
+        this.fornecedor['loglogin'] = this.usuarioLocal.login
         Fornecedor.cadastrar(this.fornecedor)
           .then((fornecedor) => {
             if (fornecedor.data.errors) {
@@ -538,6 +539,9 @@ export default {
   },
   computed: {
 
+  },
+  mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   }
 }
 </script>

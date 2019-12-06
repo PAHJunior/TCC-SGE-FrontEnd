@@ -304,6 +304,7 @@ import Produto from '../../service/produto/produto.js'
 
 export default {
   mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
     Categoria.buscar()
       .then((und) => {
         this.categoriaOpt = und.data.response.map((cat) => {
@@ -344,6 +345,7 @@ export default {
   },
   data () {
     return {
+      usuarioLocal: null,
       errors: [],
       categoriaOpt: [],
       grupoOpt: [],
@@ -416,9 +418,9 @@ export default {
   methods: {
     salvar () {
       if (this.validarCampos()) {
+        this.produto['loglogin'] = this.usuarioLocal.login
         Produto.Cadastrar(this.produto)
           .then((produto) => {
-            console.log(produto)
             if (produto.data.errors) {
               for (let i = 0; i < produto.data.errors.length; i++) {
                 this.$q.notify({

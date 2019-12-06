@@ -149,6 +149,7 @@ export default {
     },
     Cadastrar () {
       if (this.validar()) {
+        this.tipoDoc['loglogin'] = this.usuarioLocal.login
         TipoDoc.Cadastrar(this.tipoDoc)
           .then((usuario) => {
             if (usuario.data.errors) {

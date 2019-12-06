@@ -169,6 +169,7 @@ export default {
     },
     Cadastrar () {
       if (this.validar()) {
+        this.unidMedida['loglogin'] = this.usuarioLocal.login
         UndMedida.cadastrar(this.unidMedida)
           .then((usuario) => {
             if (usuario.data.errors) {
@@ -211,6 +212,9 @@ export default {
           })
       }
     }
+  },
+  mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   }
 }
 </script>

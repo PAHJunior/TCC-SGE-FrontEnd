@@ -155,6 +155,7 @@
                         class="text-red col-12"
                         dense
                         outlined
+                        disable
                         v-model="usuario.nome"
                         label="Nome completo"
                       />
@@ -165,6 +166,7 @@
                       <q-checkbox
                         class="float-right"
                         left-label
+                        disable
                         v-model="usuario.ativo"
                         label="Status do usúario"/>
                     </div>
@@ -174,6 +176,7 @@
                       <q-input
                         class="col-12"
                         dense
+                        disable
                         outlined
                         v-model="usuario.login"
                         label="Login"

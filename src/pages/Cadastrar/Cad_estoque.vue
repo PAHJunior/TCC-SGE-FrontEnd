@@ -127,6 +127,7 @@ export default {
     },
     cadastrarEstoque () {
       if (this.validarCampos()) {
+        this.estoque['loglogin'] = this.usuarioLocal.login
         Estoque.cadEstoque(this.estoque)
           .then((estoque) => {
             if (estoque.data.errors) {
@@ -199,6 +200,9 @@ export default {
         return true
       }
     }
+  },
+  mounted () {
+    this.usuarioLocal = JSON.parse(localStorage.getItem('usuario'))
   }
 }
 </script>
