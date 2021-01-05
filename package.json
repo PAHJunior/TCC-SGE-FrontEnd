@@ -13,7 +13,7 @@
   "dependencies": {
     "@quasar/extras": "^1.2.0",
     "apexcharts": "^3.8.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "cpf-rg-validator": "^1.0.0",
     "js-brasil": "^1.4.5",
     "quasar": "^1.0.5",
